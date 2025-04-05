@@ -1,0 +1,113 @@
+/* .navbar{
+    display: flex;
+    flex-direction: row;
+    background-color: #393E46;
+    margin-top: 3.25cm;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5cm 0.5cm;
+}
+.navbar-nav{
+    display: flex;
+    flex-direction: row;
+    color: aliceblue !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 11.5cm;
+}
+.links-adnav{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: aliceblue !important;
+}
+.nav-link{
+    color:aliceblue;
+}
+.logout{
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    gap: 1cm;
+}
+.admin-profile-icon{
+    color: aliceblue;
+}
+
+.enter-records{
+    display: flex ; 
+    flex-direction: row;
+}
+
+.admin-role-button{
+    margin-left: 1cm;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    background-color: #222831;
+    margin-top: 3.25cm;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5cm 1cm;
+}
+
+/* Admin Role Text */
+.admin-role-text {
+    color: aliceblue;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+/* Centered Navigation Links */
+.nav-center {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1cm;
+}
+
+/* Navbar Links */
+.nav-link {
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+/* Profile Icon & Logout Button */
+.logout-profile {
+    display: flex;
+    align-items: center;
+    gap: 1cm;
+}
+
+.admin-profile-icon {
+    color: aliceblue;
+}
+
+/* Logout Button */
+.logout-btn {
+    background: none;
+    border: none;
+    color: aliceblue;
+    cursor: pointer;
+}
