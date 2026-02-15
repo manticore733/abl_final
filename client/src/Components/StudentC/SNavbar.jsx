@@ -118,7 +118,8 @@ const SNavbar = () => {
       const data = await response.json();
 
       if (response.ok) {
-        navigate("/");
+         // Redirect and replace history
+      navigate("/", { replace: true });
       } else {
         console.error("Logout failed:", data.message);
       }

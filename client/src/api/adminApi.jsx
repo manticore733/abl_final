@@ -15,7 +15,9 @@ export const fetchAdminCredentials = async (username) => {
 
 export const getMentorsByBranch = async (branch) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/api/admin/getMentors/${branch}`); // ✅ Fixed route
+    // If no branch is selected, pass "all" to fetch all mentors
+    const branchToFetch = branch ? branch : "all";
+    const response = await axios.get(`${API_BASE_URL}/api/admin/getMentors/${branchToFetch}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching mentors:", error);

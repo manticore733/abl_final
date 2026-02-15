@@ -24,7 +24,7 @@ export const generateTokenForUser = async (req, res) => {
             userIdField = "s_id"; 
             usernameField = "s_username";
         } else if (user_type === "mentor") {
-            userModel = "mentors";
+            userModel = "mentor_info";
             userIdField = "m_id";
             usernameField = "m_username";
         } else if (user_type === "admin") {

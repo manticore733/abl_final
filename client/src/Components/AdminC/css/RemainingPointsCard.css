@@ -1,0 +1,148 @@
+/* .remaining-points-card {
+    background: white;
+    padding: 20px;
+    margin-top: 30px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+  
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filters select {
+    margin-left: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .chart-container {
+    margin-top: 20px;
+  }
+   */
+
+
+
+
+
+
+   .remaining-points-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .card-header {
+    margin-bottom: 20px;
+  }
+  
+  .card-header h2 {
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .sub-heading {
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+  
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  
+  .filters select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    min-width: 120px;
+  }
+  
+  .chart-container {
+    min-height: 300px;
+    position: relative;
+  }
+  
+  .error-message {
+    color: #d32f2f;
+    padding: 10px;
+    background-color: #ffebee;
+    border-radius: 4px;
+  }
+  
+  .view-toggle {
+    margin: 15px 0;
+  }
+  
+  .toggle-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .toggle-btn.active {
+    background-color: #e0e0e0;
+    border-color: #aaa;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Loading spinner */
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+  }
+  
+  /* Summary stats cards */
+  .summary-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .stat-card {
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 15px;
+    flex: 1;
+    min-width: 100px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }

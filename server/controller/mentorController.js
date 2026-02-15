@@ -1,4 +1,4 @@
-import Mentor from "../postgres/model/Mentor.js";
+
 import Session from "../postgres/model/Session.js";
 import Student from "../postgres/model/Student.js";
 import StudentInfo from "../postgres/model/StudentInfo.js";
@@ -7,25 +7,75 @@ import StudentActivityParticipation from "../postgres/model/StudentActivityParti
 import StudentActivitySummary from "../postgres/model/StudentActivitySummary.js";
 import StudentDetails from "../postgres/model/StudentDetails.js";
 
+import { Document, Packer, Paragraph, HeadingLevel, Media, Table, TableRow, TableCell, TextRun, AlignmentType,ImageRun  } from "docx";
+import fs from "fs";
+
+import path from "path";
+
+
+
+
+
+// export const getMentorCredentials = async (req, res) => {
+//   const { username } = req.params; 
+//   try {
+//     const mentor = await Mentor.findOne({
+//       where: { m_username: username }, // Search by username
+//       attributes: ["m_username", "m_password"], // Only retrieve specific fields
+//     });
+//     if (!mentor) {
+//       return res.status(404).json({ error: "Mentor not found" });
+//     }
+//     res.status(200).json(mentor);
+//   } catch (error) {
+//     console.error("Error fetching mentor credentials:", error);
+//     res.status(500).json({ error: "Failed to fetch mentor credentials" });
+//   }
+// };
 
 
 
 export const getMentorCredentials = async (req, res) => {
-  const { username } = req.params; 
+  const { username } = req.params;
   try {
-    const mentor = await Mentor.findOne({
+
+    console.log(`Fetching credentials for: ${username}`); // Debug log
+
+
+
+    const mentor = await MentorInfo.findOne({
       where: { m_username: username }, // Search by username
       attributes: ["m_username", "m_password"], // Only retrieve specific fields
     });
+
     if (!mentor) {
       return res.status(404).json({ error: "Mentor not found" });
     }
+
     res.status(200).json(mentor);
   } catch (error) {
     console.error("Error fetching mentor credentials:", error);
     res.status(500).json({ error: "Failed to fetch mentor credentials" });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const fetchStudentDetails = async (req, res) => {
   try {
@@ -245,6 +295,71 @@ export const assignPoints = async (req, res) => {
 
 
 
+// export const fetchStudentsUnderMentor = async (req, res) => {
+//   try {
+//     const sessionToken = req.cookies.sessionToken;
+//     if (!sessionToken) {
+//       console.log("⛔ Session token missing.");
+//       return res.status(401).json({ error: "Session token missing. Please log in again." });
+//     }
+
+//     // Find session in the database
+//     const session = await Session.findOne({ where: { session_token: sessionToken } });
+//     if (!session) {
+//       console.log("⛔ Invalid session.");
+//       return res.status(401).json({ error: "Invalid session. Please log in again." });
+//     }
+
+//     const sessionUserId = session.user_id;
+//     const mentorIdConv = parseInt(sessionUserId.replace(/[^0-9]+/g, ""), 10);
+//     console.log("✅ Mentor ID:", mentorIdConv);
+
+//     // Fetch mentor details
+//     const mentorDetails = await MentorInfo.findOne({
+//       where: { m_id: mentorIdConv },
+//       attributes: ["m_batch", "m_sem", "m_csec", "m_branch"],
+//     });
+
+//     if (!mentorDetails) {
+//       console.log("⛔ Mentor not found in mentor_info table.");
+//       return res.status(404).json({ error: "Mentor not found." });
+//     }
+
+//     console.log("✅ Mentor Details:", mentorDetails.dataValues);
+
+//     // Fetch students matching the mentor's batch, sem, csec, and branch
+//     const students = await StudentDetails.findAll({
+//       where: {
+//         batch: mentorDetails.m_batch.trim(),
+//         semester: mentorDetails.m_sem.trim(),
+//         division: mentorDetails.m_csec.trim(),
+//         department: mentorDetails.m_branch.trim(),
+//       },
+//     });
+
+//     console.log("✅ Students Found:", students.length);
+
+//     if (students.length === 0) {
+//       return res.status(404).json({ message: "No students found for this mentor." });
+//     }
+
+//     // res.status(200).json(students);
+//     res.status(200).json({
+//       mentorId: mentorIdConv, // Include mentor ID in the response
+//       students: students.length > 0 ? students : [],
+//     });
+
+
+
+//   } catch (error) {
+//     console.error("🔥 Error fetching students under mentor:", error);
+//     res.status(500).json({ error: "Internal server error." });
+//   }
+// };
+
+
+
+
 export const fetchStudentsUnderMentor = async (req, res) => {
   try {
     const sessionToken = req.cookies.sessionToken;
@@ -267,7 +382,7 @@ export const fetchStudentsUnderMentor = async (req, res) => {
     // Fetch mentor details
     const mentorDetails = await MentorInfo.findOne({
       where: { m_id: mentorIdConv },
-      attributes: ["m_batch", "m_sem", "m_csec", "m_branch"],
+      attributes: ["m_batch", "m_sem", "m_csec", "m_branch","year_of_joining"],
     });
 
     if (!mentorDetails) {
@@ -281,7 +396,8 @@ export const fetchStudentsUnderMentor = async (req, res) => {
     const students = await StudentDetails.findAll({
       where: {
         batch: mentorDetails.m_batch.trim(),
-        semester: mentorDetails.m_sem.trim(),
+        // semester: mentorDetails.m_sem.trim(),
+        year: mentorDetails.year_of_joining,
         division: mentorDetails.m_csec.trim(),
         department: mentorDetails.m_branch.trim(),
       },
@@ -306,6 +422,42 @@ export const fetchStudentsUnderMentor = async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -578,6 +730,34 @@ export const fetchMentorProfile = async (req, res) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const fetchAllStudentsForMentor = async (req, res) => {
   try {
     const { mentorId } = req.params; // Get mentorId from request params
@@ -592,7 +772,7 @@ export const fetchAllStudentsForMentor = async (req, res) => {
     // Fetch mentor details
     const mentorDetails = await MentorInfo.findOne({
       where: { m_id: mentorId },
-      attributes: ["m_batch", "m_sem", "m_csec", "m_branch"],
+      attributes: ["m_batch", "m_sem", "m_csec", "m_branch","year_of_joining"],
     });
 
     if (!mentorDetails) {
@@ -606,7 +786,8 @@ export const fetchAllStudentsForMentor = async (req, res) => {
     const students = await StudentDetails.findAll({
       where: {
         batch: mentorDetails.m_batch.trim(),
-        semester: mentorDetails.m_sem.trim(),
+        // semester: mentorDetails.m_sem.trim(),
+        year : mentorDetails.year_of_joining,
         division: mentorDetails.m_csec.trim(),
         department: mentorDetails.m_branch.trim(),
       },
@@ -697,3 +878,256 @@ export const fetchStudentStatistics = async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const fetchMentorCreds = async (req, res) => { 
+  try {
+    const sessionToken = req.cookies.sessionToken;
+
+    if (!sessionToken) {
+      console.log("⛔ Session token missing.");
+      return res.status(401).json({ error: "Session token missing. Please log in again." });
+    }
+
+    const session = await Session.findOne({ where: { session_token: sessionToken } });
+
+    if (!session) {
+      console.log("⛔ Invalid session.");
+      return res.status(401).json({ error: "Invalid session. Please log in again." });
+    }
+
+    const mentorIdConv = parseInt(session.user_id.replace(/[^0-9]+/g, ""), 10);
+
+    const mentorDetails = await MentorInfo.findOne({
+      where: { m_id: mentorIdConv },
+      attributes: ["m_id","m_batch", "m_sem", "m_csec", "m_branch"],
+    });
+
+    if (!mentorDetails) {
+      console.log("⛔ Mentor not found.");
+      return res.status(404).json({ error: "Mentor not found." });
+    }
+
+    console.log("✅ Mentor Details Fetched:", mentorDetails.dataValues);
+    res.status(200).json({
+      mentorId: mentorDetails.m_id,
+    
+      m_branch: mentorDetails.m_branch,
+      m_batch: mentorDetails.m_batch,
+      m_csec: mentorDetails.m_csec,
+      m_sem: mentorDetails.m_sem,
+    });
+  } catch (error) {
+    console.error("🔥 Error fetching mentor profile:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Your function to generate the mentor report
+
+
+
+
+export const generateMentorReport = async (req, res) => {
+  try {
+    const { rollNumber, barChartBase64 } = req.body;
+
+    console.log("Fetching student details and activities...");
+
+    const studentDetails = await StudentDetails.findOne({ where: { s_username: rollNumber } });
+    const activities = await StudentActivitySummary.findAll({
+      where: { roll_number: rollNumber, status: "Approved" },
+    });
+
+    console.log("Student details:", studentDetails);
+    console.log("Activities:", activities);
+
+    // ✅ Step 1: Create document with empty sections to avoid creator error
+    const doc = new Document({ sections: [] });
+
+    // ✅ Step 2: Convert base64 image and embed it using ImageRun
+    let chartImageParagraph;
+    if (barChartBase64 && barChartBase64.startsWith("data:image/png;base64,")) {
+      const base64Data = barChartBase64.split(",")[1];
+      const imageBuffer = Buffer.from(base64Data, "base64");
+
+      console.log("Embedding the base64 chart...");
+
+      chartImageParagraph = new Paragraph({
+        children: [
+          new ImageRun({
+            data: imageBuffer,
+            transformation: {
+              width: 500,
+              height: 300,
+            },
+          }),
+        ],
+        alignment: AlignmentType.CENTER,
+      });
+
+      console.log("Chart image added.");
+    } else {
+      console.log("No valid base64 chart provided.");
+      chartImageParagraph = new Paragraph("No chart provided.");
+    }
+
+    // ✅ Step 3: Add all report content to the document
+    doc.addSection({
+      children: [
+        new Paragraph({
+          text: `Mentor Report`,
+          heading: HeadingLevel.HEADING_1,
+          alignment: AlignmentType.CENTER,
+        }),
+        new Paragraph(" "),
+        new Paragraph({ text: `Student Name: ${studentDetails.name}` }),
+        new Paragraph({ text: `Roll Number: ${studentDetails.s_username}` }),
+        new Paragraph({ text: `Department: ${studentDetails.department}` }),
+        new Paragraph({ text: `Division: ${studentDetails.division}` }),
+        new Paragraph({ text: `Batch: ${studentDetails.batch}` }),
+        new Paragraph({ text: `Year of Joining: ${studentDetails.year}` }),
+        new Paragraph({ text: `Total Credits Earned: ${studentDetails.total_credits} / 100` }),
+        new Paragraph(" "),
+        new Paragraph({
+          text: `Approved Activities:`,
+          heading: HeadingLevel.HEADING_2,
+        }),
+        new Table({
+          rows: [
+            new TableRow({
+              children: [
+                new TableCell({ children: [new Paragraph("Event Name")] }),
+                new TableCell({ children: [new Paragraph("Event Type")] }),
+                new TableCell({ children: [new Paragraph("Points")] }),
+                new TableCell({ children: [new Paragraph("Date")] }),
+              ],
+            }),
+            ...activities.map((act) =>
+              new TableRow({
+                children: [
+                  new TableCell({ children: [new Paragraph(act?.event_name || "N/A")] }),
+                  new TableCell({ children: [new Paragraph(act?.event_type || "N/A")] }),
+                  new TableCell({ children: [new Paragraph(`${act?.allocated_points ?? "N/A"}`)] }), // updated to allocated_points
+                  new TableCell({ children: [new Paragraph(act?.participation_date || "N/A")] }), // updated to participation_date
+                ],
+              })
+
+
+
+
+            ),
+            
+          ],
+        }),
+        new Paragraph(" "),
+        new Paragraph({
+          text: "Event Type-wise Participation:",
+          heading: HeadingLevel.HEADING_2,
+        }),
+        // chartImageParagraph,
+        new Paragraph(" "),
+        new Paragraph({
+          text: "Signatures:",
+          heading: HeadingLevel.HEADING_2,
+        }),
+        new Paragraph("HOD: ___________________"),
+        new Paragraph("Principal: _______________"),
+      ],
+    });
+
+    // ✅ Step 4: Generate and send the .docx file
+    const buffer = await Packer.toBuffer(doc);
+    res.setHeader("Content-Disposition", `attachment; filename=${studentDetails.name}_Report.docx`);
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+    res.send(buffer);
+  } catch (err) {
+    console.error("Error generating report:", err);
+    res.status(500).json({ message: "Failed to generate report." });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

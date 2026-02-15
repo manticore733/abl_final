@@ -1,19 +1,3 @@
-// import React from 'react'
-// import MNavbar from '../../Components/MentorC/MNavbar';
-
-// const mProfile = () => {
-//   return (
-//     <div>
-//         <MNavbar />
-//         <div className='mentor-profile'>
-
-//         </div>
-//     </div>
-//   )
-// }
-
-// export default mProfile
-
 
 
 
@@ -983,7 +967,7 @@
 
 ///new things
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { Card, CardContent, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from "@mui/material";
 import MNavbar from "../../Components/MentorC/MNavbar";
 import { BarChart, PieChart, LineChart } from "@mui/x-charts";
@@ -992,6 +976,7 @@ import { Avatar } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 import { Box, Divider } from "@mui/material";
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import html2canvas from "html2canvas";
 
 const mProfile = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -1011,6 +996,9 @@ const mProfile = () => {
 
   const [filteredEventCounts, setFilteredEventCounts] = useState({});
   const [filteredSemesterWiseEvents, setFilteredSemesterWiseEvents] = useState({});
+
+  // 1️⃣ Define this at top of your component
+const barChartRef = useRef(null);
 
   // Handle student selection and fetch statistics
   const handleViewStatistics = (student) => {
@@ -1040,6 +1028,38 @@ const mProfile = () => {
       setLoadingStats(false);
     }
   };
+
+
+
+  const handleGenerateReport = async () => {
+    if (!selectedStudent) return;
+  
+    try {
+      const canvas = await html2canvas(barChartRef.current);
+      const base64Image = canvas.toDataURL("image/png");
+  
+      const payload = {
+        rollNumber: selectedStudent.s_username,  // 📌 Send to backend
+        barChartBase64: base64Image
+      };
+  
+      await axios.post("http://localhost:5000/api/mentor/generate-report", payload, {
+        responseType: 'blob', // so we get the Word file in response
+      }).then((response) => {
+        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${selectedStudent.name}_Report.docx`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+  
+    } catch (error) {
+      console.error("Error generating report:", error);
+    }
+  };
+  
 
   useEffect(() => {
     const mentorId = sessionStorage.getItem("mentorId");
@@ -1116,7 +1136,7 @@ const mProfile = () => {
           {/*Mentor info card*/ }
 
           
-          <Card sx={{ display: "flex", width: "45%", borderRadius: "12px", overflow: "hidden", boxShadow: 3 }}>
+          <Card sx={{ display: "flex", width: "30%", borderRadius: "12px", overflow: "hidden", boxShadow: 3 }}>
             {/* Left Section - Profile with Gradient */}
             <Box sx={{
                     width: "30%",
@@ -1245,6 +1265,19 @@ const mProfile = () => {
       Statistics for {selectedStudent.name}
     </Typography>
 
+
+    <Button
+    variant="contained"
+    color="success"
+    onClick={handleGenerateReport}
+  >
+    Generate Report
+  </Button>
+
+
+
+
+
     {loadingStats ? (
       <Typography>Loading statistics...</Typography>
     ) : errorStats ? (
@@ -1253,81 +1286,129 @@ const mProfile = () => {
       <>
         {/* Semester Filter */}
         <Box sx={{ marginBottom: 2 }}>
-  <Typography variant="subtitle1">Filter by Semester:</Typography>
-  <select 
-    value={selectedSemester} 
-    onChange={handleSemesterChange} 
-    style={{ padding: "5px", marginLeft: "10px", borderRadius: "5px" }}
-  >
-    <option value="All">All Semesters</option>
-    {Array.from({ length: 8 }, (_, i) => (i + 1).toString()).map((semester) => (
-      <option key={semester} value={semester}>
-        Semester {semester}
-      </option>
-    ))}
-  </select>
-</Box>
+            <Typography variant="subtitle1">Filter by Semester:</Typography>
+            <select 
+              value={selectedSemester} 
+              onChange={handleSemesterChange} 
+              style={{ padding: "5px", marginLeft: "10px", borderRadius: "5px" }}
+            >
+              <option value="All">All Semesters</option>
+              {Array.from({ length: 8 }, (_, i) => (i + 1).toString()).map((semester) => (
+                <option key={semester} value={semester}>
+                  Semester {semester}
+                </option>
+              ))}
+            </select>
+          </Box>
 
         {/* Graphs Container */}
         <Box sx={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "center" }}>
           
           {/* Bar Chart: Event Type Participation */}
           <Card sx={{ width: "30%", padding: "10px" }}>
-            <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
-              Student Participation ({selectedSemester})
-            </Typography>
-            <BarChart
-              width={350}
-              height={300}
-              series={[{
-                data: Object.values(filteredEventCounts), 
-                label: "Participation", 
-                type: "bar"
-              }]}
-              xAxis={[{ scaleType: "band", data: Object.keys(filteredEventCounts) }]}
-            />
-          </Card>
+              <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
+                Student Participation ({selectedSemester})
+              </Typography>
+
+              <Box sx={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+
+
+ 
+              <div ref={barChartRef}>
+
+                <BarChart marginLeft = "5px"
+                  width={350}
+                  height={300}
+                  series={[{
+                    data: Object.values(filteredEventCounts),
+                    label: "Participation",
+                    type: "bar"
+                  }]}
+                  xAxis={[{
+                    scaleType: "band",
+                    data: Object.keys(filteredEventCounts),
+                    tickLabelStyle: {
+                      angle: -40,
+                      textAnchor: 'end',
+                    },
+                    // Leave label out to avoid overlap
+                  }]}
+                  yAxis={[{
+                    label: "No. of Events Participated",
+                    labelStyle: {
+                      fontSize: 14,
+                      fontWeight: 500,
+                    },
+                    tickMinStep: 1, // 👈 Force whole numbers
+                  }]}
+                />
+
+
+            </div>
+
+                {/* 👇 X-axis title manually below the chart */}
+                <Typography variant="body2" sx={{ mt: 1, fontWeight: 500 }}>
+                  Event Type
+                </Typography>
+              </Box>
+        </Card>
+
 
           {/* Pie Chart: Activity Status */}
-          <Card sx={{ width: "30%", padding: "10px" }}>
+          <Card sx={{ width: "25%", padding: "10px" }}>
             <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
               Activity Status Breakdown
             </Typography>
-            <PieChart
-              width={350}
-              height={300}
-              series={[{
-                data: Object.entries(studentStatistics.statusCounts).map(([label, value], index) => ({
-                  id: index, value, label
-                }))
-              }]}
-              legend={{ position: "bottom" }}
-            />
+
+            <PieChart sx={{ml: '60px'}}
+                width={350}
+                height={350}
+                series={[{
+                  data: Object.entries(studentStatistics.statusCounts).map(([label, value], index) => ({
+                    id: index,
+                    value,
+                    label,
+                  }))
+                }]}
+                slotProps={{
+                  legend: {
+                    direction: "row", // could also use "column" if you want stacked
+                    position: {
+                      vertical: "bottom",
+                      horizontal: "middle",
+                    },
+                    padding: 10,
+                    itemMarkWidth: 12,
+                    itemMarkHeight: 12,
+                    labelStyle: { fontSize: 12 },
+                  }
+                }}
+              />
+
           </Card>
 
           {/* Line Chart: Semester-wise Performance */}
           <Card sx={{ width: "30%", padding: "10px" }}>
-  <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
-    Semester-wise Total Participation
-  </Typography>
-  <LineChart
-    width={350}
-    height={300}
-    series={[{
-      data: Array.from({ length: 8 }, (_, i) => {
-        const sem = (i + 1).toString();
-        return studentStatistics.semesterWiseEvents[sem]
-          ? Object.values(studentStatistics.semesterWiseEvents[sem]).reduce((a, b) => a + b, 0)
-          : 0;  // Fill missing semesters with 0
-      }),
-      label: "Total Participation",
-    }]}
-    xAxis={[{ 
-      scaleType: "point", 
-      data: Array.from({ length: 8 }, (_, i) => (i + 1).toString()) // Always show 1-8 on x-axis
-    }]}
-  />
-</Card>
+              <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
+                Semester-wise Total Participation
+              </Typography>
+              <LineChart
+                width={350}
+                height={300}
+                series={[{
+                  data: Array.from({ length: 8 }, (_, i) => {
+                    const sem = (i + 1).toString();
+                    return studentStatistics.semesterWiseEvents[sem]
+                      ? Object.values(studentStatistics.semesterWiseEvents[sem]).reduce((a, b) => a + b, 0)
+                      : 0;  // Fill missing semesters with 0
+                  }),
+                  label: "Total Participation",
+                }]}
+                xAxis={[{ 
+                  scaleType: "point", 
+                  data: Array.from({ length: 8 }, (_, i) => (i + 1).toString()) // Always show 1-8 on x-axis
+                }]}/>
+              </Card>
 
         </Box>
       </>
@@ -1344,56 +1425,6 @@ const mProfile = () => {
 
 
 
-        {/* SECTION 3: Overall Statistics for All Students */}
-        <Card sx={{ padding: "20px" }}>
-          <Typography variant="h6">Overall Statistics for Students Under Mentor</Typography>
-          <div style={{ display: "flex", gap: "20px", justifyContent: "space-between" }}>
-
-            {/* Bar Chart Card */}
-            <Card sx={{ width: "32%", padding: "10px" }}>
-              <BarChart
-                width={300}
-                height={300}
-                series={[{ data: [10, 5, 8, 7, 3], label: "Participation", type: "bar" }]}
-                xAxis={[{ scaleType: "band", data: ["Technical", "Cultural", "Sports", "Social", "Internship"] }]}
-              />
-            </Card>
-
-            {/* Pie Chart Card */}
-            <Card sx={{ width: "32%", padding: "10px" ,display: "flex", 
-                flexDirection: "column", 
-                alignItems: "center", 
-                justifyContent: "center"  }}>
-                            <PieChart
-                width={300}
-                height={300}
-                series={[{ 
-                  data: [
-                    { id: 0, value: 40, label: "Approved" }, 
-                    { id: 1, value: 10, label: "Rejected" }, 
-                    { id: 2, value: 15, label: "Pending" }
-                  ] 
-                }]}
-
-                slotProps={{
-                  legend: { direction: "row", position: { vertical: "bottom", horizontal: "center" } , padding: 12}
-                }}
-             
-              />
-            </Card>
-
-            {/* Line Chart Card */}
-            <Card sx={{ width: "32%", padding: "10px" }}>
-              <LineChart
-                width={500}
-                height={300}
-                series={[{ data: [5, 10, 15, 12, 18], label: "Overall Performance" }]}
-                xAxis={[{ scaleType: "point", data: ["Jan", "Feb", "Mar", "Apr", "May"] }]}
-              />
-            </Card>
-
-          </div>
-        </Card>
       </div>
     </div>
   );

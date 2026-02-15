@@ -3,7 +3,8 @@ import { assignPoints, fetchStudentDetails } from "../controller/mentorControlle
 import { getStudent,fetchStudentsUnderMentor,fetchPendingActivities,approveActivity,
     rejectActivity,undoActivityAction,
     fetchProcessedActivities,getStudentDetails,
-    fetchMentorProfile,fetchAllStudentsForMentor,fetchStudentStatistics} from "../controller/mentorController.js"; // Import controller function
+    fetchMentorProfile,fetchAllStudentsForMentor,fetchStudentStatistics,
+    fetchMentorCreds, generateMentorReport} from "../controller/mentorController.js"; // Import controller function
 
 const router = express.Router();
 
@@ -63,6 +64,15 @@ router.get("/student-statistics/:studentId", fetchStudentStatistics);
 
 
 
+
+router.get("/mentorcreds",fetchMentorCreds);
+
+
+
+
+
+
+router.post("/generate-report", generateMentorReport);
 
 
 

@@ -45,6 +45,12 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser()); 
+// Prevent caching for all responses (important after logout)
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

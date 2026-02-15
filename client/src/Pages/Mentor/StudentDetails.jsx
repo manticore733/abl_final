@@ -1,409 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { useParams, useLocation } from "react-router-dom";
-// import { FetchStudentActivities, AssignActivityPoints } from "../../api/mentorApi";
-// import MNavbar from "../../Components/MentorC/MNavbar";
-// import "./css/StudentDetails.css";
-
-// const StudentDetails = () => {
-//   const { id } = useParams();
-//   const location = useLocation();
-//   const studentName = location.state?.studentName || "Unknown Student";
-
-//   const [activities, setActivities] = useState([]);
-
-//   useEffect(() => {
-//     const fetchDetails = async () => {
-//       if (!id) {
-//         console.error("Error: Missing student ID in URL");
-//         return;
-//       }
-
-//       const data = await FetchStudentActivities(id);
-//       if (data) {
-//         setActivities(data);
-//       }
-//     };
-
-//     fetchDetails();
-//   }, [id]);
-
-//   // ✅ Handle Approve Action
-//   const handleApprove = async (a_id, a_type, a_sub_type, a_level) => {
-//     console.log(`🛑 Approving Activity ID: ${a_id}, Type: ${a_type}, Sub Type: ${a_sub_type}, Level: ${a_level}`);
-
-//     const response = await AssignActivityPoints(a_id, a_type, a_sub_type, a_level);
-//     if (response) {
-//       setActivities((prev) =>
-//         prev.map((activity) =>
-//           activity.a_id === a_id ? { ...activity, a_status: "Approved" } : activity
-//         )
-//       );
-//     }
-//   };
-
-
-//   if (activities.length === 0) {
-//     return <p className="loading-text">No activities found for {studentName}.</p>;
-//   }
-
-//   return (
-//     <div>
-//       <MNavbar />
-//       <div className="student-details-container">
-//         <h2>{studentName}'s Activities</h2>
-//         <table className="details-table">
-//           <thead>
-//             <tr>
-//               <th>Activity Name</th>
-//               <th>Type</th>
-//               <th>Sub Type</th>
-//               <th>Start Date</th>
-//               <th>End Date</th>
-//               <th>Venue</th>
-//               <th>Level</th>
-//               <th>Status</th>
-//               <th>Points Scored</th>
-//               <th>Actions</th> {/* 🔹 Actions Column */}
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {activities.map((activity) => (
-//               <tr key={activity.a_id}>
-//                 <td>{activity.a_name}</td>
-//                 <td>{activity.a_type}</td>
-//                 <td>{activity.a_sub_type}</td>
-//                 <td>{activity.a_start_date || "N/A"}</td>
-//                 <td>{activity.a_end_date || "N/A"}</td>
-//                 <td>{activity.a_venue || "N/A"}</td>
-//                 <td>{activity.a_level || "N/A"}</td>
-//                 <td>{activity.a_status}</td> {/* Status Column */}
-//                 <td>{activity.a_points_scored !== null ? activity.a_points_scored : "Pending"}</td>
-//                 <td>
-//                   {activity.a_status !== "Approved" && (
-//                     <button
-//                       className="action-btn approve-btn"
-//                       onClick={() => handleApprove(activity.a_id, activity.a_type, activity.a_sub_type, activity.a_level)}
-//                     >
-//                       <i className="bi bi-check-square"></i>
-//                     </button>
-//                   )}
-//                 </td>
-
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default StudentDetails;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///working 100%
-
-
-
-// import React, { useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
-// import axios from "axios";
-// import { Table, Button, Modal, TextField } from "@mui/material";
-// import MNavbar from "../../Components/MentorC/MNavbar";
-
-// const StudentDetails = () => {
-//   const { id: s_id } = useParams();
-
-//   // State for activities
-//   const [pendingActivities, setPendingActivities] = useState([]);
-//   const [processedActivities, setProcessedActivities] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-
-//   // Reject Modal
-//   const [openModal, setOpenModal] = useState(false);
-//   const [rejectReason, setRejectReason] = useState("");
-//   const [rejectActivityId, setRejectActivityId] = useState(null);
-
-//   // ✅ Fetch activities
-//   useEffect(() => {
-//     const fetchActivities = async () => {
-//       try {
-//         setLoading(true);
-        
-//         // Fetch pending activities
-//         const pendingRes = await axios.get(
-//           `http://localhost:5000/api/mentor/student-pending-activities/${s_id}`
-//         );
-//         setPendingActivities(pendingRes.data);
-  
-//         // Fetch approved/rejected activities
-//         try {
-//           const processedRes = await axios.get(
-//             `http://localhost:5000/api/mentor/student-processed-activities/${s_id}`
-//           );
-//           setProcessedActivities(processedRes.data);
-//         } catch (error) {
-//           if (error.response && error.response.status === 404) {
-//             setProcessedActivities([]); // No approved/rejected activities, set empty array
-//           } else {
-//             setError("Failed to fetch processed activities.");
-//           }
-//         }
-  
-//       } catch (error) {
-//         setError("Failed to fetch activities.");
-//         console.error("Error fetching activities:", error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-  
-//     fetchActivities();
-//   }, [s_id]);
-  
-//   // ✅ Approve Activity
-//   const handleApprove = async (activityId) => {
-//     if (!window.confirm("Are you sure you want to approve this activity?")) return;
-
-//     try {
-//       await axios.put(`http://localhost:5000/api/mentor/approve-activity/${activityId}`);
-
-//       // Update UI
-//       setPendingActivities((prev) => prev.filter((act) => act.id !== activityId));
-//       setProcessedActivities((prev) => [
-//         ...prev,
-//         { ...pendingActivities.find((act) => act.id === activityId), status: "Approved" },
-//       ]);
-//     } catch (err) {
-//       console.error("Error approving activity:", err);
-//     }
-//   };
-
-//   // ✅ Reject Activity (open modal)
-//   const handleRejectClick = (activityId) => {
-//     setRejectActivityId(activityId);
-//     setOpenModal(true);
-//   };
-
-//   // ✅ Confirm Reject Activity
-//   const handleRejectConfirm = async () => {
-//     if (!rejectReason) {
-//       alert("Please enter a rejection reason.");
-//       return;
-//     }
-
-//     try {
-//       await axios.put(`http://localhost:5000/api/mentor/reject-activity/${rejectActivityId}`, {
-//         rejectionReason: rejectReason,
-//       });
-
-//       // Update UI
-//       setPendingActivities((prev) => prev.filter((act) => act.id !== rejectActivityId));
-//       setProcessedActivities((prev) => [
-//         ...prev,
-//         { ...pendingActivities.find((act) => act.id === rejectActivityId), status: "Rejected", remarks: rejectReason },
-//       ]);
-
-//       setOpenModal(false);
-//       setRejectReason("");
-//     } catch (err) {
-//       console.error("Error rejecting activity:", err);
-//     }
-//   };
-
-//   // ✅ Undo Activity
-//   const handleUndo = async (activityId) => {
-//     if (!window.confirm("Are you sure you want to undo this action?")) return;
-
-//     try {
-//       await axios.put(`http://localhost:5000/api/mentor/undo-activity/${activityId}`);
-
-//       // Update UI
-//       setProcessedActivities((prev) => prev.filter((act) => act.id !== activityId));
-//       setPendingActivities((prev) => [
-//         ...prev,
-//         { ...processedActivities.find((act) => act.id === activityId), status: "Pending" },
-//       ]);
-//     } catch (err) {
-//       console.error("Error undoing activity:", err);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <MNavbar />
-//       <div style={{ padding: "20px" }}>
-//         <h2>Student Activities</h2>
-
-//         {loading ? (
-//           <p>Loading...</p>
-//         ) : error ? (
-//           <p style={{ color: "red" }}>{error}</p>
-//         ) : (
-//           <>
-//             {/* 🔹 PENDING ACTIVITIES */}
-//             <h3>Pending Activities</h3>
-//             <Table>
-//               <thead>
-//                 <tr>
-//                   <th>Event Name</th>
-//                   <th>Type</th>
-//                   <th>Subcategory</th>
-//                   <th>Organized By</th>
-//                   <th>Date</th>
-//                   <th>Venue</th>
-//                   <th>Points</th>
-//                   <th>Actions</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {pendingActivities.map((act) => (
-//                   <tr key={act.id}>
-//                     <td>{act.event_name}</td>
-//                     <td>{act.event_type}</td>
-//                     <td>{act.subcategory}</td>
-//                     <td>{act.organised_by}</td>
-//                     <td>{act.participation_date}</td>
-//                     <td>{act.venue}</td>
-//                     <td>{act.allocated_points}</td>
-//                     <td>
-//                       <Button
-//                         variant="contained"
-//                         color="success"
-//                         onClick={() => handleApprove(act.id)}
-//                       >
-//                         Approve
-//                       </Button>
-//                       <Button
-//                         variant="contained"
-//                         color="error"
-//                         onClick={() => handleRejectClick(act.id)}
-//                         style={{ marginLeft: "8px" }}
-//                       >
-//                         Reject
-//                       </Button>
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </Table>
-
-//             {/* 🔹 APPROVED/REJECTED ACTIVITIES */}
-//             <h3>Processed Activities</h3>
-//             <Table>
-//               <thead>
-//                 <tr>
-//                   <th>Event Name</th>
-//                   <th>Type</th>
-//                   <th>Subcategory</th>
-//                   <th>Organized By</th>
-//                   <th>Date</th>
-//                   <th>Venue</th>
-//                   <th>Points</th>
-//                   <th>Status</th>
-//                   <th>Remarks</th>
-//                   <th>Undo</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {processedActivities.map((act) => (
-//                   <tr key={act.id}>
-//                     <td>{act.event_name}</td>
-//                     <td>{act.event_type}</td>
-//                     <td>{act.subcategory}</td>
-//                     <td>{act.organised_by}</td>
-//                     <td>{act.participation_date}</td>
-//                     <td>{act.venue}</td>
-//                     <td>{act.allocated_points}</td>
-//                     <td style={{ color: act.status === "Approved" ? "green" : "red" }}>
-//                       {act.status}
-//                     </td>
-//                     <td>{act.remarks || "—"}</td>
-//                     <td>
-//                       <Button
-//                         variant="contained"
-//                         color="secondary"
-//                         onClick={() => handleUndo(act.id)}
-//                       >
-//                         Undo
-//                       </Button>
-//                     </td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </Table>
-
-//             {/* 🔹 REJECT MODAL */}
-//             <Modal open={openModal} onClose={() => setOpenModal(false)}>
-//               <div style={{ padding: "20px", backgroundColor: "white", margin: "auto", marginTop: "100px", width: "300px" }}>
-//                 <h3>Reject Activity</h3>
-//                 <TextField
-//                   label="Rejection Reason"
-//                   fullWidth
-//                   multiline
-//                   rows={3}
-//                   value={rejectReason}
-//                   onChange={(e) => setRejectReason(e.target.value)}
-//                 />
-//                 <Button variant="contained" color="error" onClick={handleRejectConfirm} style={{ marginTop: "10px" }}>
-//                   Confirm Reject
-//                 </Button>
-//               </div>
-//             </Modal>
-//           </>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default StudentDetails;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /////100% works all things n all perfeectly 
@@ -465,83 +59,89 @@ const fetchStudentData = async () => {
 };
 
   // Fetch activities
+  // useEffect(() => {
+
+
+  //   const fetchActivities = async () => {
+  //     try {
+  //       setLoading(true);
+
+  //       // Fetch pending activities
+  //       const pendingRes = await axios.get(
+  //         `http://localhost:5000/api/mentor/student-pending-activities/${s_id}`
+  //       );
+  //       setPendingActivities(pendingRes.data);
+
+  //       // Fetch approved/rejected activities
+  //       try {
+  //         const processedRes = await axios.get(
+  //           `http://localhost:5000/api/mentor/student-processed-activities/${s_id}`
+  //         );
+  //         setProcessedActivities(processedRes.data);
+  //       } catch (error) {
+  //         if (error.response && error.response.status === 404) {
+  //           setProcessedActivities([]); // No approved/rejected activities, set empty array
+  //         } else {
+  //           setError("Failed to fetch processed activities.");
+  //         }
+  //       }
+  //     } catch (error) {
+  //       setError("Failed to fetch activities.");
+  //       console.error("Error fetching activities:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchStudentData();
+
+  //   fetchActivities();
+  // }, [s_id]);
+
   useEffect(() => {
-
-
-    // const fetchStudentData = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const studentRes = await axios.get(
-    //       `http://localhost:5000/api/mentor/getstudentdetails/${s_id}`
-    //     );
-    //     setStudent(studentRes.data);
-    //   } catch (error) {
-    //     setError("Failed to fetch student details.");
-    //   }
-    // };
-
-
-
-
-
-
-
-
-
+    fetchStudentData(); // always fetch student details
+  
     const fetchActivities = async () => {
+      setLoading(true);
+      setError(""); // reset error first
+  
       try {
-        setLoading(true);
-
-        // Fetch pending activities
-        const pendingRes = await axios.get(
-          `http://localhost:5000/api/mentor/student-pending-activities/${s_id}`
-        );
-        setPendingActivities(pendingRes.data);
-
-        // Fetch approved/rejected activities
-        try {
-          const processedRes = await axios.get(
-            `http://localhost:5000/api/mentor/student-processed-activities/${s_id}`
-          );
-          setProcessedActivities(processedRes.data);
-        } catch (error) {
-          if (error.response && error.response.status === 404) {
-            setProcessedActivities([]); // No approved/rejected activities, set empty array
-          } else {
-            setError("Failed to fetch processed activities.");
-          }
+        const [pendingRes, processedRes] = await Promise.allSettled([
+          axios.get(`http://localhost:5000/api/mentor/student-pending-activities/${s_id}`),
+          axios.get(`http://localhost:5000/api/mentor/student-processed-activities/${s_id}`),
+        ]);
+  
+        if (pendingRes.status === "fulfilled") {
+          setPendingActivities(pendingRes.value.data);
+        } else {
+          setPendingActivities([]);
+          console.warn("Pending activities fetch failed:", pendingRes.reason);
         }
+  
+        if (processedRes.status === "fulfilled") {
+          setProcessedActivities(processedRes.value.data);
+        } else if (processedRes.reason.response?.status === 404) {
+          setProcessedActivities([]); // no processed activities
+        } else {
+          console.warn("Processed activities fetch failed:", processedRes.reason);
+        }
+  
       } catch (error) {
-        setError("Failed to fetch activities.");
-        console.error("Error fetching activities:", error);
+        console.error("Unexpected error in fetchActivities:", error);
+        setError("Something went wrong while loading activities.");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchStudentData();
-
+  
     fetchActivities();
   }, [s_id]);
+  
+
+
 
   // Approve Activity
-  // const handleApprove = async (activityId) => {
-  //   if (!window.confirm("Are you sure you want to approve this activity?")) return;
-
-  //   try {
-  //     await axios.put(`http://localhost:5000/api/mentor/approve-activity/${activityId}`);
-
-  //     // Update UI
-  //     setPendingActivities((prev) => prev.filter((act) => act.id !== activityId));
-  //     setProcessedActivities((prev) => [
-  //       ...prev,
-  //       { ...pendingActivities.find((act) => act.id === activityId), status: "Approved" },
-  //     ]);
-  //   } catch (err) {
-  //     console.error("Error approving activity:", err);
-  //   }
-  // };
-
+ 
   const handleApprove = async (activityId) => {
     if (!window.confirm("Are you sure you want to approve this activity?")) return;
   
@@ -572,31 +172,7 @@ const fetchStudentData = async () => {
   };
 
   // Confirm Reject Activity
-  // const handleRejectConfirm = async () => {
-  //   if (!rejectReason) {
-  //     alert("Please enter a rejection reason.");
-  //     return;
-  //   }
-
-  //   try {
-  //     await axios.put(`http://localhost:5000/api/mentor/reject-activity/${rejectActivityId}`, {
-  //       rejectionReason: rejectReason,
-  //     });
-
-  //     // Update UI
-  //     setPendingActivities((prev) => prev.filter((act) => act.id !== rejectActivityId));
-  //     setProcessedActivities((prev) => [
-  //       ...prev,
-  //       { ...pendingActivities.find((act) => act.id === rejectActivityId), status: "Rejected", remarks: rejectReason },
-  //     ]);
-
-  //     setOpenModal(false);
-  //     setRejectReason("");
-  //   } catch (err) {
-  //     console.error("Error rejecting activity:", err);
-  //   }
-  // };
-
+  
 
   const handleRejectConfirm = async () => {
     if (!rejectReason) {
@@ -636,23 +212,7 @@ const fetchStudentData = async () => {
 
 
   // Undo Activity
-  // const handleUndo = async (activityId) => {
-  //   if (!window.confirm("Are you sure you want to undo this action?")) return;
-
-  //   try {
-  //     await axios.put(`http://localhost:5000/api/mentor/undo-activity/${activityId}`);
-
-  //     // Update UI
-  //     setProcessedActivities((prev) => prev.filter((act) => act.id !== activityId));
-  //     setPendingActivities((prev) => [
-  //       ...prev,
-  //       { ...processedActivities.find((act) => act.id === activityId), status: "Pending" },
-  //     ]);
-  //   } catch (err) {
-  //     console.error("Error undoing activity:", err);
-  //   }
-  // };
-
+ 
 
   const handleUndo = async (activityId) => {
     if (!window.confirm("Are you sure you want to undo this action?")) return;

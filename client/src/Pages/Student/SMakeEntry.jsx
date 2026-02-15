@@ -583,7 +583,26 @@ import {
 } from "@mui/material";
 
 // Dummy Club List
-const clubOptions = ["Tech Club", "Cultural Club", "Sports Club", "NSS", "Other"];
+const clubOptions = ["Nrtiya Nation", "Drama club", "Csi comps", "NSS", "Csi IT","AIDL","Gdsc","Ecell","ARC","Eco club","Cyber cell","Marathi mandal"];
+
+//Rhythm club
+// Nrtiya nation -dance club
+// Drama club
+// Csi comps
+// Csi IT
+// AIDL
+// Gdsc
+// Ecell
+// ARC
+// NSS
+// Eco club
+// Cyber cell 
+// Marathi mandal
+// Manthan magazine club
+// IEEE
+// Algozenith
+// Aero FCRIT
+// //
 
 // Points Mapping
 const pointsMapping = {
