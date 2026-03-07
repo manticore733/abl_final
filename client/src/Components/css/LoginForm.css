@@ -1,34 +1,220 @@
-.loginform {
-    margin: auto; /* Center the form itself in the page horizontally */
-    margin-top: 5cm; /* Add space from the top */
-    border: 3px solid black;
-    padding: 3em;
-    width: 11cm;
-    background-color: #FFB703;
-    height: 11cm;
-    display: flex; /* Use flexbox to center content inside the form */
-    flex-direction: column; /* Stack items vertically */
-    justify-content: center; /* Center items vertically */
-    color: #023047;
-    text-emphasis-color: #023047;
-    font-weight: bold;
+/* Global reset is already in index.css:
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-.logintext {
-    align-self: center; /* Center the text horizontally within the form */
-    font-size: 1.7em;
-    margin-bottom: 1em; /* Add space below the text */
+*/
+
+/* PAGE WRAPPER */
+.login-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px);
+    /* Full viewport height */
+    background-color: #f8fafc;
+    width: 100%;
+    overflow-x: hidden;
+    /* Safety */
+    /* If you want to strictly prevent vertical scroll on this page, uncomment: */
+    overflow-y: hidden;
+}
+
+/* HERO SECTION */
+.login-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    padding: 35px 20px 70px 20px;
+    /* Bottom padding tuned for card overlap */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.login-hero-content h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.login-subtitle {
+    font-size: 18px;
+    opacity: 0.8;
+    color: #e2e8f0;
+}
+
+/* CARD CONTAINER (OVERLAP) */
+.login-card-container {
+    display: flex;
+    justify-content: center;
+    margin-top: -70px;
+    /* Pull card into the blue area */
+    padding: 0 20px 40px 20px;
+    /* Bottom padding so it does not push too far */
+    position: relative;
+    z-index: 10;
+}
+
+/* MATERIAL CARD */
+.material-card {
+    background: #ffffff;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f1f5f9;
+    padding-top: 30px;
+}
+
+.material-header {
+    text-align: center;
+
+}
+
+.material-header h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* FORM STYLES */
+.material-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+}
+
+.material-input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    background-color: #ffffff;
+    color: #334155;
+}
+
+.material-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.material-input::placeholder {
+    color: #94a3b8;
+}
+
+/* PASSWORD WRAPPER */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-input {
+    padding-right: 45px;
+}
+
+.eye-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    display: flex;
     align-items: center;
 }
-.btn {
-    width: 100px;
-    align-self: center;
-    margin-top: 2em;
+
+/* ACTION BUTTON */
+.material-btn {
+    margin-top: 10px;
+    width: 100%;
+    padding: 14px;
+    background-color: #0f172a;
+    color: white;
     border: none;
-    padding: 0.5em;
-    font-size: 1em;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
-    background-color: #023047; /* Default color */
-    color: #FFFFFF;
+    transition: background-color 0.2s, transform 0.05s;
 }
 
+.material-btn:hover {
+    background-color: #1e293b;
+}
 
+.material-btn:active {
+    transform: scale(0.98);
+}
+
+/* ERROR BANNER */
+.error-banner {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* FOOTER */
+.card-footer {
+
+    text-align: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 24px;
+}
+
+.back-link {
+    color: #4373b6;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.back-link:hover {
+    color: #0f172a;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .login-hero {
+        padding: 40px 16px 90px 16px;
+    }
+
+    .login-hero-content h1 {
+        font-size: 32px;
+    }
+
+    .material-card {
+        padding: 24px;
+    }
+
+    .login-card-container {
+        margin-top: -60px;
+        padding-bottom: 32px;
+    }
+}

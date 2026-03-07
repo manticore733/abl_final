@@ -1,54 +1,47 @@
 .topbar {
-  background-image: url('./topbarbg.png'); 
+  background-image: url('./topbarbg.png');
   background-size: cover;
-  background-position: center; 
-  height: 3.3cm; /* Adjust height as needed */
-  position: fixed;  /* Fixes the topbar to the top of the screen */
-  top: 0;           /* Aligns it to the top */
-  left: 0;          /* Aligns it to the left */
-  right: 0;         /* Ensures it stretches across the page */
-  z-index: 1000;    /* Ensures it stays above other content */
+  background-position: center;
+  height: 120px;
+  /* Standardized px height */
+  width: 100%;
   display: flex;
-  justify-content: flex-start; /* Aligns items to the left */
-  align-items: center;  /* Vertically centers content */
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.navbar-brand {
+  justify-content: center;
+  /* Perfectly centers logo and text together */
+  align-items: center;
+  gap: 30px;
+  /* Clean spacing between logo and text */
+  flex-shrink: 0;
+  /* Ensures the topbar never gets squished */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   position: relative;
-  margin-right: 20px;  /* Adds space between logo and text */
+  z-index: 100;
 }
 
 .img {
-  width: 95px;
-  height: 95px;
-  margin-left: 7cm;
+  width: 90px;
+  height: 90px;
 }
 
-.text-container {
+.ag {
   display: flex;
-  flex-direction: column;  /* Stack text vertically */
-  justify-content: center; /* Vertically center the text */
-  margin-left: 120px;  /* Space between the logo and the text */
+  flex-direction: column;
+  justify-content: center;
+  color: white;
 }
 
-.ag1, .ag3 {
-  font-size: 0.8em;  /* Small font size */
-  color: white; /* Optional: Make the text color white */
+.ag1 {
+  font-size: 14px;
+  margin-bottom: 4px;
 }
 
 .ag2 {
-  font-size: 1.5em;  /* Larger font size */
+  font-size: 26px;
   font-weight: bold;
-  color: white; /* Optional: Make the text color white */
-}
-
-/* Optional: Add some margin between the text blocks */
-.ag1 {
-  margin-bottom: 5px;
 }
 
 .ag3 {
-  margin-top: 5px;
+  font-size: 12px;
+  margin-top: 4px;
+  opacity: 0.9;
 }

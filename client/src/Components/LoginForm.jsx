@@ -1,255 +1,174 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { fetchStudentCredentials, getClubAdminStatus } from "../api/studentApi";
-// import { fetchAdminCredentials } from "../api/adminApi";
-// import { fetchMentorCredentials } from "../api/mentorApi";
-
-// import "./css/LoginForm.css";
-
-// const LoginForm = ({ role }) => {
-//     const [username, setUsername] = useState(""); 
-//     const [password, setPassword] = useState(""); 
-//     const [error, setError] = useState(""); 
-
-//     const navigate = useNavigate();
-
-//     const handleLogin = async (e) => {
-//         e.preventDefault(); 
-
-//         try {
-//             let credentials;
-//             let isValid = false;
-
-//             if (role === "Student" || role === "Club Admin") {
-//                 credentials = await fetchStudentCredentials(username);
-                
-//                 if (role === "Club Admin") {
-//                     const clubAdminStatus = await getClubAdminStatus(credentials.s_id);
-//                     if (!clubAdminStatus) {
-//                         setError("Student is not a Club Admin");
-//                         return;
-//                     }
-//                 }
-
-//                 isValid = credentials.s_password === password;
-//             } 
-//             else if (role === "Admin") {
-//                 credentials = await fetchAdminCredentials(username);
-//                 isValid = credentials.a_password === password;
-//             } 
-//             else if (role === "Mentor") {
-//                 credentials = await fetchMentorCredentials(username);
-//                 isValid = credentials.m_password === password;
-//             } 
-//             else {
-//                 setError("Invalid role.");
-//                 return;
-//             }
-
-//             if (!isValid) {
-//                 setError("Invalid username or password.");
-//                 return;
-//             }
-
-//             // 🔹 Step 1: Send request to backend to create a session
-//             const sessionResponse = await fetch("http://localhost:5000/api/session/generate-token", {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 credentials: "include", // 🔥 Ensures session cookie is stored
-//                 body: JSON.stringify({
-//                     username: username,  
-//                     user_type: role.toLowerCase() // Convert role to lowercase for consistency
-//                 }),
-//             });
-
-//             const sessionData = await sessionResponse.json();
-
-//             if (sessionResponse.ok) {
-//                 console.log("Session created successfully:", sessionData);
-
-//                 // 🔹 Step 2: Redirect based on role
-//                 if (role === "Club Admin") navigate("/cHomepage");
-//                 else if (role === "Student") navigate("/sHomepage");
-//                 else if (role === "Admin") navigate("/aHomepage");
-//                 else if (role === "Mentor") navigate("/mHomepage");
-//             } else {
-//                 setError(sessionData.message || "Failed to create session.");
-//             }
-
-//         } catch (err) {
-//             console.error("Login Error:", err);
-//             setError("Server error. Please try again.");
-//         }
-//     };
-
-//     return (
-//         <div className="loginform">
-//             <div className="logintext" style={{ color: "black"}}>Login {role ? `- ${role}` : ""}</div>
-//             <form onSubmit={handleLogin}>
-//                 <div className="mb-3 username">
-//                     <label htmlFor="usernameInput" className="form-label" style={{ color: "black"}}>Username</label>
-//                     <input
-//                         type="text"
-//                         className="form-control"
-//                         id="usernameInput"
-//                         placeholder="Enter your username"
-//                         value={username}
-//                         onChange={(e) => setUsername(e.target.value)}
-//                         required
-//                     />
-//                 </div>   
-//                 <div className="mb-3 password">
-//                     <label htmlFor="passwordInput" className="col-form-label" style={{ color: "black"}}>Password</label>
-//                     <input
-//                         type="password"
-//                         id="passwordInput"
-//                         className="form-control"
-//                         placeholder="Enter your password"
-//                         value={password}
-//                         onChange={(e) => setPassword(e.target.value)}
-//                         required
-//                     />
-//                 </div>
-//                 <input className="btn btn-success" type="submit" value="Submit" />
-                
-//             </form>
-//             {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-//         </div>
-//     );
-// };
-
-// export default LoginForm;
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { fetchStudentCredentials, getClubAdminStatus } from "../api/studentApi";
 import { fetchAdminCredentials } from "../api/adminApi";
 import { fetchMentorCredentials } from "../api/mentorApi";
-
+import { motion } from "framer-motion";
+import { User, Lock, ArrowLeft, LogIn, Eye, EyeOff } from "lucide-react"; // Added Eye icons
 import "./css/LoginForm.css";
 
+
 const LoginForm = ({ role }) => {
-    const [username, setUsername] = useState(""); 
-    const [password, setPassword] = useState(""); 
-    const [error, setError] = useState(""); 
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false); // Toggle state
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
+        setError("");
+        setIsLoading(true);
 
         try {
             let credentials;
             let isValid = false;
 
+
             if (role === "Student" || role === "Club Admin") {
                 credentials = await fetchStudentCredentials(username);
-                
                 if (role === "Club Admin") {
                     const clubAdminStatus = await getClubAdminStatus(credentials.s_id);
-                    if (!clubAdminStatus) {
-                        setError("Student is not a Club Admin");
-                        return;
-                    }
+                    if (!clubAdminStatus) throw new Error("Student is not a Club Admin");
                 }
-
                 isValid = credentials.s_password === password;
-            } 
+            }
             else if (role === "Admin") {
                 credentials = await fetchAdminCredentials(username);
                 isValid = credentials.a_password === password;
-            } 
+            }
             else if (role === "Mentor") {
                 credentials = await fetchMentorCredentials(username);
                 isValid = credentials.m_password === password;
-            } 
+            }
             else {
-                setError("Invalid role.");
-                return;
+                throw new Error("Invalid role.");
             }
 
-            if (!isValid) {
-                setError("Invalid username or password.");
-                return;
-            }
+            if (!isValid) throw new Error("Invalid username or password.");
 
-            // 🔹 Store username & role in sessionStorage
             sessionStorage.setItem("username", username);
             sessionStorage.setItem("role", role);
 
-            // 🔹 Step 1: Send request to backend to create a session
             const sessionResponse = await fetch("http://localhost:5000/api/session/generate-token", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                credentials: "include", // 🔥 Ensures session cookie is stored
-                body: JSON.stringify({
-                    username: username,  
-                    user_type: role.toLowerCase() // Convert role to lowercase for consistency
-                }),
+                credentials: "include",
+                body: JSON.stringify({ username: username, user_type: role.toLowerCase() }),
             });
 
             const sessionData = await sessionResponse.json();
 
             if (sessionResponse.ok) {
-                console.log("Session created successfully:", sessionData);
-
-                // 🔹 Step 2: Redirect based on role
                 if (role === "Club Admin") navigate("/cHomepage");
                 else if (role === "Student") navigate("/sHomepage");
                 else if (role === "Admin") navigate("/aHomepage");
                 else if (role === "Mentor") navigate("/mHomepage");
             } else {
-                setError(sessionData.message || "Failed to create session.");
+                throw new Error(sessionData.message || "Failed to create session.");
             }
 
         } catch (err) {
             console.error("Login Error:", err);
-            setError("Server error. Please try again.");
+            setError(err.message || "Server error. Please try again.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="loginform">
-            <div className="logintext" style={{ color: "black"}}>Login {role ? `- ${role}` : ""}</div>
-            <form onSubmit={handleLogin}>
-                <div className="mb-3 username">
-                    <label htmlFor="usernameInput" className="form-label" style={{ color: "black"}}>Username</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="usernameInput"
-                        placeholder="Enter your username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-                </div>   
-                <div className="mb-3 password">
-                    <label htmlFor="passwordInput" className="col-form-label" style={{ color: "black"}}>Password</label>
-                    <input
-                        type="password"
-                        id="passwordInput"
-                        className="form-control"
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+        <div className="login-page-wrapper">
+            {/* Hero Section */}
+            <div className="login-hero">
+                <div className="login-hero-content">
+                    <motion.h1
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                    >
+                        Welcome Back
+                    </motion.h1>
+                    <p className="login-subtitle">
+                        Access your <strong>{role}</strong> dashboard
+                    </p>
                 </div>
-                <input className="btn btn-success" type="submit" value="Submit" />
-                
-            </form>
-            {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+            </div>
+
+            {/* Material Style Card */}
+            <div className="login-card-container">
+                <motion.div
+                    className="material-card"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                >
+                    <div className="material-header">
+                        <h3>Login</h3>
+                    </div>
+
+                    <form onSubmit={handleLogin} className="material-form">
+
+                        {/* Username */}
+                        <div className="form-group">
+                            <label>Username</label>
+                            <input
+                                type="text"
+                                className="material-input"
+                                placeholder="e.g. 2022FHCO045"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        {/* Password with Eye Icon */}
+                        <div className="form-group">
+                            <label>Password</label>
+                            <div className="password-wrapper">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className="material-input password-input"
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="eye-btn"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Error Message */}
+                        {error && (
+                            <div className="error-banner">
+                                {error}
+                            </div>
+                        )}
+
+                        {/* Submit Button */}
+                        <button
+                            type="submit"
+                            className="material-btn"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? "Verifying..." : "Sign in"}
+                        </button>
+                    </form>
+
+                    <div className="card-footer">
+                        <Link to="/" className="back-link">
+                            <ArrowLeft size={16} />
+                            <span>Select a different role</span>
+                        </Link>
+                    </div>
+                </motion.div>
+            </div>
         </div>
     );
 };

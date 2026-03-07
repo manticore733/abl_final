@@ -1,123 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import SNavbar from "../../Components/StudentC/SNavbar";
-// import "./css/sHomepage.css";
-// import event1img from "../../assets/event1.jpeg";
-// import event2img from "../../assets/event2.jpeg";
-// import event3img from "../../assets/event3.png";
-
-// const sHomepage = () => {
-//   const [events, setEvents] = useState([]);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const getEvents = async () => {
-//       try {
-//         const eventData = await fetchEvents2();
-//         console.log("Fetched events:", eventData);
-//         setEvents(eventData);
-//       } catch (error) {
-//         console.error("Error fetching events:", error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     getEvents();
-//   }, []);
-
-//   // Dummy static cards array for demonstration (20 items)
-//   const dummyCards = Array.from({ length: 20 }, (_, index) => ({
-//     id: index + 1,
-//     title: `Sample Event ${index + 1}`,
-//     text: `This is sample text for event ${index + 1}.`,
-//     date: "2025-12-31",
-//     organizer: "Sample Organizer",
-//     url: "#",
-//     // You can set a placeholder image or use one of your imports
-//     image: event1img,
-//   }));
-
-//   return (
-//     <div>
-//       <SNavbar />
-//       <div id="carouselExampleFade" className="news carousel slide carousel-fade">
-//         <div className="carousel-inner">
-//           <div className="carousel-item active">
-//             <img src={event1img} className="d-block w-100" alt="Event 1" />
-//           </div>
-//           <div className="carousel-item">
-//             <img src={event2img} className="d-block w-100" alt="Event 2" />
-//           </div>
-//           <div className="carousel-item">
-//             <img src={event3img} className="d-block w-100" alt="Event 3" />
-//           </div>
-//         </div>
-//         <button
-//           className="carousel-control-prev"
-//           type="button"
-//           data-bs-target="#carouselExampleFade"
-//           data-bs-slide="prev"
-//         >
-//           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-//           <span className="visually-hidden">Previous</span>
-//         </button>
-//         <button
-//           className="carousel-control-next"
-//           type="button"
-//           data-bs-target="#carouselExampleFade"
-//           data-bs-slide="next"
-//         >
-//           <span className="carousel-control-next-icon" aria-hidden="true"></span>
-//           <span className="visually-hidden">Next</span>
-//         </button>
-//       </div>
-//       <div className="event-info-cards-section container my-4">
-//         <h2 className="text-center mb-4">Latest Events</h2>
-//         <div className="row">
-//           {dummyCards.map((card) => (
-//             <div className="col-md-3 mb-4" key={card.id}>
-//               <div className="card">
-//                 <img
-//                   src={card.image}
-//                   className="card-img-top"
-//                   alt={card.title}
-//                 />
-//                 <div className="card-body">
-//                   <h5 className="card-title">{card.title}</h5>
-//                   <p className="card-text">{card.text}</p>
-//                   <p className="card-text">
-//                     <small className="text-muted">Date: {card.date}</small>
-//                   </p>
-//                   <p className="card-text">
-//                     <small className="text-muted">
-//                       Organizer: {card.organizer}
-//                     </small>
-//                   </p>
-//                   <a href={card.url} className="btn btn-primary">
-//                     More Info
-//                   </a>
-//                 </div>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default sHomepage;
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
 import SNavbar from "../../Components/StudentC/SNavbar";
 import "./css/sHomepage.css";
@@ -126,29 +6,20 @@ import { motion } from "framer-motion";
 
 import {
   Box,
-  Container,
   Typography,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
   Grid,
-  Divider,
   TextField,
-  Paper,
   Avatar,
-  CardActions,
 } from "@mui/material";
-import { styled } from "@mui/system";
+import { ChevronRight, Calendar, Star, BellRing } from "lucide-react";
 import Slider from "react-slick";
-import Marquee from "react-fast-marquee";
 import event1img from "../../assets/event1.jpeg";
 import event2img from "../../assets/event2.jpeg";
 import event3img from "../../assets/event3.png";
 import event4img from "../../assets/event4.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Card as JoyCard, CardOverflow } from "@mui/joy";
+import { Link } from "react-router-dom";
 
 const images = [event1img, event2img, event3img, event4img];
 const dummyCards = Array.from({ length: 12 }, (_, index) => ({
@@ -160,23 +31,11 @@ const dummyCards = Array.from({ length: 12 }, (_, index) => ({
     index % 3 === 0
       ? "Completed"
       : index % 2 === 0
-      ? "Ongoing"
-      : "Upcoming",
+        ? "Ongoing"
+        : "Upcoming",
   organizer: "Sample Organizer",
   url: "#",
   image: images[index % images.length],
-}));
-
-const feedbacks = [
-  { name: "John Doe", review: "Amazing event! Had a great experience.", image: event1img },
-  { name: "Jane Smith", review: "Well organized and very informative.", image: event2img },
-  { name: "David Lee", review: "Loved the energy and vibe of the fest.", image: event3img },
-];
-
-const StatCard = styled(Card)(({ theme }) => ({
-  padding: theme.spacing(2),
-  textAlign: "center",
-  background: "#f0f4ff",
 }));
 
 const testimonials = [
@@ -189,278 +48,314 @@ const testimonials = [
 ];
 
 
-
-
-const SectionContainer = styled(Paper)(({ theme }) => ({
-  
-  padding: theme.spacing(4),
-  marginBottom: theme.spacing(5),
-  backgroundColor: "#f9f9f9",
-  borderRadius: 10,
-  boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-}));
-
 const sHomepage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
-  const itemsPerPage = 4;
+  const itemsPerPage = 6;
   const totalPages = Math.ceil(testimonials.length / itemsPerPage);
 
-  
-const handlePageChange = (event, value) => {
-  setPage(value);
-};
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
 
-const paginatedTestimonials = testimonials.slice(
-  (page - 1) * itemsPerPage,
-  page * itemsPerPage
-);
+  const paginatedTestimonials = testimonials.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
   const filteredEvents = dummyCards.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const sliderSettings = {
+  const carouselSettings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 800,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    arrows: true,
+    autoplaySpeed: 4000,
+    arrows: false,
+    cssEase: "cubic-bezier(0.87, 0, 0.13, 1)",
   };
 
   return (
-    <>
+    <div className="student-page-wrapper">
       <SNavbar />
-      <Box mt={8}>
 
-        {/* Carousel Section */}
-        <Container maxWidth={false} sx={{ mt: 12, mb: 5,width: "90%" }}>
-          <SectionContainer>
-            <Slider {...sliderSettings}>
-              {images.map((img, i) => (
-                <Box key={i} sx={{ height: 400, overflow: "hidden" }}>
-                  <img
-                    src={img}
-                    alt={`Slide ${i}`}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: 10 }}
-                  />
-                </Box>
-              ))}
-            </Slider>
-          </SectionContainer>
-        </Container>
+      {/* 1. THE HERO SECTION (Deep Academic Blue) */}
+      <div className="student-hero">
+        <div className="student-hero-content">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Welcome to FCRIT Portal
+          </motion.h1>
+          <div className="student-hero-instruction">
+            Your central hub for campus life and academic progress
+          </div>
+        </div>
 
-        {/* About & Announcements Section */}
-        <Container maxWidth={false} sx={{width: "90%"}}>
-          <SectionContainer>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={8}>
-                <Typography variant="h5" mb={2}>
-                  🎓 Welcome to FCRIT Student Portal
-                </Typography>
-                <Typography variant="body1">
-                  This portal is designed to keep you updated with the latest events, announcements,
-                  and your academic progress. Stay engaged, explore events, and earn credits!
-                </Typography>
-              </Grid>
+        {/* Decorative background shapes mimicking SelectRole */}
+        <div className="student-hero-shape student-shape-1"></div>
+        <div className="student-hero-shape student-shape-2"></div>
+      </div>
 
-              <Grid item xs={12} md={4}>
-  <Paper elevation={1} sx={{ p: 2, background: "#fff", borderRadius: 2, height: "100%" }}>
-    <Typography variant="h6" mb={2}>
-      📢 Announcements
-    </Typography>
-    <Box
-      sx={{
-        height: 160,
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 1,
-          animation: "scrollUp 8s linear infinite",
-          pl: 2, // 👈 padding-left to move text slightly right
-        }}
-      >
-        <Typography variant="body2">✨ Registration Open for Tech Fest 2025</Typography>
-        <Divider />
-        <Typography variant="body2">🚀 New Event: Hackathon 2025 Added</Typography>
-        <Divider />
-        <Typography variant="body2">📅 Certificates of Past Events are now available</Typography>
-      </Box>
-    </Box>
-  </Paper>
-</Grid>
+      {/* Main Content Area */}
+      <div className="student-main-container">
 
-
-
-
-
-
-
+        {/* Overlapping Quick Stats Section */}
+        <div className="stats-overlap-container">
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={4}>
+              <motion.div
+                className="stat-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                <div className="stat-value primary-text">12</div>
+                <div className="stat-label">Credits Earned</div>
+              </motion.div>
             </Grid>
-          </SectionContainer>
-        </Container>
+            <Grid item xs={12} sm={4}>
+              <motion.div
+                className="stat-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="stat-value secondary-text">5</div>
+                <div className="stat-label">Events Registered</div>
+              </motion.div>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <motion.div
+                className="stat-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="stat-value success-text">3</div>
+                <div className="stat-label">Certificates Generated</div>
+              </motion.div>
+            </Grid>
+          </Grid>
+        </div>
+
+        {/* Announcements & Featured Carousel Row */}
+        <Box sx={{ mt: 6, mb: 10 }}>
+          <Grid container spacing={4} >
+            {/* Announcements Panel */}
+            <Grid item xs={12} md={4}>
+              <div className="announcements-panel">
+                <div className="announcements-header">
+                  <BellRing size={20} className="bell-icon" />
+                  <h3>Latest Announcements</h3> {/* Changed to match your reference */}
+                </div>
+
+                <div className="announcements-list-wrapper">
+                  {/* This track animates upwards continuously */}
+                  <div className="announcements-track">
+
+                    {/* SET 1 */}
+                    <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
+                    <div className="announcement-item"><p>Incentive to faculty members</p></div>
+                    <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
+                    <div className="announcement-item"><p>PhD Advertisement</p></div>
+                    <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
+                    <div className="announcement-item"><p>Holiday List 2026</p></div>
+
+                    {/* SET 2: Exact Duplicate for seamless infinite loop */}
+                    <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
+                    <div className="announcement-item"><p>Incentive to faculty members</p></div>
+                    <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
+                    <div className="announcement-item"><p>PhD Advertisement</p></div>
+                    <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
+                    <div className="announcement-item"><p>Holiday List 2026</p></div>
+
+                  </div>
+                </div>
+              </div>
+            </Grid>
+
+            {/* Featured Event Slider */}
+            <Grid item xs={12} md={8}>
+              <div className="slider-container-card">
+                <Slider {...carouselSettings} className="featured-slider">
+                  {images.map((img, i) => (
+                    <div key={i} className="slide-image-wrapper">
+                      <img
+                        src={img}
+                        alt={`Slide ${i}`}
+                        className="slide-image"
+                      />
+                      <div className="slide-overlay">
+                        <h3>Featured Event {i + 1}</h3>
+                        <p>Join us for an amazing experience on campus.</p>
+                      </div>
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* Events Section */}
-        <Container maxWidth={false} sx={{width: "90%"}}>
-          <SectionContainer>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-              <Typography variant="h5">Events</Typography>
-              <TextField
-                label="Search Events"
-                variant="outlined"
-                size="small"
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </Box>
+        <Box sx={{ mb: 10 }}>
+          <div className="section-header-flex">
+            <h2>Discover Events</h2>
+            <TextField
+              placeholder="Search events..."
+              variant="outlined"
+              size="small"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              sx={{
+                width: { xs: "100%", sm: "300px" },
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                  backgroundColor: "#fff",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
+                  '& fieldset': {
+                    borderColor: '#e2e8f0',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#cbd5e1',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#1e3a8a',
+                  },
+                },
+              }}
+            />
+          </div>
 
-            {["Ongoing", "Upcoming", "Completed"].map((status) => (
-              <Box key={status} mb={4}>
-                <Typography variant="h6" mb={2}>
+          {["Ongoing", "Upcoming", "Completed"].map((status) => {
+            const statusEvents = filteredEvents.filter((event) => event.status === status).slice(0, 4);
+            if (statusEvents.length === 0) return null;
+
+            return (
+              <Box key={status} mb={6}>
+                <Typography variant="h6" sx={{ color: '#475569', fontWeight: 600, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <span className={`status-dot dot-${status.toLowerCase()}`}></span>
                   {status} Events
                 </Typography>
-                <Grid container spacing={3}>
-                  {filteredEvents
-                    .filter((event) => event.status === status)
-                    .slice(0, 4)
-                    .map((event) => (
-                      <Grid item xs={12} sm={6} md={3} key={event.id}>
-                        <Card elevation={4} sx={{ borderRadius: 3 }}>
-                          <CardMedia
-                            component="img"
-                            height="140"
-                            image={event.image}
-                            alt={event.title}
-                          />
-                          <CardContent>
-                            <Typography gutterBottom variant="subtitle1" fontWeight="bold">
-                              {event.title}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              {event.text}
-                            </Typography>
-                            <Typography variant="caption" color="text.secondary">
-                              📅 {event.date}
-                            </Typography>
-                          </CardContent>
-                          <CardActions sx={{ justifyContent: "center", pb: 1 }}>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              href={event.url}
-                              sx={{ borderRadius: 10 }}
-                            >
-                              {status === "Completed" ? "View" : "Register"}
-                            </Button>
-                          </CardActions>
-                        </Card>
-                      </Grid>
-                    ))}
+
+                <Grid container spacing={4}>
+                  {statusEvents.map((event, index) => (
+                    <Grid item xs={12} sm={6} md={3} key={event.id}>
+                      <Link to={event.url} className="event-card-link">
+                        <motion.div
+                          className="event-pro-card"
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true, margin: "-50px" }}
+                          transition={{ delay: index * 0.1 }}
+                        >
+                          <div className="event-image-box">
+                            <img src={event.image} alt={event.title} />
+                            <div className={`event-status-chip chip-${status.toLowerCase()}`}>
+                              {status}
+                            </div>
+                          </div>
+                          <div className="event-card-content">
+                            <h3>{event.title}</h3>
+                            <p className="event-desc">{event.text}</p>
+
+                            <div className="event-date">
+                              <Calendar size={14} />
+                              <span>{event.date}</span>
+                            </div>
+                          </div>
+
+                          <div className="event-hover-action">
+                            <span>{status === "Completed" ? "View Details" : "Register Now"}</span>
+                            <ChevronRight size={16} />
+                          </div>
+                        </motion.div>
+                      </Link>
+                    </Grid>
+                  ))}
                 </Grid>
               </Box>
-            ))}
-          </SectionContainer>
-        </Container>
-
-        {/* Feedback Section */}
-
-        <Container maxWidth={false} sx={{ width: "90%" }}>
-  <SectionContainer>
-    <Typography variant="h5" textAlign="center" mb={3}>
-      🌟 Testimonials
-    </Typography>
-
-    <Grid container spacing={3}>
-      {paginatedTestimonials.map((fb, i) => (
-        <Grid item xs={12} sm={6} md={3} key={i}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: i * 0.1 }}
-          >
-            <Card sx={{ borderRadius: 1 }}>
-              <Box sx={{ height: 100, backgroundColor: "#7a81a8" }} />
-              <Box sx={{ display: "flex", justifyContent: "center", mt: -6 }}>
-                <Avatar
-                  src={fb.image}
-                  alt={fb.name}
-                  sx={{ width: 80, height: 80, border: "3px solid white" }}
-                />
-              </Box>
-              <CardContent sx={{ textAlign: "center" }}>
-                <Typography variant="subtitle1" fontWeight="bold">
-                  {fb.name}
-                </Typography>
-                <Divider sx={{ my: 1, width: "60%", mx: "auto" }} />
-                <Typography variant="body2" color="text.secondary" mt={2}>
-                  “{fb.review}”
-                </Typography>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </Grid>
-      ))}
-    </Grid>
-
-    {/* Pagination */}
-    {totalPages > 1 && (
-      <Box display="flex" justifyContent="center" mt={4}>
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={handlePageChange}
-          color="primary"
-        />
-      </Box>
-    )}
-  </SectionContainer>
-</Container>
-
-      
-
-        {/* Quick Stats Section */}
-        <Container maxWidth={false} sx={{width: "90%"}}>
-          <SectionContainer>
-            <Typography variant="h5" mb={3}>
-              📊 Quick Stats
-            </Typography>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={4}>
-                <StatCard>
-                  <Typography variant="h4">12</Typography>
-                  <Typography variant="body1">Credits Earned</Typography>
-                </StatCard>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <StatCard>
-                  <Typography variant="h4">5</Typography>
-                  <Typography variant="body1">Events Registered</Typography>
-                </StatCard>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <StatCard>
-                  <Typography variant="h4">3</Typography>
-                  <Typography variant="body1">Certificates Generated</Typography>
-                </StatCard>
-              </Grid>
-            </Grid>
-          </SectionContainer>
-        </Container>
-
-        {/* Footer */}
-        <Box textAlign="center" py={2} bgcolor="#f5f5f5">
-          <Typography variant="body2">
-            © 2025 FCRIT ABL Portal | Contact: info@fcrit.ac.in
-          </Typography>
+            );
+          })}
         </Box>
-      </Box>
-    </>
+
+        {/* Testimonials Section */}
+        <Box sx={{ mb: 10 }}>
+          <div className="section-header-center">
+            <h2>Student Experiences</h2>
+            <p>Hear what others have to say about our events and activities.</p>
+          </div>
+
+          <Grid container spacing={4}>
+            {paginatedTestimonials.map((fb, i) => (
+              <Grid item xs={12} sm={6} md={4} key={i}>
+                <motion.div
+                  className="testimonial-card"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: (i % 3) * 0.1 }}
+                >
+                  <Avatar
+                    src={fb.image}
+                    alt={fb.name}
+                    className="testimonial-avatar"
+                  />
+                  <div className="testimonial-content">
+                    <div className="stars">
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                    </div>
+                    <p>"{fb.review}"</p>
+                    <h4>{fb.name}</h4>
+                  </div>
+                </motion.div>
+              </Grid>
+            ))}
+          </Grid>
+
+          {totalPages > 1 && (
+            <Box display="flex" justifyContent="center" mt={6}>
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={handlePageChange}
+                color="primary"
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    fontFamily: 'Inter',
+                    fontWeight: 500
+                  },
+                  "& .Mui-selected": {
+                    backgroundColor: '#1e3a8a',
+                    color: 'white',
+                    '&:hover': {
+                      backgroundColor: '#1e293b',
+                    }
+                  }
+                }}
+              />
+            </Box>
+          )}
+        </Box>
+
+      </div>
+
+      {/* Footer */}
+      <footer className="student-footer">
+        <p>© {new Date().getFullYear()} FCRIT ABL Portal</p>
+        <p className="footer-sub">Contact: info@fcrit.ac.in | Designed for Students</p>
+      </footer>
+    </div>
   );
 };
 
