@@ -1,61 +1,147 @@
-.make-entry-form {
-    margin: 6cm auto 6cm auto; /* Centers horizontally and adds top & bottom spacing */
-    height: auto;
-    width: 30cm; /* Set the correct width */
-    background-color: #011f27;
-    border: solid black 2px;
-    border-radius: 1cm;
-    padding: 10px;
+/* SMakeEntry.css - Modernized */
+
+.entry-overlap-container {
+    margin-top: -80px;
+    /* Pulls form up into hero space */
+    position: relative;
+    z-index: 10;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
 }
 
-/* 🔹 Allow items to break to the next row */
-.form-group {
+/* Enhancing the form card inherited from .section-card */
+.form-card-enhancement {
+    padding: 1rem;
+}
+
+/* Titles explicitly for separating sections in the form */
+.form-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #3b82f6;
+    /* Student primary blue */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.form-divider {
+    border: 0;
+    height: 1px;
+    background: #e2e8f0;
+    margin: 1.5rem 0;
+}
+
+/* Standardize Modern Inputs */
+.modern-input .MuiOutlinedInput-root {
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+}
+
+.modern-input .MuiOutlinedInput-root fieldset {
+    border-color: #e2e8f0;
+}
+
+.modern-input .MuiOutlinedInput-root:hover fieldset {
+    border-color: #94a3b8;
+}
+
+.modern-input .MuiOutlinedInput-root.Mui-focused fieldset {
+    border-color: #1e3a8a;
+    /* Deep blue focus */
+}
+
+.modern-input .MuiInputBase-input {
+    font-family: 'Inter', sans-serif;
+    color: #334155;
+}
+
+/* Disabled/Read-only Inputs */
+.modern-input.disabled-input .MuiOutlinedInput-root {
+    background-color: #e2e8f0;
+    /* Darker gray for read-only */
+    opacity: 0.8;
+}
+
+.modern-input.disabled-input .MuiInputBase-input {
+    color: #475569;
+    font-weight: 500;
+}
+
+/* Points Input (Slightly Highlighted) */
+.points-input .MuiOutlinedInput-root {
+    background-color: #eff6ff;
+}
+
+.points-input .MuiInputBase-input {
+    color: #1e3a8a;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Submit Button */
+.modern-submit-btn {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-family: 'Inter', sans-serif !important;
+    border-radius: 8px !important;
+    padding: 12px 24px !important;
+    font-size: 1rem !important;
+    text-transform: none !important;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+
+}
+
+.modern-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+/* Consistent Label Wrapper */
+.input-group {
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap onto the next row */
-    justify-content: space-between;
-}
-.form-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%; 
+    flex-direction: column;
+    gap: 6px;
 }
 
-/* Ensures all dropdowns & inputs remain the same width */
-.form-control, .form-select {
-    width: 100%;
-    min-width: 250px; /* Ensures a consistent width */
-    max-width: 300px; /* Prevents excessive stretching */
-    border-radius: 7px;
-    background-color: azure;
-    border: solid black 1px;
-    padding-left: 10px;  
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+    /* Slate gray */
+    margin-left: 4px;
 }
 
-/* 🔹 Ensure each label + input takes the full row */
-.form-group .form-label, 
-.form-group .form-control, 
-.form-group .form-select {
-    width: 100%; /* Makes each input take full width of container */
-    margin-bottom: 10px; /* Adds space between rows */
+/* 1. Pull the border down to match the background color perfectly */
+.modern-input .MuiOutlinedInput-root fieldset {
+    border-color: #e2e8f0;
+    top: 0 !important;
+    /* Forces the border to wrap the background exactly */
 }
 
-.sentry-header {
-    color: aliceblue;
+/* 2. Completely destroy the invisible notch (legend) in the top border */
+.modern-input .MuiOutlinedInput-root fieldset legend {
+    display: none !important;
+    width: 0 !important;
 }
 
-.form-label {
-    color: aliceblue;
+/* Ensure the background color fills the entire container evenly */
+.modern-input .MuiOutlinedInput-root {
+    border-radius: 8px;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    /* Clips the background neatly inside the border */
 }
 
-.form-control, .form-select {
-    width: 100%; /* Ensures proper width */
-    border-radius: 7px;
-    background-color: azure;
-    border: solid black 1px;
-    padding-left: 1cm;  
-}
-
-.entry-event-button {
-    margin-bottom: 10px;
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .entry-overlap-container {
+        margin-top: -40px;
+    }
 }

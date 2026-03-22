@@ -1,140 +1,13 @@
-// import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import MNavbar from "../../Components/MentorC/MNavbar";
-// import { FetchStudentList } from "../../api/mentorApi";
-// import "./css/ViewStudents.css";
-
-// const ViewStudents = () => {
-//   const [students, setStudents] = useState([]);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const studentData = await FetchStudentList();
-//       setStudents(studentData);
-//     };
-//     fetchData();
-//   }, []);
- 
-//   const handleStudentClick = (s_id, s_name) => {
-//     console.log("Navigating with:", { s_id, s_name }); 
-//     navigate(`/get-student/${s_id}`, { state: { studentName: s_name } });
-//   };
-
-//   return (
-//     <div>
-//       <MNavbar />
-//       <div className="mentor-view-students-page">
-//         <h4 className="text-left mentorviewstudentlistheader">Student List For Mentoring Batch:</h4>
-              
-
-//         <div className="view-students-container">
-//           {students.length === 0 ? (
-//             <p className="text-center">No students found.</p>
-//           ) : (
-//             <table className="table-student-list">
-//               <thead>
-//                 <tr>
-//                   <th>S_ID</th>
-//                   <th>Student Name</th>
-//                   <th>Roll No</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {students.map((student) => (
-//                   <tr key={student.s_id}>
-//                     <td>{student.s_id}</td>
-//                     <td>
-//                       <button
-//                         className="student-name-btn"
-//                         onClick={() => handleStudentClick(student.s_id, student.s_name)}
-//                       >
-//                         {student.s_name}
-//                       </button>
-//                     </td>
-//                     <td>{student.s_username}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ViewStudents;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MNavbar from "../../Components/MentorC/MNavbar";
-import {
-  Box,
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  Typography,
-  Paper,
-} from "@mui/material";
 import axios from "axios";
+import "./css/ViewStudents.css";
+import { Search, ChevronRight } from "lucide-react"; // Using Lucide
 
 const ViewStudents = () => {
   const [students, setStudents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -145,17 +18,13 @@ const ViewStudents = () => {
         });
 
         if (response.data && response.data.mentorId) {
-          sessionStorage.setItem("mentorId", response.data.mentorId); // Store mentorId
+          sessionStorage.setItem("mentorId", response.data.mentorId);
         }
 
         if (typeof response.data === "string") {
           console.error("Received HTML instead of JSON:", response.data);
         } else {
-          // setStudents(Array.isArray(response.data) ? response.data : []);
           setStudents(Array.isArray(response.data.students) ? response.data.students : []);
-
-
-   
         }
       } catch (error) {
         console.error("Error fetching student list:", error);
@@ -168,55 +37,106 @@ const ViewStudents = () => {
     navigate(`/get-student/${s_id}`, { state: { studentName: name } });
   };
 
-  return (
-    <div>
-      <MNavbar />
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
-        <Card sx={{ width: "80%", padding: 3 }}>
-          <Typography variant="h5" sx={{ mb: 2, fontWeight: "bold", textAlign: "center" }}>
-            Student List for Mentoring Batch
-          </Typography>
+  // Filter students based on search query (by name or roll number)
+  const filteredStudents = students.filter((student) => {
+    const query = searchQuery.toLowerCase();
+    const nameMatch = student.name?.toLowerCase().includes(query);
+    const rollMatch = student.s_username?.toLowerCase().includes(query);
+    return nameMatch || rollMatch;
+  });
 
-          {students.length === 0 ? (
-            <Typography align="center">No students found.</Typography>
-          ) : (
-            <TableContainer component={Paper} sx={{ borderRadius: 2, boxShadow: 3 }}>
-              <Table>
-                <TableHead>
-                  <TableRow sx={{ backgroundColor: "#448aff" }}>
-                    <TableCell sx={{ fontWeight: "bold" }}>Sr. No</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Roll No</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Department</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Semester</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Batch</TableCell>
-                    <TableCell sx={{ fontWeight: "bold" }}>Division</TableCell>
-                    <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {students.map((student, index) => (
-                    <TableRow key={student.s_id} sx={{ backgroundColor: index % 2 ? "#f9f9f9" : "white" }}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{student.name}</TableCell>
-                      <TableCell>{student.s_username}</TableCell>
-                      <TableCell>{student.department}</TableCell>
-                      <TableCell>{student.semester}</TableCell>
-                      <TableCell>{student.batch}</TableCell>
-                      <TableCell>{student.division}</TableCell>
-                      <TableCell align="center">
-                        <Button variant="contained" color="primary" onClick={() => handleViewActivities(student.s_id, student.name)}>
-                          View Activities
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </Card>
-      </Box>
+  return (
+    <div className="mentor-page-wrapper">
+      <MNavbar />
+
+      {/* Mini-Hero Banner */}
+      <div className="page-header-banner">
+        <h2>Student Roster</h2>
+        <p>Manage and review the activity logs of your assigned batch.</p>
+      </div>
+
+      <div className="mentor-main-container roaster-container">
+
+        {/* Toolbar: Search and Filters */}
+        <div className="toolbar-flex">
+          <div className="search-input-wrapper">
+            <Search size={20} className="search-icon" />
+            <input
+              type="text"
+              className="roster-search-input"
+              placeholder="Search by student name or roll number..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <div className="roster-stats">
+            Total Students: <strong>{filteredStudents.length}</strong>
+          </div>
+        </div>
+
+        {/* Modern Table Section */}
+        {/* Modern Table Section */}
+        <div className="modern-table-card">
+          <div className="table-responsive-wrapper">
+            <table className="modern-roster-table">
+              <thead>
+                <tr>
+                  {/* Hardcoded widths prevent the table from shrinking or shifting! */}
+                  <th style={{ width: "8%" }}>Sr No</th>
+                  <th style={{ width: "25%" }}>Name</th>
+                  <th style={{ width: "15%" }}>Roll No</th>
+                  <th style={{ width: "15%" }}>Department</th>
+                  <th style={{ width: "8%" }}>Sem</th>
+                  <th style={{ width: "8%" }}>Batch</th>
+                  <th style={{ width: "6%" }}>Div</th>
+                  <th style={{ width: "15%" }} className="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredStudents.length === 0 ? (
+                  /* Empty State Row */
+                  <tr>
+                    <td colSpan="8" className="empty-table-cell">
+                      No students found matching "{searchQuery}"
+                    </td>
+                  </tr>
+                ) : (
+                  /* Data Rows */
+                  filteredStudents.map((student, index) => (
+                    <tr key={student.s_id} className="roster-row">
+                      <td className="sr-no-cell">{index + 1}</td>
+                      <td className="fw-700 primary-text">{student.name}</td>
+                      <td className="mono-text">{student.s_username}</td>
+                      <td>{student.department}</td>
+                      <td>{student.semester}</td>
+                      <td>
+                        <span className="batch-badge">{student.batch}</span>
+                      </td>
+                      <td>{student.division}</td>
+                      <td className="action-cell">
+                        <button
+                          className="modern-view-btn"
+                          onClick={() => handleViewActivities(student.s_id, student.name)}
+                        >
+                          View Profile
+                          <ChevronRight size={16} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+
+      </div>
+
+      {/* Footer */}
+      <footer className="mentor-footer">
+        <p>© {new Date().getFullYear()} FCRIT ABL Portal</p>
+      </footer>
     </div>
   );
 };

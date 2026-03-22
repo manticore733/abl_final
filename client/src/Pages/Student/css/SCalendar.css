@@ -1,53 +1,635 @@
-.calendarc {
-    margin-top: 6cm;
-    margin-left: 1cm;
-    margin-right: 1cm;
-    margin-bottom: 1cm;
-    padding: 5px;
+/* ================================================================
+   STUDENT CALENDAR  —  Ultimate Dribbble SaaS Aesthetic
+   Clean, vibrant, high-radius components, soft shadows.
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Global Context ── */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-.fc {
-    background-color: rgb(255, 255, 255) !important;
-    padding: 10px;
-    border: solid black 1px;
+.saas-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    background: #f8fafc;
+    /* Very soft slate background */
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #334155;
 }
 
-.fc .fc-daygrid-day-frame {
-    border: 1px solid black !important;
-    /* Darkens the borders of each calendar cell */
+.saas-dashboard {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
 }
 
-
-
-/* Make the header grid lines black */
-.fc .fc-scrollgrid {
-    border-color: black !important;
-    /* Black border for the entire calendar grid */
+/* ================================================================
+      LEFT SIDEBAR (The Control Panel)
+      ================================================================ */
+.saas-sidebar {
+    width: 300px;
+    min-width: 300px;
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 24px;
+    overflow-y: auto;
+    gap: 40px;
 }
 
-.fc .fc-col-header-cell {
-    border: 1px solid black !important;
-    /* Adds black borders for header cells */
+.saas-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-/* Change the color of day names (e.g., Sun, Mon, Tue) */
-/* Change the color of the day names (Sun, Mon, etc.) */
-.fc .fc-col-header-cell-cushion {
-    color: rgb(1, 0, 11) !important; /* Apply your desired color */
-    font-weight: bold; /* Optional: Make the text bold */
-  }
-  
-
-/* Change the color of dates (e.g., 1, 2, 3) */
-.fc .fc-daygrid-day-number {
-    color: rgb(34, 160, 250) !important;
-    /* Set your desired color for the dates */
-    font-weight: bold;
-    /* Optional: Make it bold */
+/* ─── Mini Calendar ─────────────────────────────────────────── */
+.saas-mini-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-/* Optional: Customize hover effects for the dates */
-.fc .fc-daygrid-day:hover {
-    background-color: #f0f0f0;
-    /* Light gray background on hover */
+.saas-mini-header h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.2px;
+}
+
+.saas-mini-arrows {
+    display: flex;
+    gap: 4px;
+}
+
+.saas-mini-arrows button {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saas-mini-arrows button:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.saas-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px 2px;
+}
+
+.saas-mini-daylabel {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-align: center;
+    padding-bottom: 8px;
+}
+
+.saas-mini-day {
+    background: transparent;
+    border: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #475569;
+    height: 32px;
+    width: 32px;
+    border-radius: 32px;
+    /* Perfect circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 0 auto;
+    font-family: inherit;
+}
+
+.saas-mini-day:hover:not(.today):not(.selected) {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.saas-mini-day.dim {
+    color: #cbd5e1;
+    pointer-events: none;
+}
+
+.saas-mini-day.today {
+    background: #e0e7ff;
+    color: #4f46e5;
+    font-weight: 700;
+}
+
+.saas-mini-day.selected {
+    background: #4f46e5;
+    /* Deep Indigo (Like Image 2!) */
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}
+
+/* ─── Upcoming Schedules ────────────────────────────────────── */
+.saas-widget-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 12px;
+}
+
+.saas-widget-title h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.saas-widget-title .badge {
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+.saas-schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.saas-empty {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+.saas-schedule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 8px 8px 0;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.saas-schedule-item:hover {
+    background: #f8fafc;
+    padding-left: 8px;
+    /* Slight active slide */
+    cursor: pointer;
+}
+
+.saas-sched-icon {
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.saas-sched-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.saas-sched-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.saas-sched-date {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ================================================================
+      MAIN PANEL (The Big Clean Grid)
+      ================================================================ */
+.saas-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 40px 40px;
+    overflow: hidden;
+    gap: 24px;
+}
+
+/* ─── Topbar ────────────────────────────────────────────────── */
+.saas-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.saas-top-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.saas-month-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0;
+    letter-spacing: -0.5px;
+    min-width: 200px;
+    /* Prevent jitter on month change */
+}
+
+.saas-btn-today {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: #4f46e5;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid #e2e8f0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.saas-btn-today:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.saas-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #4f46e5;
+}
+
+.saas-nav-group {
+    display: flex;
+    gap: 8px;
+}
+
+.saas-arrow-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+    /* Perfect circle buttons */
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.saas-arrow-btn:hover {
+    background: #f8fafc;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+/* Settings/View Switcher */
+.saas-view-tabs {
+    display: flex;
+    background: #e2e8f0;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.saas-tab {
+    background: transparent;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.saas-tab:hover:not(.active) {
+    color: #334155;
+}
+
+.saas-tab.active {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ─── Calendar Card Wrapper ─────────────────────────────────── */
+.saas-calendar-card {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ================================================================
+      FULLCALENDAR DEEP OVERRIDES (Dribbble Magic)
+      ================================================================ */
+.saas-calendar-card .fc {
+    font-family: 'Inter', sans-serif !important;
+    color: #334155;
+    flex: 1;
+    height: 100%;
+}
+
+/* Kill all dark borders, use incredibly soft #f1f5f9 lines */
+.saas-calendar-card .fc .fc-scrollgrid {
+    border: none !important;
+}
+
+.saas-calendar-card .fc th,
+.saas-calendar-card .fc td {
+    border-color: #f1f5f9 !important;
+}
+
+.saas-calendar-card .fc .fc-scrollgrid-section>td {
+    border: none !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+/* Disable default header */
+.saas-calendar-card .fc .fc-header-toolbar {
+    display: none !important;
+}
+
+/* ── Day Headers (Mon, Tue, Wed) ── */
+.saas-calendar-card .fc .fc-col-header-cell {
+    padding: 16px 0 !important;
+    background: transparent;
+}
+
+.saas-calendar-card .fc .fc-col-header-cell-cushion {
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    color: #64748b !important;
+    text-transform: capitalize;
+    text-decoration: none !important;
+}
+
+/* ── Day Number Cells ── */
+.saas-calendar-card .fc .fc-daygrid-day-top {
+    justify-content: flex-start !important;
+    /* Left aligned numbers like Image 2 */
+    padding: 8px 8px 4px !important;
+}
+
+.saas-calendar-card .fc .fc-daygrid-day-number {
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    text-decoration: none !important;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+}
+
+.saas-calendar-card .fc .fc-daygrid-day-number:hover {
+    background: #f1f5f9;
+}
+
+/* Outline for other months */
+.saas-calendar-card .fc .fc-day-other .fc-daygrid-day-number {
+    color: #cbd5e1 !important;
+}
+
+/* Today marker */
+.saas-calendar-card .fc .fc-day-today {
+    background: transparent !important;
+    /* Only highlight the number circle */
+}
+
+.saas-calendar-card .fc .fc-day-today .fc-daygrid-day-number {
+    background: #4f46e5 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+}
+
+/* Cell Hover */
+.saas-calendar-card .fc .fc-daygrid-day:hover {
+    background: #f8fafc !important;
+}
+
+/* Weekend subtle bg */
+.saas-calendar-card .fc .fc-day-sat,
+.saas-calendar-card .fc .fc-day-sun {
+    background: #fdfdfe;
+}
+
+/* ── Vibrant Pill Events (Image 2 Style) ── */
+.saas-calendar-card .fc .fc-event {
+    border: none !important;
+    background: transparent !important;
+    margin: 2px 8px !important;
+    /* Proper margin from cell edges */
+}
+
+.saas-event-pill {
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, filter 0.2s ease;
+    cursor: pointer;
+}
+
+.saas-event-pill:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+}
+
+.saas-event-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* More link (+2) */
+.saas-calendar-card .fc .fc-daygrid-more-link {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    color: #4f46e5 !important;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.saas-calendar-card .fc .fc-daygrid-more-link:hover {
+    background: #e0e7ff !important;
+}
+
+/* ── Time Grid (Week View) Overrides ── */
+.saas-calendar-card .fc .fc-timegrid-slot-label-cushion {
+    font-size: 0.75rem !important;
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+}
+
+.saas-calendar-card .fc .fc-timegrid-event {
+    border-radius: 6px !important;
+    border: none !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+    padding: 2px 4px !important;
+}
+
+/* ================================================================
+      EVENT MODAL (Custom Popup on click)
+      ================================================================ */
+.saas-event-modal {
+    position: absolute;
+    z-index: 1000;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f5f9;
+    width: 300px;
+    overflow: hidden;
+    animation: popSlideUp 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes popSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.saas-modal-header {
+    padding: 16px 20px;
+    background: #ffffff;
+    border-bottom: 2px solid;
+    /* Color driven by JS */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.saas-modal-icon-bg {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.saas-modal-header h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.3;
+}
+
+.saas-modal-body {
+    padding: 16px 20px;
+    background: #f8fafc;
+}
+
+.saas-modal-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #475569;
+    font-weight: 500;
+}
+
+.saas-muted-icon {
+    color: #94a3b8;
+}
+
+/* ================================================================
+      RESPONSIVE
+      ================================================================ */
+@media (max-width: 1024px) {
+    .saas-sidebar {
+        width: 240px;
+        min-width: 240px;
+        padding: 24px 16px;
+    }
+
+    .saas-main {
+        padding: 24px;
+        gap: 16px;
+    }
+
+    .saas-month-title {
+        font-size: 1.4rem;
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 768px) {
+    .saas-sidebar {
+        display: none;
+    }
+
+    .saas-dashboard {
+        flex-direction: column;
+    }
+
+    .saas-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .saas-top-right {
+        width: 100%;
+        display: flex;
+        justify-content: stretch;
+    }
+
+    .saas-view-tabs {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 }

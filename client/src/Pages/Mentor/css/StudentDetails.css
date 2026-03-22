@@ -1,32 +1,455 @@
-.student-details-container {
-    margin-top: 8cm; /* Adjust if needed */
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centers everything inside this div */
+/* StudentDetails.css - Phase 6 Student Case Dashboard */
+
+.student-case-container {
+    padding-top: 1rem !important;
+    padding-bottom: 5rem !important;
 }
 
-/* Ensure table is properly spaced and centered */
-.details-table {
-    margin-top: 30px;
-    width: 89%;
-    border-collapse: collapse;
-    text-align: left;
-    border: 2px solid black; 
+/* Header & Back Button */
+.case-header-banner {
+    position: relative;
 }
 
-.details-table th, 
-.details-table td {
-    border: 1px solid black; /* Border around each cell */
-    padding: 10px; /* Padding inside each cell */
-    text-align: center; /* Center text inside cells */
-}
-
-/* Header row styling */
-.details-table th {
-    background-color: #343a40;
+.back-nav-btn {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    transition: all 0.2s;
+    backdrop-filter: blur(5px);
 }
 
+.back-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateX(-3px);
+}
 
+/* Premium Profile Card */
+.ms-profile-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.ms-profile-header-bg {
+    height: 100px;
+    background: linear-gradient(120deg, #f1f5f9 0%, #e2e8f0 100%);
+    /* position: relative; */
+}
+
+.ms-profile-content {
+    padding: 0 2rem 2rem 2rem;
+    display: flex;
+    align-items: flex-end;
+    margin-top: -50px;
+    gap: 2rem;
+}
+
+.ms-avatar-wrapper {
+    position: relative;
+    z-index: 2;
+    background: white;
+    padding: 6px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ms-avatar-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.ms-info-section {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+}
+
+.ms-name-block h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+.ms-batch-tag {
+    background: #1e3a8a;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.ms-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    background: #f8fafc;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid #f1f5f9;
+}
+
+.ms-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ms-icon {
+    color: #64748b;
+    background: white;
+    padding: 8px;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+}
+
+.ms-stat-item label {
+    display: block;
+    font-size: 0.75rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.ms-stat-item span {
+    display: block;
+    color: #1e293b;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.highlight-stat .ms-icon {
+    color: #f59e0b;
+    background: #fffbeb;
+}
+
+.highlight-stat .credits-val {
+    color: #f59e0b;
+    font-size: 1.1rem;
+}
+
+/* Headers for Sections */
+.section-flex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.section-flex-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.count-badge {
+    background: #e2e8f0;
+    color: #475569;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+}
+
+.pending-count {
+    background: #fef08a;
+    color: #ca8a04;
+}
+
+.small-search {
+    max-width: 300px;
+}
+
+.small-search .roster-search-input {
+    padding: 10px 16px 10px 38px;
+    font-size: 0.9rem;
+}
+
+/* Specific Table Tweaks for Student Details */
+.ms-activity-table td {
+    vertical-align: middle;
+}
+
+.event-name-primary {
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+
+.event-type-sub {
+    font-size: 0.8rem;
+    color: #64748b;
+    background: #f1f5f9;
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.td-stack span {
+    display: block;
+}
+
+.td-subtext {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.points-cell {
+    color: #10b981;
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+/* Status Pills */
+.status-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: inline-block;
+}
+
+.pill-success {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.pill-danger {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.remarks-cell {
+    white-space: normal;
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.4;
+}
+
+/* Action Pill Buttons */
+.flex-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.action-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.approve-btn {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.approve-btn:hover {
+    background: #d1fae5;
+    transform: translateY(-1px);
+}
+
+.reject-btn {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.reject-btn:hover {
+    background: #fee2e2;
+    transform: translateY(-1px);
+}
+
+.undo-btn {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.undo-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+}
+
+/* Pagination Wrapper */
+.pagination-wrapper {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #f1f5f9;
+}
+
+/* Reject Modal Styling */
+.custom-reject-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.reject-modal-box {
+    background: white;
+    width: 90%;
+    max-width: 450px;
+    border-radius: 16px;
+    padding: 2rem;
+    outline: none;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.rmodal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.5rem;
+}
+
+.rmodal-icon {
+    color: #ef4444;
+    background: #fef2f2;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.rmodal-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.rmodal-sub {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.rmodal-textarea {
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    resize: vertical;
+    margin-bottom: 1.5rem;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+.rmodal-textarea:focus {
+    outline: none;
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.rmodal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.rmodal-cancel {
+    background: transparent;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rmodal-cancel:hover {
+    background: #f8fafc;
+}
+
+.rmodal-confirm {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rmodal-confirm:hover {
+    background: #dc2626;
+}
+
+/* Responsiveness */
+@media (max-width: 1024px) {
+    .ms-profile-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .ms-info-section {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .ms-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .ms-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .back-nav-btn {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: inline-flex;
+        margin-bottom: 1rem;
+    }
+}

@@ -42,9 +42,6 @@ const testimonials = [
   { name: "John Doe", review: "Amazing event! Had a great experience.", image: event1img },
   { name: "Jane Smith", review: "Well organized and very informative.", image: event2img },
   { name: "David Lee", review: "Loved the energy and vibe of the fest.", image: event3img },
-  { name: "Maria Smantha", review: "Great crowd and great speakers.", image: event4img },
-  { name: "Lisa Cudrow", review: "Will definitely join next year!", image: event1img },
-  { name: "John Smith", review: "Perfectly executed and fun!", image: event2img },
 ];
 
 
@@ -146,207 +143,214 @@ const sHomepage = () => {
         </div>
 
         {/* Announcements & Featured Carousel Row */}
-        <Box sx={{ mt: 6, mb: 10 }}>
-          <Grid container spacing={4} >
-            {/* Announcements Panel */}
-            <Grid item xs={12} md={4}>
-              <div className="announcements-panel">
-                <div className="announcements-header">
-                  <BellRing size={20} className="bell-icon" />
-                  <h3>Latest Announcements</h3> {/* Changed to match your reference */}
-                </div>
+        <div className="section-card">
+          <Box sx={{ mt: 6, mb: 10 }}>
+            <Grid container spacing={4} >
+              {/* Announcements Panel */}
+              <Grid item xs={12} md={4}>
+                <div className="announcements-panel">
+                  <div className="announcements-header">
+                    <BellRing size={20} className="bell-icon" />
+                    <h3>Latest Announcements</h3> {/* Changed to match your reference */}
+                  </div>
 
-                <div className="announcements-list-wrapper">
-                  {/* This track animates upwards continuously */}
-                  <div className="announcements-track">
+                  <div className="announcements-list-wrapper">
+                    {/* This track animates upwards continuously */}
+                    <div className="announcements-track">
 
-                    {/* SET 1 */}
-                    <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
-                    <div className="announcement-item"><p>Incentive to faculty members</p></div>
-                    <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
-                    <div className="announcement-item"><p>PhD Advertisement</p></div>
-                    <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
-                    <div className="announcement-item"><p>Holiday List 2026</p></div>
+                      {/* SET 1 */}
+                      <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
+                      <div className="announcement-item"><p>Incentive to faculty members</p></div>
+                      <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
+                      <div className="announcement-item"><p>PhD Advertisement</p></div>
+                      <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
+                      <div className="announcement-item"><p>Holiday List 2026</p></div>
 
-                    {/* SET 2: Exact Duplicate for seamless infinite loop */}
-                    <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
-                    <div className="announcement-item"><p>Incentive to faculty members</p></div>
-                    <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
-                    <div className="announcement-item"><p>PhD Advertisement</p></div>
-                    <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
-                    <div className="announcement-item"><p>Holiday List 2026</p></div>
+                      {/* SET 2: Exact Duplicate for seamless infinite loop */}
+                      <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
+                      <div className="announcement-item"><p>Incentive to faculty members</p></div>
+                      <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
+                      <div className="announcement-item"><p>PhD Advertisement</p></div>
+                      <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
+                      <div className="announcement-item"><p>Holiday List 2026</p></div>
 
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Grid>
+              </Grid>
 
-            {/* Featured Event Slider */}
-            <Grid item xs={12} md={8}>
-              <div className="slider-container-card">
-                <Slider {...carouselSettings} className="featured-slider">
-                  {images.map((img, i) => (
-                    <div key={i} className="slide-image-wrapper">
-                      <img
-                        src={img}
-                        alt={`Slide ${i}`}
-                        className="slide-image"
-                      />
-                      <div className="slide-overlay">
-                        <h3>Featured Event {i + 1}</h3>
-                        <p>Join us for an amazing experience on campus.</p>
+
+              {/* Featured Event Slider */}
+              <Grid item xs={12} md={8}>
+                <div className="slider-container-card">
+                  <Slider {...carouselSettings} className="featured-slider">
+                    {images.map((img, i) => (
+                      <div key={i} className="slide-image-wrapper">
+                        <img
+                          src={img}
+                          alt={`Slide ${i}`}
+                          className="slide-image"
+                        />
+                        <div className="slide-overlay">
+                          <h3>Featured Event {i + 1}</h3>
+                          <p>Join us for an amazing experience on campus.</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </Slider>
-              </div>
+                    ))}
+                  </Slider>
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
+          </Box>
+        </div>
 
         {/* Events Section */}
-        <Box sx={{ mb: 10 }}>
-          <div className="section-header-flex">
-            <h2>Discover Events</h2>
-            <TextField
-              placeholder="Search events..."
-              variant="outlined"
-              size="small"
-              onChange={(e) => setSearchTerm(e.target.value)}
-              sx={{
-                width: { xs: "100%", sm: "300px" },
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "8px",
-                  backgroundColor: "#fff",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
-                  '& fieldset': {
-                    borderColor: '#e2e8f0',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#cbd5e1',
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#1e3a8a',
-                  },
-                },
-              }}
-            />
-          </div>
-
-          {["Ongoing", "Upcoming", "Completed"].map((status) => {
-            const statusEvents = filteredEvents.filter((event) => event.status === status).slice(0, 4);
-            if (statusEvents.length === 0) return null;
-
-            return (
-              <Box key={status} mb={6}>
-                <Typography variant="h6" sx={{ color: '#475569', fontWeight: 600, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <span className={`status-dot dot-${status.toLowerCase()}`}></span>
-                  {status} Events
-                </Typography>
-
-                <Grid container spacing={4}>
-                  {statusEvents.map((event, index) => (
-                    <Grid item xs={12} sm={6} md={3} key={event.id}>
-                      <Link to={event.url} className="event-card-link">
-                        <motion.div
-                          className="event-pro-card"
-                          initial={{ opacity: 0, y: 30 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, margin: "-50px" }}
-                          transition={{ delay: index * 0.1 }}
-                        >
-                          <div className="event-image-box">
-                            <img src={event.image} alt={event.title} />
-                            <div className={`event-status-chip chip-${status.toLowerCase()}`}>
-                              {status}
-                            </div>
-                          </div>
-                          <div className="event-card-content">
-                            <h3>{event.title}</h3>
-                            <p className="event-desc">{event.text}</p>
-
-                            <div className="event-date">
-                              <Calendar size={14} />
-                              <span>{event.date}</span>
-                            </div>
-                          </div>
-
-                          <div className="event-hover-action">
-                            <span>{status === "Completed" ? "View Details" : "Register Now"}</span>
-                            <ChevronRight size={16} />
-                          </div>
-                        </motion.div>
-                      </Link>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            );
-          })}
-        </Box>
-
-        {/* Testimonials Section */}
-        <Box sx={{ mb: 10 }}>
-          <div className="section-header-center">
-            <h2>Student Experiences</h2>
-            <p>Hear what others have to say about our events and activities.</p>
-          </div>
-
-          <Grid container spacing={4}>
-            {paginatedTestimonials.map((fb, i) => (
-              <Grid item xs={12} sm={6} md={4} key={i}>
-                <motion.div
-                  className="testimonial-card"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: (i % 3) * 0.1 }}
-                >
-                  <Avatar
-                    src={fb.image}
-                    alt={fb.name}
-                    className="testimonial-avatar"
-                  />
-                  <div className="testimonial-content">
-                    <div className="stars">
-                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                      <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                    </div>
-                    <p>"{fb.review}"</p>
-                    <h4>{fb.name}</h4>
-                  </div>
-                </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-
-          {totalPages > 1 && (
-            <Box display="flex" justifyContent="center" mt={6}>
-              <Pagination
-                count={totalPages}
-                page={page}
-                onChange={handlePageChange}
-                color="primary"
+        <div className="section-card">
+          <Box sx={{ mb: 10 }}>
+            <div className="section-header-flex">
+              <h2>Discover Events</h2>
+              <TextField
+                placeholder="Search events..."
+                variant="outlined"
+                size="small"
+                onChange={(e) => setSearchTerm(e.target.value)}
                 sx={{
-                  "& .MuiPaginationItem-root": {
-                    fontFamily: 'Inter',
-                    fontWeight: 500
+                  width: { xs: "100%", sm: "300px" },
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: "8px",
+                    backgroundColor: "#fff",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
+                    '& fieldset': {
+                      borderColor: '#e2e8f0',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#cbd5e1',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#1e3a8a',
+                    },
                   },
-                  "& .Mui-selected": {
-                    backgroundColor: '#1e3a8a',
-                    color: 'white',
-                    '&:hover': {
-                      backgroundColor: '#1e293b',
-                    }
-                  }
                 }}
               />
-            </Box>
-          )}
-        </Box>
+            </div>
+
+            {["Ongoing", "Upcoming", "Completed"].map((status) => {
+              const statusEvents = filteredEvents.filter((event) => event.status === status).slice(0, 4);
+              if (statusEvents.length === 0) return null;
+
+              return (
+                <Box key={status} mb={6}>
+                  <Typography variant="h6" sx={{ color: '#475569', fontWeight: 600, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <span className={`status-dot dot-${status.toLowerCase()}`}></span>
+                    {status} Events
+                  </Typography>
+
+                  <Grid container spacing={4}>
+                    {statusEvents.map((event, index) => (
+                      <Grid item xs={12} sm={6} md={3} key={event.id}>
+                        <Link to={event.url} className="event-card-link">
+                          <motion.div
+                            className="event-pro-card"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ delay: index * 0.1 }}
+                          >
+                            <div className="event-image-box">
+                              <img src={event.image} alt={event.title} />
+                              <div className={`event-status-chip chip-${status.toLowerCase()}`}>
+                                {status}
+                              </div>
+                            </div>
+                            <div className="event-card-content">
+                              <h3>{event.title}</h3>
+                              <p className="event-desc">{event.text}</p>
+
+                              <div className="event-date">
+                                <Calendar size={14} />
+                                <span>{event.date}</span>
+                              </div>
+                            </div>
+
+                            <div className="event-hover-action">
+                              <span>{status === "Completed" ? "View Details" : "Register Now"}</span>
+                              <ChevronRight size={16} />
+                            </div>
+                          </motion.div>
+                        </Link>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+              );
+            })}
+          </Box>
+        </div>
+
+        {/* Testimonials Section */}
+        <div className="section-card">
+          <Box sx={{ mb: 10 }}>
+            <div className="section-header-center">
+              <h2>Student Experiences</h2>
+              <p>Hear what others have to say about our events and activities.</p>
+            </div>
+
+            <Grid container spacing={4}>
+              {paginatedTestimonials.map((fb, i) => (
+                <Grid item xs={12} sm={6} md={4} key={i}>
+                  <motion.div
+                    className="testimonial-card"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: (i % 3) * 0.1 }}
+                  >
+                    <Avatar
+                      src={fb.image}
+                      alt={fb.name}
+                      className="testimonial-avatar"
+                    />
+                    <div className="testimonial-content">
+                      <div className="stars">
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
+                      </div>
+                      <p>"{fb.review}"</p>
+                      <h4>{fb.name}</h4>
+                    </div>
+                  </motion.div>
+                </Grid>
+              ))}
+            </Grid>
+
+            {totalPages > 1 && (
+              <Box display="flex" justifyContent="center" mt={6}>
+                <Pagination
+                  count={totalPages}
+                  page={page}
+                  onChange={handlePageChange}
+                  color="primary"
+                  sx={{
+                    "& .MuiPaginationItem-root": {
+                      fontFamily: 'Inter',
+                      fontWeight: 500
+                    },
+                    "& .Mui-selected": {
+                      backgroundColor: '#1e3a8a',
+                      color: 'white',
+                      '&:hover': {
+                        backgroundColor: '#1e293b',
+                      }
+                    }
+                  }}
+                />
+              </Box>
+            )}
+          </Box>
+        </div>
 
       </div>
 

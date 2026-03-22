@@ -571,6 +571,26 @@
   color: #94a3b8 !important;
 }
 
+
+/* NEW: Master Section Wrapper */
+.section-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  /* Generous internal padding */
+  margin-bottom: 3rem;
+  /* Space between the big sections */
+  box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+}
+
+/* Adjustments for Mobile */
+@media (max-width: 768px) {
+  .section-card {
+    padding: 1.5rem;
+  }
+}
+
 /* Responsiveness */
 @media (max-width: 900px) {
   .section-header-flex {

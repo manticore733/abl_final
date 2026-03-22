@@ -1,123 +1,13 @@
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// import './css/MNavbar.css';
-// import { FetchStudentList } from "../../api/mentorApi";
-
-// const MNavbar = () => {
-//   const navigate = useNavigate();
-
-//   const handleLogout = async () => {
-//     try {
-//       const response = await fetch("http://localhost:5000/api/session/logout", {
-//         method: "POST",
-//         credentials: "include",
-//       });
-
-//       const data = await response.json();
-//       if (response.ok) {
-//         console.log("Logout successful:", data);
-//         navigate("/");
-//       } else {
-//         console.error("Logout failed:", data.message);
-//       }
-//     } catch (error) {
-//       console.error("Error during logout:", error);
-//     }
-//   };
-
-//   const handleViewStudents = async (event) => {
-//     event.preventDefault(); // Prevent default link behavior
-
-//     const students = await FetchStudentList();
-//     if (students) {
-//       navigate("/view-students"); // Navigate only if fetch is successful
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <nav className="navbar navbar-expand-lg">
-//         <div className="mentor-role-button">
-//           <button>
-//             mentor
-//           </button>
-//         </div>
-//         <div className="container-fluid">
-//           <button
-//             className="navbar-toggler"
-//             type="button"
-//             data-bs-toggle="collapse"
-//             data-bs-target="#navbarNavAltMarkup"
-//             aria-controls="navbarNavAltMarkup"
-//             aria-expanded="false"
-//             aria-label="Toggle navigation"
-//           >
-//             <span className="navbar-toggler-icon"></span>
-//           </button>
-
-//           <div className="collapse navbar-collapse" id="navbarNavAltMarkup-m">
-//             <div className="navbar-mmnav">
-//               <div className="links-mnav">
-//                 <a className="nav-link" href="/mHomepage">
-//                   Home
-//                 </a>
-//                 <a className="nav-link" href="/view-students" onClick={handleViewStudents}>
-//                   View Students
-//                 </a>
-//               </div>
-//               <div className="logout profile">
-//                 <a href="/mprofile">
-//                   <i className="bi bi-person-circle mentor-profile-icon fs-4"></i>
-//                 </a>
-//                 <button className="logout-btn" onClick={handleLogout}>
-//                   <i className="bi bi-box-arrow-right fs-4"></i>
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </nav>
-//     </div>
-//   );
-// };
-
-// export default MNavbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./css/MNavbar.css";
 import { FetchStudentList } from "../../api/mentorApi";
+import { LogOut, UserCircle } from "lucide-react"; // Matching SNavbar
 
 const MNavbar = () => {
   const navigate = useNavigate();
-  const rollNumber = sessionStorage.getItem("username"); // 
+  const location = useLocation();
+  const rollNumber = sessionStorage.getItem("username") || "Guest";
 
   const handleLogout = async () => {
     try {
@@ -128,8 +18,7 @@ const MNavbar = () => {
 
       const data = await response.json();
       if (response.ok) {
-         // Redirect and replace history
-      navigate("/", { replace: true });
+        navigate("/", { replace: true });
       } else {
         console.error("Logout failed:", data.message);
       }
@@ -147,25 +36,36 @@ const MNavbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg">
-      {/* Mentor Role Text */}
-      <div className="mentor-role-text">
-        Logged in as <strong>Mentor : {rollNumber}</strong>
+    <nav className="mui-appbar">
+      {/* Left side: Role Text (MUI Typography style) */}
+      <div className="mui-role-text">
+        Logged in as <strong>Mentor: {rollNumber}</strong>
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="nav-center">
-        <a className="nav-link" href="/mHomepage">Home</a>
-        <a className="nav-link" href="/view-students" onClick={handleViewStudents}>View Students</a>
-      </div>
-
-      {/* Profile Icon & Logout */}
-      <div className="logout-profile">
-        <a href="/mprofile">
-          <i className="bi bi-person-circle mentor-profile-icon fs-4"></i>
+      {/* Center: Navigation Links (MUI Tabs style) */}
+      <div className="mui-nav-center">
+        <a
+          className={`mui-nav-link ${location.pathname === '/mHomepage' ? 'mui-active' : ''}`}
+          href="/mHomepage"
+        >
+          Home
         </a>
-        <button className="logout-btn" onClick={handleLogout}>
-          <i className="bi bi-box-arrow-right fs-4"></i>
+        <a
+          className={`mui-nav-link ${location.pathname === '/view-students' ? 'mui-active' : ''}`}
+          href="/view-students"
+          onClick={handleViewStudents}
+        >
+          View Students
+        </a>
+      </div>
+
+      {/* Right side: Actions (MUI IconButton style) */}
+      <div className="mui-action-group">
+        <a href="/mprofile" className="mui-icon-button" title="Profile">
+          <UserCircle size={24} />
+        </a>
+        <button className="mui-icon-button mui-logout-button" onClick={handleLogout} title="Logout">
+          <LogOut size={22} />
         </button>
       </div>
     </nav>
