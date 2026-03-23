@@ -1,273 +1,273 @@
 /* Wrap and Font Reset */
 .student-page-wrapper {
-  min-height: 100vh;
-  background-color: #f1f5f9;
-  /* Slate 100 - Matches SelectRole background */
-  font-family: 'Inter', 'Segoe UI', sans-serif;
-  overflow-x: hidden;
+    min-height: 100vh;
+    background-color: #f1f5f9;
+    /* Slate 100 - Matches SelectRole background */
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    overflow-x: hidden;
 }
 
 /* 1. HERO SECTION (Deep Academic Blue) */
 .student-hero {
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-  height: 40vh;
-  /* Shorter than SelectRole so content pulls up nicely */
-  min-height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  color: white;
-  text-align: center;
-  padding-bottom: 80px;
-  /* Space for the overlap */
-  margin-top: 0;
-  /* Buffer from navbar */
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    height: 40vh;
+    /* Shorter than SelectRole so content pulls up nicely */
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    text-align: center;
+    padding-bottom: 80px;
+    /* Space for the overlap */
+    margin-top: 0;
+    /* Buffer from navbar */
 }
 
 .student-hero-content {
-  z-index: 2;
-  position: relative;
-  padding: 0 1rem;
+    z-index: 2;
+    position: relative;
+    padding: 0 1rem;
 }
 
 .student-hero-content h1 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 1rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 1rem;
 }
 
 .student-hero-instruction {
-  font-size: 1.05rem;
-  opacity: 0.85;
-  background: rgba(255, 255, 255, 0.1);
-  display: inline-block;
-  padding: 10px 24px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
+    font-size: 1.05rem;
+    opacity: 0.85;
+    background: rgba(255, 255, 255, 0.1);
+    display: inline-block;
+    padding: 10px 24px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
 }
 
 /* Geometric Shapes in Background */
 .student-hero-shape {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  opacity: 0.4;
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.4;
 }
 
 .student-shape-1 {
-  background: #3b82f6;
-  width: 300px;
-  height: 300px;
-  top: -50px;
-  left: -50px;
+    background: #3b82f6;
+    width: 300px;
+    height: 300px;
+    top: -50px;
+    left: -50px;
 }
 
 .student-shape-2 {
-  background: #6366f1;
-  width: 400px;
-  height: 400px;
-  bottom: -100px;
-  right: -50px;
+    background: #6366f1;
+    width: 400px;
+    height: 400px;
+    bottom: -100px;
+    right: -50px;
 }
 
 
 /* Main Container */
 .student-main-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
 /* 2. STATS OVERLAP CARDS */
 .stats-overlap-container {
-  margin-top: -60px;
-  /* Pulls cards UP into the blue section */
-  position: relative;
-  z-index: 10;
-  margin-bottom: 2rem;
+    margin-top: -60px;
+    /* Pulls cards UP into the blue section */
+    position: relative;
+    z-index: 10;
+    margin-bottom: 2rem;
 }
 
 .stat-card {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f1f5f9;
-  height: 100%;
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1f5f9;
+    height: 100%;
 }
 
 .stat-value {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 0.25rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
 }
 
 .stat-label {
-  color: #64748b;
-  font-size: 1rem;
-  font-weight: 500;
+    color: #64748b;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 .primary-text {
-  color: #1e3a8a;
+    color: #1e3a8a;
 }
 
 .secondary-text {
-  color: #f59e0b;
+    color: #f59e0b;
 }
 
 .success-text {
-  color: #10b981;
+    color: #10b981;
 }
 
 
 /* 3. ANNOUNCEMENTS PANEL */
 .announcements-panel {
-  background: white;
-  border-radius: 8px;
-  /* Sharper corners to match reference */
-  height: 420px;
-  /* Locked to match slider */
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e2e8f0;
-  overflow: hidden;
-  /* This is crucial: it clips the red header so it stays rounded at the top! */
+    background: white;
+    border-radius: 8px;
+    /* Sharper corners to match reference */
+    height: 420px;
+    /* Locked to match slider */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    /* This is crucial: it clips the red header so it stays rounded at the top! */
 }
 
 /* Red header flush to the edges */
 .announcements-header {
-  background-color: #385bbe;
-  /* Deep FCRIT Red */
-  color: white;
-  padding: 1.25rem 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0;
+    background-color: #385bbe;
+    /* Deep FCRIT Red */
+    color: white;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
 }
 
 .announcements-header h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 600;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .bell-icon {
-  color: white;
-  /* Make icon white to match text */
+    color: white;
+    /* Make icon white to match text */
 }
 
 /* The scrollable list area */
 .announcements-list-wrapper {
-  flex-grow: 1;
-  overflow: hidden;
-  /* Hides the scrollbar completely */
-  background-color: white;
-  position: relative;
+    flex-grow: 1;
+    overflow: hidden;
+    /* Hides the scrollbar completely */
+    background-color: white;
+    position: relative;
 }
 
 /* The animating track */
 .announcements-track {
-  display: flex;
-  flex-direction: column;
-  /* 15s is the speed. Change it to make it faster or slower */
-  animation: scrollUpInfinite 15s linear infinite;
+    display: flex;
+    flex-direction: column;
+    /* 15s is the speed. Change it to make it faster or slower */
+    animation: scrollUpInfinite 15s linear infinite;
 }
 
 /* This PAUSES the animation when the user hovers over it! */
 .announcements-track:hover {
-  animation-play-state: paused;
+    animation-play-state: paused;
 }
 
 /* The Infinite Loop Animation */
 @keyframes scrollUpInfinite {
-  0% {
-    transform: translateY(0);
-  }
+    0% {
+        transform: translateY(0);
+    }
 
-  100% {
-    /* Moves up exactly 50% (the height of Set 1), then instantly resets */
-    transform: translateY(-50%);
-  }
+    100% {
+        /* Moves up exactly 50% (the height of Set 1), then instantly resets */
+        transform: translateY(-50%);
+    }
 }
 
 /* Clean, separated list items */
 .announcement-item {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #e2e8f0;
-  /* Subtle divider line matching reference */
-  background: white;
-  transition: background-color 0.2s;
-  /* Resetting the old styles */
-  margin: 0;
-  border-left: none;
-  border-radius: 0;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    /* Subtle divider line matching reference */
+    background: white;
+    transition: background-color 0.2s;
+    /* Resetting the old styles */
+    margin: 0;
+    border-left: none;
+    border-radius: 0;
 }
 
 .announcement-item:hover {
-  background-color: #f8fafc;
-  /* Slight gray hover effect so users know it's clickable */
-  cursor: pointer;
+    background-color: #f8fafc;
+    /* Slight gray hover effect so users know it's clickable */
+    cursor: pointer;
 }
 
 .announcement-item p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: #334155;
-  line-height: 1.5;
-  font-weight: 500;
+    margin: 0;
+    font-size: 0.95rem;
+    color: #334155;
+    line-height: 1.5;
+    font-weight: 500;
 }
 
 /* Hide the old color badges to perfectly match the clean reference image */
 .ann-badge {
-  display: none;
+    display: none;
 }
 
 .announcement-item.new {
-  border-left-color: #3b82f6;
+    border-left-color: #3b82f6;
 }
 
 .badge-new {
-  background: #dceafe;
-  color: #1e40af;
+    background: #dceafe;
+    color: #1e40af;
 }
 
 .announcement-item.event {
-  border-left-color: #8b5cf6;
+    border-left-color: #8b5cf6;
 }
 
 .badge-event {
-  background: #ede9fe;
-  color: #5b21b6;
+    background: #ede9fe;
+    color: #5b21b6;
 }
 
 .announcement-item.update {
-  border-left-color: #10b981;
+    border-left-color: #10b981;
 }
 
 .badge-update {
-  background: #d1fae5;
-  color: #065f46;
+    background: #d1fae5;
+    color: #065f46;
 }
 
 
 /* 4. FEATURED SLIDER */
 /* 4. FEATURED SLIDER */
 .slider-container-card {
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  height: 420px;
-  /* Forces a perfect, fixed rectangle! */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  position: relative;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 420px;
+    /* Forces a perfect, fixed rectangle! */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
 /* Force the slick slider to perfectly fill our new fixed rectangle */
@@ -276,336 +276,336 @@
 .featured-slider .slick-track,
 .featured-slider .slick-slide,
 .featured-slider .slick-slide>div {
-  height: 100%;
+    height: 100%;
 }
 
 .slide-image-wrapper {
-  position: relative;
-  height: 100%;
-  width: 100%;
+    position: relative;
+    height: 100%;
+    width: 100%;
 }
 
 .slide-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .slide-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 4rem 2rem 2rem 2rem;
-  /* Increased top padding for a smoother gradient fade */
-  background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 50%, transparent 100%);
-  color: white;
-  pointer-events: none;
-  /* Lets you click through the gradient if needed later */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4rem 2rem 2rem 2rem;
+    /* Increased top padding for a smoother gradient fade */
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 50%, transparent 100%);
+    color: white;
+    pointer-events: none;
+    /* Lets you click through the gradient if needed later */
 }
 
 .slide-overlay h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.75rem;
-  /* Made slightly larger for better impact */
-  font-weight: 800;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  /* Adds readability if the image is bright */
+    margin: 0 0 0.5rem 0;
+    font-size: 1.75rem;
+    /* Made slightly larger for better impact */
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    /* Adds readability if the image is bright */
 }
 
 .slide-overlay p {
-  margin: 0;
-  opacity: 0.9;
-  font-size: 1rem;
+    margin: 0;
+    opacity: 0.9;
+    font-size: 1rem;
 }
 
 /* Dots positioning */
 .featured-slider .slick-dots {
-  bottom: 20px;
-  text-align: right;
-  padding-right: 25px;
+    bottom: 20px;
+    text-align: right;
+    padding-right: 25px;
 }
 
 .featured-slider .slick-dots li button:before {
-  color: white;
-  opacity: 0.4;
-  font-size: 8px;
-  /* Slightly larger dots */
+    color: white;
+    opacity: 0.4;
+    font-size: 8px;
+    /* Slightly larger dots */
 }
 
 .featured-slider .slick-dots li.slick-active button:before {
-  color: white;
-  opacity: 1;
+    color: white;
+    opacity: 1;
 }
 
 /* 5. EVENTS SECTION */
 .section-header-flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
 .section-header-flex h2,
 .section-header-center h2 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #1e293b;
-  margin: 0;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin: 0;
 }
 
 .status-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
 }
 
 .dot-ongoing {
-  background: #10b981;
+    background: #10b981;
 }
 
 .dot-upcoming {
-  background: #3b82f6;
+    background: #3b82f6;
 }
 
 .dot-completed {
-  background: #64748b;
+    background: #64748b;
 }
 
 .event-card-link {
-  text-decoration: none;
-  display: block;
-  height: 100%;
+    text-decoration: none;
+    display: block;
+    height: 100%;
 }
 
 /* Identical interaction to SelectRole .pro-card */
 .event-pro-card {
-  background: white;
-  border-radius: 16px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-bottom: 4px solid transparent;
+    background: white;
+    border-radius: 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 4px solid transparent;
 }
 
 .event-pro-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  border-bottom-color: #2563eb;
-  /* Blue line matching roles */
+    transform: translateY(-10px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-bottom-color: #2563eb;
+    /* Blue line matching roles */
 }
 
 .event-image-box {
-  position: relative;
-  height: 160px;
-  overflow: hidden;
+    position: relative;
+    height: 160px;
+    overflow: hidden;
 }
 
 .event-image-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
 .event-pro-card:hover .event-image-box img {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .event-status-chip {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  backdrop-filter: blur(4px);
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
 }
 
 .chip-ongoing {
-  background: rgba(16, 185, 129, 0.9);
-  color: white;
+    background: rgba(16, 185, 129, 0.9);
+    color: white;
 }
 
 .chip-upcoming {
-  background: rgba(59, 130, 246, 0.9);
-  color: white;
+    background: rgba(59, 130, 246, 0.9);
+    color: white;
 }
 
 .chip-completed {
-  background: rgba(241, 245, 249, 0.9);
-  color: #475569;
+    background: rgba(241, 245, 249, 0.9);
+    color: #475569;
 }
 
 .event-card-content {
-  padding: 1.5rem;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .event-card-content h3 {
-  margin: 0 0 0.5rem 0;
-  color: #1e293b;
-  font-size: 1.1rem;
-  font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #1e293b;
+    font-size: 1.1rem;
+    font-weight: 700;
 }
 
 .event-desc {
-  color: #64748b;
-  font-size: 0.85rem;
-  line-height: 1.5;
-  margin: 0 0 1rem 0;
-  flex-grow: 1;
+    color: #64748b;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin: 0 0 1rem 0;
+    flex-grow: 1;
 }
 
 .event-date {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #475569;
-  font-size: 0.85rem;
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 /* Hover indicator matching SelectRole */
 .event-hover-action {
-  padding: 1rem 1.5rem;
-  background: #f8fafc;
-  border-top: 1px solid #f1f5f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  color: #64748b;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: all 0.3s;
+    padding: 1rem 1.5rem;
+    background: #f8fafc;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: #64748b;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s;
 }
 
 .event-pro-card:hover .event-hover-action {
-  color: #2563eb;
-  background: #eff6ff;
+    color: #2563eb;
+    background: #eff6ff;
 }
 
 
 /* 6. TESTIMONIALS */
 .section-header-center {
-  text-align: center;
-  margin-bottom: 3rem;
+    text-align: center;
+    margin-bottom: 3rem;
 }
 
 .section-header-center p {
-  color: #64748b;
-  margin-top: 0.5rem;
+    color: #64748b;
+    margin-top: 0.5rem;
 }
 
 .testimonial-card {
-  background: white;
-  border-radius: 16px;
-  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
-  position: relative;
-  text-align: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  border: 1px solid #f1f5f9;
-  margin-top: 2rem;
-  /* Make room for avatar */
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+    margin-top: 2rem;
+    /* Make room for avatar */
 }
 
 .testimonial-avatar {
-  width: 70px !important;
-  height: 70px !important;
-  position: absolute;
-  top: -35px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 4px solid white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 70px !important;
+    height: 70px !important;
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .testimonial-content .stars {
-  margin-bottom: 1rem;
-  display: flex;
-  justify-content: center;
-  gap: 2px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
 }
 
 .testimonial-content p {
-  font-size: 0.95rem;
-  color: #475569;
-  font-style: italic;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: #475569;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
 }
 
 .testimonial-content h4 {
-  margin: 0;
-  color: #1e293b;
-  font-weight: 700;
+    margin: 0;
+    color: #1e293b;
+    font-weight: 700;
 }
 
 
 /* 7. FOOTER */
 .student-footer {
-  text-align: center;
-  padding: 2rem;
-  background: white;
-  border-top: 1px solid #e2e8f0;
-  color: #64748b;
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
 }
 
 .student-footer p {
-  margin: 0;
-  font-weight: 500;
+    margin: 0;
+    font-weight: 500;
 }
 
 .footer-sub {
-  font-size: 0.85rem;
-  margin-top: 0.5rem !important;
-  color: #94a3b8 !important;
+    font-size: 0.85rem;
+    margin-top: 0.5rem !important;
+    color: #94a3b8 !important;
 }
 
 
 /* NEW: Master Section Wrapper */
 .section-card {
-  background: white;
-  border-radius: 16px;
-  padding: 2.5rem;
-  /* Generous internal padding */
-  margin-bottom: 3rem;
-  /* Space between the big sections */
-  box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
-  border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    /* Generous internal padding */
+    margin-bottom: 3rem;
+    /* Space between the big sections */
+    box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
 }
 
 /* Adjustments for Mobile */
 @media (max-width: 768px) {
-  .section-card {
-    padding: 1.5rem;
-  }
+    .section-card {
+        padding: 1.5rem;
+    }
 }
 
 /* Responsiveness */
 @media (max-width: 900px) {
-  .section-header-flex {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+    .section-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 }
 
 @media (max-width: 600px) {
-  .student-hero-content h1 {
-    font-size: 2rem;
-  }
+    .student-hero-content h1 {
+        font-size: 2rem;
+    }
 
-  .stats-overlap-container {
-    margin-top: -20px;
-  }
+    .stats-overlap-container {
+        margin-top: -20px;
+    }
 }
