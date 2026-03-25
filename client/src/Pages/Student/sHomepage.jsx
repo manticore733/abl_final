@@ -1,366 +1,352 @@
-import React, { useState } from "react";
-import SNavbar from "../../Components/StudentC/SNavbar";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./css/sHomepage.css";
-import { Pagination } from "@mui/material";
-import { motion } from "framer-motion";
 
-import {
-  Box,
-  Typography,
-  Grid,
-  TextField,
-  Avatar,
-} from "@mui/material";
-import { ChevronRight, Calendar, Star, BellRing } from "lucide-react";
-import Slider from "react-slick";
-import event1img from "../../assets/event1.jpeg";
-import event2img from "../../assets/event2.jpeg";
-import event3img from "../../assets/event3.png";
-import event4img from "../../assets/event4.jpg";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { Link } from "react-router-dom";
+const SHomepage = () => {
+  const navigate = useNavigate();
 
-const images = [event1img, event2img, event3img, event4img];
-const dummyCards = Array.from({ length: 12 }, (_, index) => ({
-  id: index + 1,
-  title: `Sample Event ${index + 1}`,
-  text: `This is sample text for event ${index + 1}.`,
-  date: "2025-12-31",
-  status:
-    index % 3 === 0
-      ? "Completed"
-      : index % 2 === 0
-        ? "Ongoing"
-        : "Upcoming",
-  organizer: "Sample Organizer",
-  url: "#",
-  image: images[index % images.length],
-}));
-
-const testimonials = [
-  { name: "John Doe", review: "Amazing event! Had a great experience.", image: event1img },
-  { name: "Jane Smith", review: "Well organized and very informative.", image: event2img },
-  { name: "David Lee", review: "Loved the energy and vibe of the fest.", image: event3img },
-];
-
-
-const sHomepage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 6;
-  const totalPages = Math.ceil(testimonials.length / itemsPerPage);
-
-  const handlePageChange = (event, value) => {
-    setPage(value);
-  };
-
-  const paginatedTestimonials = testimonials.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
-
-  const filteredEvents = dummyCards.filter((event) =>
-    event.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const carouselSettings = {
-    dots: true,
-    infinite: true,
-    speed: 800,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 4000,
-    arrows: false,
-    cssEase: "cubic-bezier(0.87, 0, 0.13, 1)",
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/session/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (response.ok) {
+        navigate("/", { replace: true });
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
   };
 
   return (
-    <div className="student-page-wrapper">
-      <SNavbar />
-
-      {/* 1. THE HERO SECTION (Deep Academic Blue) */}
-      <div className="student-hero">
-        <div className="student-hero-content">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Welcome to FCRIT Portal
-          </motion.h1>
-          <div className="student-hero-instruction">
-            Your central hub for campus life and academic progress
+    <div className="sh-page-wrapper">
+      {/* Top Navigation Bar */}
+      <nav className="sh-top-nav">
+        <div className="sh-nav-left">
+          <span className="sh-brand-text">ABL Portal</span>
+          <div className="sh-desktop-links">
+            <Link className="sh-nav-link active" to="/sHomepage">Dashboard</Link>
+            <Link className="sh-nav-link" to="/student-calendar">Schedule</Link>
+            <Link className="sh-nav-link" to="/make-entry">Grades</Link>
+            <Link className="sh-nav-link" to="#">Financials</Link>
+            <Link className="sh-nav-link" to="#">Messages</Link>
           </div>
         </div>
+        <div className="sh-nav-right">
+          <div className="sh-search-box">
+            <span className="material-symbols-outlined">search</span>
+            <input placeholder="Search resources..." type="text" />
+          </div>
+          <button className="sh-icon-btn">
+            <span className="material-symbols-outlined">notifications</span>
+          </button>
+          <button className="sh-icon-btn">
+            <span className="material-symbols-outlined">settings</span>
+          </button>
 
-        {/* Decorative background shapes mimicking SelectRole */}
-        <div className="student-hero-shape student-shape-1"></div>
-        <div className="student-hero-shape student-shape-2"></div>
-      </div>
+          {/* Logout Button moved to Navbar */}
+          <button onClick={handleLogout} className="sh-icon-btn logout-icon-btn" title="Logout">
+            <span className="material-symbols-outlined">logout</span>
+          </button>
 
-      {/* Main Content Area */}
-      <div className="student-main-container">
-
-        {/* Overlapping Quick Stats Section */}
-        <div className="stats-overlap-container">
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={4}>
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <div className="stat-value primary-text">12</div>
-                <div className="stat-label">Credits Earned</div>
-              </motion.div>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="stat-value secondary-text">5</div>
-                <div className="stat-label">Events Registered</div>
-              </motion.div>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <div className="stat-value success-text">3</div>
-                <div className="stat-label">Certificates Generated</div>
-              </motion.div>
-            </Grid>
-          </Grid>
+          <Link to="/profile">
+            <img className="sh-profile-avatar" alt="Student Profile Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-01cNusPj6qq-SqdEc78yD6RCE2i37nxrydaMSyXPS0x8xyoL2-jPlLqLKdJHXJPqzsBLaJVv_x19BKsfrWF00x9arEtsk-oZ6k_J0SNo2tVGpuoNGSFCGeEbMNRWWaeVNmOpS6XsmGRqt9ATEfZi526ZUaNLUIGRIHuWtbAHqsDJ-x18LdyNtbAVeG9r0r5d6Ahe_jIO-AXGewrH017f1xSJXK4pZHA-A-g_VJU4zeU-r9bxZK126UWiQK6ygAd6NZjQeoBxQXY" />
+          </Link>
         </div>
+      </nav>
 
-        {/* Announcements & Featured Carousel Row */}
-        <div className="section-card">
-          <Box sx={{ mt: 6, mb: 10 }}>
-            <Grid container spacing={4} >
-              {/* Announcements Panel */}
-              <Grid item xs={12} md={4}>
-                <div className="announcements-panel">
-                  <div className="announcements-header">
-                    <BellRing size={20} className="bell-icon" />
-                    <h3>Latest Announcements</h3> {/* Changed to match your reference */}
-                  </div>
+      {/* Main Content Canvas - Now perfectly centered without the sidebar! */}
+      <main className="sh-main-content">
+        <div className="sh-content-container">
 
-                  <div className="announcements-list-wrapper">
-                    {/* This track animates upwards continuously */}
-                    <div className="announcements-track">
+          {/* Hero Section */}
+          <section className="sh-hero-section">
+            <div className="sh-hero-card primary-gradient editorial-shadow">
+              <div className="sh-hero-overlay"></div>
+              <div className="sh-hero-decor">
+                <span className="material-symbols-outlined">auto_stories</span>
+              </div>
+              <div className="sh-hero-content">
+                <span className="sh-hero-tag">Featured Event</span>
+                <h1>Annual Research & Innovation Summit 2024</h1>
+                <p>Join world-renowned scholars and industry leaders for a 3-day exploration of the future of digital humanities.</p>
+              </div>
+              <img className="sh-hero-img" alt="Modern university auditorium with students" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmvB39QEUq7oZP_edyC1stteyuZls8F8OWnsyH_nY6d28agaEl0X089fWkkgPSjZ0O0mguJV-V73-tou7V0js--IsrY0vz1zn2DhdmJ_mvSJekStxRyHmgh5cLPdzQBpogwAGm1Lom40HWa4AAbWxGG63MLHpVJs76yy1NL3K2qlicAlx1rbssEd_7lKtwTnqqUWM0HCgPzueDdFSQ-hXt86KZ1Xy1od5nTdb3LSLyy8RVK9lBtpVhPVk_AruY3xdcbwY0VwFd0C0" />
+            </div>
 
-                      {/* SET 1 */}
-                      <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
-                      <div className="announcement-item"><p>Incentive to faculty members</p></div>
-                      <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
-                      <div className="announcement-item"><p>PhD Advertisement</p></div>
-                      <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
-                      <div className="announcement-item"><p>Holiday List 2026</p></div>
+            {/* KPI Metric Cards */}
+            <div className="sh-kpi-grid">
+              <div className="sh-kpi-card editorial-shadow border-blue">
+                <div className="sh-kpi-info">
+                  <p className="sh-kpi-eyebrow">Academic Progress</p>
+                  <h3>120</h3>
+                  <p className="sh-kpi-label">Earned Credits</p>
+                </div>
+                <div className="sh-kpi-icon bg-blue-light text-blue">
+                  <span className="material-symbols-outlined">analytics</span>
+                </div>
+              </div>
+              <div className="sh-kpi-card editorial-shadow border-cyan">
+                <div className="sh-kpi-info">
+                  <p className="sh-kpi-eyebrow">Campus Life</p>
+                  <h3>14</h3>
+                  <p className="sh-kpi-label">Upcoming Events</p>
+                </div>
+                <div className="sh-kpi-icon bg-cyan-light text-cyan">
+                  <span className="material-symbols-outlined">event_available</span>
+                </div>
+              </div>
+              <div className="sh-kpi-card editorial-shadow border-orange">
+                <div className="sh-kpi-info">
+                  <p className="sh-kpi-eyebrow">Achievements</p>
+                  <h3>05</h3>
+                  <p className="sh-kpi-label">Certificates Won</p>
+                </div>
+                <div className="sh-kpi-icon bg-orange-light text-orange">
+                  <span className="material-symbols-outlined">verified</span>
+                </div>
+              </div>
+            </div>
+          </section>
 
-                      {/* SET 2: Exact Duplicate for seamless infinite loop */}
-                      <div className="announcement-item"><p>Fee Structure F.Y. M.Tech. 2025-26</p></div>
-                      <div className="announcement-item"><p>Incentive to faculty members</p></div>
-                      <div className="announcement-item"><p>ACAP and ILS Admission Schedule</p></div>
-                      <div className="announcement-item"><p>PhD Advertisement</p></div>
-                      <div className="announcement-item"><p>PHD Application Form_2025-26</p></div>
-                      <div className="announcement-item"><p>Holiday List 2026</p></div>
-
+          {/* Main Grid: Announcements & Events */}
+          <div className="sh-bento-grid">
+            {/* Announcements Sidebar */}
+            <aside className="sh-announcements-panel">
+              <div className="sh-panel-card">
+                <div className="sh-panel-header">
+                  <h2>Announcements</h2>
+                  <button>View All</button>
+                </div>
+                <div className="announcements-scroll-container no-scrollbar">
+                  <div className="announcements-scroll-content">
+                    <div className="sh-announcement-card editorial-shadow">
+                      <span className="sh-tag tag-blue">Academic</span>
+                      <h4>Spring Semester Registration Deadline</h4>
+                      <p>Ensure all course selections are finalized by Friday, March 15th to avoid late fees.</p>
+                      <div className="sh-ann-footer">
+                        <span className="material-symbols-outlined">schedule</span>
+                        <span>2 hours ago</span>
+                      </div>
+                    </div>
+                    <div className="sh-announcement-card border-left-cyan">
+                      <span className="sh-tag tag-cyan">Finance</span>
+                      <h4>New Scholarship Opportunity: STEM Global</h4>
+                      <p>Applications for the 2024 STEM excellence grant are now open for senior students.</p>
+                      <div className="sh-ann-footer">
+                        <span className="material-symbols-outlined">schedule</span>
+                        <span>Yesterday</span>
+                      </div>
+                    </div>
+                    <div className="sh-announcement-card">
+                      <span className="sh-tag tag-orange">Security</span>
+                      <h4>Scheduled Portal Maintenance</h4>
+                      <p>The academic portal will be offline this Saturday from 2 AM to 4 AM for system updates.</p>
+                      <div className="sh-ann-footer">
+                        <span className="material-symbols-outlined">schedule</span>
+                        <span>2 days ago</span>
+                      </div>
+                    </div>
+                    <div className="sh-announcement-card editorial-shadow">
+                      <span className="sh-tag tag-blue">Academic</span>
+                      <h4>Spring Semester Registration Deadline</h4>
+                      <p>Ensure all course selections are finalized by Friday, March 15th to avoid late fees.</p>
+                      <div className="sh-ann-footer">
+                        <span className="material-symbols-outlined">schedule</span>
+                        <span>2 hours ago</span>
+                      </div>
+                    </div>
+                    <div className="sh-announcement-card border-left-cyan">
+                      <span className="sh-tag tag-cyan">Finance</span>
+                      <h4>New Scholarship Opportunity: STEM Global</h4>
+                      <p>Applications for the 2024 STEM excellence grant are now open for senior students.</p>
+                      <div className="sh-ann-footer">
+                        <span className="material-symbols-outlined">schedule</span>
+                        <span>Yesterday</span>
+                      </div>
+                    </div>
+                    <div className="sh-announcement-card">
+                      <span className="sh-tag tag-orange">Security</span>
+                      <h4>Scheduled Portal Maintenance</h4>
+                      <p>The academic portal will be offline this Saturday from 2 AM to 4 AM for system updates.</p>
+                      <div className="sh-ann-footer">
+                        <span className="material-symbols-outlined">schedule</span>
+                        <span>2 days ago</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </Grid>
+              </div>
+            </aside>
 
-
-              {/* Featured Event Slider */}
-              <Grid item xs={12} md={8}>
-                <div className="slider-container-card">
-                  <Slider {...carouselSettings} className="featured-slider">
-                    {images.map((img, i) => (
-                      <div key={i} className="slide-image-wrapper">
-                        <img
-                          src={img}
-                          alt={`Slide ${i}`}
-                          className="slide-image"
-                        />
-                        <div className="slide-overlay">
-                          <h3>Featured Event {i + 1}</h3>
-                          <p>Join us for an amazing experience on campus.</p>
-                        </div>
-                      </div>
-                    ))}
-                  </Slider>
+            {/* Discover Events Section */}
+            <section className="sh-events-section">
+              <div className="sh-events-header">
+                <div>
+                  <h2>Discover Events</h2>
+                  <p>Curated workshops and seminars for your profile.</p>
                 </div>
-              </Grid>
-            </Grid>
-          </Box>
-        </div>
+                <div className="sh-search-bar">
+                  <span className="material-symbols-outlined">search</span>
+                  <input placeholder="Filter by keyword..." type="text" />
+                </div>
+              </div>
+              <div className="sh-filter-tabs no-scrollbar">
+                <button className="active">Ongoing</button>
+                <button>Upcoming</button>
+                <button>Completed</button>
+                <button>My Workshops</button>
+              </div>
 
-        {/* Events Section */}
-        <div className="section-card">
-          <Box sx={{ mb: 10 }}>
-            <div className="section-header-flex">
-              <h2>Discover Events</h2>
-              <TextField
-                placeholder="Search events..."
-                variant="outlined"
-                size="small"
-                onChange={(e) => setSearchTerm(e.target.value)}
-                sx={{
-                  width: { xs: "100%", sm: "300px" },
-                  "& .MuiOutlinedInput-root": {
-                    borderRadius: "8px",
-                    backgroundColor: "#fff",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.02)",
-                    '& fieldset': {
-                      borderColor: '#e2e8f0',
-                    },
-                    '&:hover fieldset': {
-                      borderColor: '#cbd5e1',
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#1e3a8a',
-                    },
-                  },
-                }}
-              />
-            </div>
-
-            {["Ongoing", "Upcoming", "Completed"].map((status) => {
-              const statusEvents = filteredEvents.filter((event) => event.status === status).slice(0, 4);
-              if (statusEvents.length === 0) return null;
-
-              return (
-                <Box key={status} mb={6}>
-                  <Typography variant="h6" sx={{ color: '#475569', fontWeight: 600, mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <span className={`status-dot dot-${status.toLowerCase()}`}></span>
-                    {status} Events
-                  </Typography>
-
-                  <Grid container spacing={4}>
-                    {statusEvents.map((event, index) => (
-                      <Grid item xs={12} sm={6} md={3} key={event.id}>
-                        <Link to={event.url} className="event-card-link">
-                          <motion.div
-                            className="event-pro-card"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px" }}
-                            transition={{ delay: index * 0.1 }}
-                          >
-                            <div className="event-image-box">
-                              <img src={event.image} alt={event.title} />
-                              <div className={`event-status-chip chip-${status.toLowerCase()}`}>
-                                {status}
-                              </div>
-                            </div>
-                            <div className="event-card-content">
-                              <h3>{event.title}</h3>
-                              <p className="event-desc">{event.text}</p>
-
-                              <div className="event-date">
-                                <Calendar size={14} />
-                                <span>{event.date}</span>
-                              </div>
-                            </div>
-
-                            <div className="event-hover-action">
-                              <span>{status === "Completed" ? "View Details" : "Register Now"}</span>
-                              <ChevronRight size={16} />
-                            </div>
-                          </motion.div>
-                        </Link>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-              );
-            })}
-          </Box>
-        </div>
-
-        {/* Testimonials Section */}
-        <div className="section-card">
-          <Box sx={{ mb: 10 }}>
-            <div className="section-header-center">
-              <h2>Student Experiences</h2>
-              <p>Hear what others have to say about our events and activities.</p>
-            </div>
-
-            <Grid container spacing={4}>
-              {paginatedTestimonials.map((fb, i) => (
-                <Grid item xs={12} sm={6} md={4} key={i}>
-                  <motion.div
-                    className="testimonial-card"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: (i % 3) * 0.1 }}
-                  >
-                    <Avatar
-                      src={fb.image}
-                      alt={fb.name}
-                      className="testimonial-avatar"
-                    />
-                    <div className="testimonial-content">
-                      <div className="stars">
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                        <Star size={16} fill="#fbbf24" color="#fbbf24" />
-                      </div>
-                      <p>"{fb.review}"</p>
-                      <h4>{fb.name}</h4>
+              <div className="sh-event-grid">
+                {/* Event Card 1 */}
+                <div className="sh-event-card editorial-shadow">
+                  <div className="sh-event-img-box">
+                    <img alt="Collaboration in a modern tech workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDhXv1PQCmOAZnYep-0zDZRFPHW6x_ExRh2dxjV52N6emhbJ2c0fRxlA1-pYfgyPO9YLV8G50R_XLqkDYZHn8pM8Mm3bSHGpBE2KS-LpLaWZt7ALYpRbMOcLejDNwci34HqbgR6rB0_gWB3kwc-6ZYTnS2xrKKa3sOeC2Ip3RXPy65NWQdI9DTsVHy2ttEvuW-qXLRdoNlLOL732A_yq-4vIj6hBh4ri--QKtSXfhbnKxJcUgK27o7wITdX_wuSGIT_LZBPOGDeqs" />
+                    <div className="sh-event-tags">
+                      <span className="tag-blur-blue">Workshop</span>
+                      <span className="tag-blur-green">Live</span>
                     </div>
-                  </motion.div>
-                </Grid>
-              ))}
-            </Grid>
+                  </div>
+                  <div className="sh-event-body">
+                    <h3>AI in Modern Journalism</h3>
+                    <div className="sh-event-meta">
+                      <div><span className="material-symbols-outlined">calendar_today</span> March 12, 2024</div>
+                      <div><span className="material-symbols-outlined">location_on</span> Room 402</div>
+                    </div>
+                    <div className="sh-event-footer">
+                      <div className="sh-avatar-stack">
+                        <img alt="Attendee avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2fYJ40Y5VUwfGiZpuYUP0V03_zXAaJTgakLj5tKxUolthyrP49J1atDIPjuf3a6pDPTXS2c47j-gIx7MQEkVwKwO_CRXLVZRcFK_6qQE5gwAuIf9q_dIxyZvgaEC-Y5R5dpGnyWK5bZNcSaY0BVAVBRGHKkvyE4dEmFTnYDE3NP-AruHF8pyz3exEbvnROHOAIanwPgfBVnv1aRVx0Vldh_W7cC-dEwO5znxDaltM8JTyPiUoJoQ58d27D46meY-C1Xf_hjkdF24" />
+                        <img alt="Attendee avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxZaTfzJ7QfWA-3PaOBIUh5yu_H5CrEw1EfNArDeQYlZB2WwuKcxRJQ2n6wZEepWTpHFAP4L_CMZvWlnjFfT_JWNC85rdxVR0IFQOR1WhBnzHosHONTFP1ndcU77FWJHjGaBqLq6_yjFqK0jiE3m_D5AjKvvn-xpPfr51pECUXtNE5qmtb2dWiafDjjbYwtf6-vVI8ihe9-Wq2KL8zpHJDuoAQQQowHuw1m9RpOMI7Rjlu1Vj_4eIZxlcXQmfGLRqjGgirr2giC6M" />
+                        <img alt="Attendee avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdwOtvguC-Jar1Mkt7Y-EZcs2iOx4X2lPbti4z7W76jAU46Z5bmXKwnI4N10WiJbzOWDYeZxhqtOmSZuRv9JOOSC887NSeGDCESC0UpbxsigqxMACrDcMcjcaNg1D8yPw9yJLxzgOZcJkxwDMACDYM2uMFq86qhKqjPhI-5TjqZ6wLk6TX5J5VrWGfS7Ckmk1xHZUQohT83hXCbxCZMTbehCepUogXK0t_VtQcvE8A-HE8ky_kcnvVxeACIOHO1PIwBCjZxGgLhBs" />
+                        <div className="sh-avatar-count">+42</div>
+                      </div>
+                      <button className="sh-enroll-btn">Enroll <span className="material-symbols-outlined">arrow_forward</span></button>
+                    </div>
+                  </div>
+                </div>
 
-            {totalPages > 1 && (
-              <Box display="flex" justifyContent="center" mt={6}>
-                <Pagination
-                  count={totalPages}
-                  page={page}
-                  onChange={handlePageChange}
-                  color="primary"
-                  sx={{
-                    "& .MuiPaginationItem-root": {
-                      fontFamily: 'Inter',
-                      fontWeight: 500
-                    },
-                    "& .Mui-selected": {
-                      backgroundColor: '#1e3a8a',
-                      color: 'white',
-                      '&:hover': {
-                        backgroundColor: '#1e293b',
-                      }
-                    }
-                  }}
-                />
-              </Box>
-            )}
-          </Box>
+                {/* Event Card 2 */}
+                <div className="sh-event-card editorial-shadow">
+                  <div className="sh-event-img-box">
+                    <img alt="University students discussing research" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOkOStPGpjzdA03cqI0D-oUV52rPXfYSVtPQbTcwxc-y2QJSiYLoVU0zxJzBd4Lx0aLf1ZbIrGDJ_Mc2Vt7LHOBuKe8-7r291PuVRg7ZRnrNM46o9beTErG1BTYV--hkp1ryXBCUJarcrhdM6iOtCOlEKPw7ItMvui8b2PwfurG5ssgRS-uu2vX_XaHhElrDGJbLmAt1FpF4HDmKT9qRY9Haj03-Qr_ewJdifCMYAbFeVqrmNhUtFEm03pZ8X0MeNfC7hDWqGLOxw" />
+                    <div className="sh-event-tags">
+                      <span className="tag-blur-cyan">Seminar</span>
+                      <span className="tag-blur-orange">Filling Fast</span>
+                    </div>
+                  </div>
+                  <div className="sh-event-body">
+                    <h3>Sustainable Urban Architecture</h3>
+                    <div className="sh-event-meta">
+                      <div><span className="material-symbols-outlined">calendar_today</span> March 14, 2024</div>
+                      <div><span className="material-symbols-outlined">location_on</span> Great Hall</div>
+                    </div>
+                    <div className="sh-event-footer">
+                      <div className="sh-avatar-stack">
+                        <img alt="Attendee avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABUPcyAO6QC4PB2I_-ZVUw2baczCbhQecW4K29Nt0fRccsdsYEgksrcLC8NP2jI6DwcCu5J-Yu1W1wRLWL9UWYUUphlRZvhVFbf95RvGFI4YJCgEuBeSN0dOFhMCL6vYWWMWvJbIpA5Uh-gnIWr3nLPIWdtT4qqinU1hxwCKfYXdrQ6Sj1frheC4cswUNryprkB_D82rVMAVnzdSvGOCy8SNdPh5LywCCAUge8Ncmr6HxKBJwQfglL2_YhQ_8dF-DqcnuqPJH3wyc" />
+                        <img alt="Attendee avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSVQXbhywQXFpDSXxNU-HM3dPk-6jgVBOLtonvUesp_bA696dwkHRDxL91jrupBgDeaQqxezZ5oNqpjsYXyuNyorGr-ahyJbz4daaVXSYMlt0zJC1Xup8lSySyVrcDokNGjnwS06cc7JXvvnufZVaLyphvpWuxtJ1fZ36z82FXZ6gETXvi0cAVB6sIQjdUh8ZQkigVxCRSKBZ5DNhCBqE0rcjx6Lt7gZtWliSxoT1Byx6oruILm1oGxugaYQgdfMH7ROU2YAq88RU" />
+                        <div className="sh-avatar-count">+115</div>
+                      </div>
+                      <button className="sh-enroll-btn">Enroll <span className="material-symbols-outlined">arrow_forward</span></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          {/* Student Testimonials Section */}
+          <section className="sh-testimonials-section">
+            <div className="sh-test-header">
+              <h2>Voices of Scholar Pulse</h2>
+              <p>Transforming the academic experience, one student at a time.</p>
+            </div>
+            <div className="sh-test-grid">
+              <div className="sh-test-card editorial-shadow">
+                <div className="sh-stars">
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                </div>
+                <p className="sh-test-quote">"The new dashboard has completely changed how I track my research progress. It feels more like a creative workspace than a portal."</p>
+                <div className="sh-test-user">
+                  <img alt="Female student testimonial" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1fqfHcCCCWgXYpM6qU-_XGIra6GPR1bFlEtNoqoW-kgmY1n3gZqmmmM-JoEmjLMJxIdC9k5OOAph9O-jUayIM1XqDHjOx3OHPAa5ySBqut8LMWcAqIgT-Zp4gNE86NtoFYX6TKi3dEIwGQX5yJU_dTaRPvT-RYsGeXABI5RUrMDjAJZky7sYlbav9x3uQIIemZ0tz4_CL4L5Z3gacgINzSU0b_UyHYhe4UbwMgHqnxKRiug2Ab5Q9b-o2lcxA5dmu9GG0eZtTIuY" />
+                  <div>
+                    <h4>Elena Rodriguez</h4>
+                    <p>PhD Candidate, Digital Arts</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="sh-test-card editorial-shadow">
+                <div className="sh-stars">
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                </div>
+                <p className="sh-test-quote">"I've never missed an announcement since the upgrade. The notification system and clean UI make everything so easy to find."</p>
+                <div className="sh-test-user">
+                  <img alt="Male student testimonial" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2_pm1aXoL99xSQ6lVfkJ9LcxyEiOS03drRvXew3MmlZ9K6W6gFfta7Eurh60C9atCDjfzTQ-nX4y_dqZ0VjlkuxxTY6PUT3HErD7YzQv4Q96Y2NAKexted6iD5mwlJBjiERh4lCNP1QM3-Aaq9_jgYtcyuppcremzqwhDeEd63KkQCVdxB0tPY4YD5QhLiCgWi1J9vNDIHBQr3LEwk7o4MrESA4aFXJZj0QlL8G45hEKesLb5Y8oRvV14l2p5g4-snAopcfHVSq4" />
+                  <div>
+                    <h4>James Wilson</h4>
+                    <p>Undergraduate, Computer Science</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="sh-test-card editorial-shadow">
+                <div className="sh-stars">
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                </div>
+                <p className="sh-test-quote">"The editorial feel of the student hub is amazing. It makes me feel proud to be part of such a forward-thinking institution."</p>
+                <div className="sh-test-user">
+                  <img alt="Female student testimonial" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUeuTGacJGb3wpe-BfaSOa4E5LJI6Avb-0x1KmEFJdrs7yvSqhpZhBXMPHCiYUFj_U2EGeKfyCfOqw_TfkN9FeSpubBf7PTxNh8dRJBpdzY6b4MGvNr8me3DIm4qQU0zyHsGpqjtXZNdjJSQ1xDC-UwxaviW-QxVaLXOoyiZ5g3ZztNl_VwFyWTmXKlYQZ7RjTmnA56S_LkJSSWq6JzqKTVuewoEcs20Yx6_QLIaFSmHrNa9HabHTI1I8fAWLjDJ-enW19MzskEWM" />
+                  <div>
+                    <h4>Sarah Chen</h4>
+                    <p>Graduate, Global Affairs</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="sh-test-pagination">
+              <button><span className="material-symbols-outlined">arrow_back_ios_new</span></button>
+              <div className="sh-page-dots">
+                <span className="dot active"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+              </div>
+              <button><span className="material-symbols-outlined">arrow_forward_ios</span></button>
+            </div>
+          </section>
         </div>
+      </main>
 
-      </div>
-
-      {/* Footer */}
-      <footer className="student-footer">
-        <p>© {new Date().getFullYear()} FCRIT ABL Portal</p>
-        <p className="footer-sub">Contact: info@fcrit.ac.in | Designed for Students</p>
+      {/* Footer - Now fully spanning the bottom */}
+      <footer className="sh-footer">
+        <div className="sh-footer-content">
+          <div>
+            <p className="sh-copyright">© 2024 Academic Editorial University. All rights reserved.</p>
+          </div>
+          <div className="sh-footer-links">
+            <Link to="#">Privacy Policy</Link>
+            <Link to="#">Terms of Service</Link>
+            <Link to="#">Accessibility</Link>
+          </div>
+        </div>
       </footer>
     </div>
   );
 };
 
-export default sHomepage;
+export default SHomepage;
