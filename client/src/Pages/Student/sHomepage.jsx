@@ -29,8 +29,6 @@ const SHomepage = () => {
             <Link className="sh-nav-link active" to="/sHomepage">Dashboard</Link>
             <Link className="sh-nav-link" to="/student-calendar">Schedule</Link>
             <Link className="sh-nav-link" to="/make-entry">Grades</Link>
-            <Link className="sh-nav-link" to="#">Financials</Link>
-            <Link className="sh-nav-link" to="#">Messages</Link>
           </div>
         </div>
         <div className="sh-nav-right">

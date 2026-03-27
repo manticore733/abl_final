@@ -1,414 +1,788 @@
-.student-page-wrapper {
+/* SProfile.css - Lumina Scholar Design System */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --sp-bg: #f7f9fb;
+    --sp-surface: #ffffff;
+    --sp-indigo: #3a388b;
+    --sp-purple: #4b2d98;
+    --sp-blue: #2170e4;
+    --sp-text-main: #191c1e;
+    --sp-text-sub: #454652;
+    --sp-text-muted: #757684;
+    --sp-border: rgba(197, 197, 212, 0.3);
+    --sp-shadow: 0 12px 32px rgba(33, 0, 94, 0.04);
+}
+
+.sp-page-wrapper {
+    background-color: var(--sp-bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--sp-text-main);
     min-height: 100vh;
-    background-color: #f1f5f9;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    overflow-x: hidden;
-}
-
-.student-hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-    height: 40vh;
-    min-height: 300px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    color: white;
-    text-align: center;
-    padding-bottom: 80px;
-    margin-top: 0;
-}
-
-.student-hero-content {
-    z-index: 2;
-    position: relative;
-    padding: 0 1rem;
-}
-
-.student-hero-content h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 1rem;
-    margin-top: 0;
-}
-
-.student-hero-instruction {
-    font-size: 1.05rem;
-    opacity: 0.85;
-    background: rgba(255, 255, 255, 0.1);
-    display: inline-block;
-    padding: 10px 24px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-}
-
-.student-hero-shape {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    opacity: 0.4;
-}
-
-.student-shape-1 {
-    background: #3b82f6;
-    width: 300px;
-    height: 300px;
-    top: -50px;
-    left: -50px;
-}
-
-.student-shape-2 {
-    background: #6366f1;
-    width: 400px;
-    height: 400px;
-    bottom: -100px;
-    right: -50px;
-}
-
-.student-main-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-/* Master Section Wrapper */
-.section-card {
-    background: white;
-    border-radius: 16px;
-    padding: 2.5rem;
-    margin-bottom: 3rem;
-    box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
-    border: 1px solid #e2e8f0;
-}
-
-/* Overlap Card Container */
-.profile-overlap-container {
-    margin-top: -60px;
-    position: relative;
-    z-index: 10;
-    margin-bottom: 2rem;
-}
-
-.profile-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f1f5f9;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-    /* To keep cover photo within borders */
     display: flex;
     flex-direction: column;
 }
 
-.profile-cover {
-    height: 120px;
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+.sp-main-content {
+    flex-grow: 1;
+    padding: 2rem 1.5rem;
     width: 100%;
-    position: absolute;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .sp-main-content {
+        padding: 3rem 2rem;
+    }
+}
+
+.sp-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Typography Utilities */
+/* --- Navbar (Matching Homepage) --- */
+.sh-top-nav {
+    position: sticky;
     top: 0;
     left: 0;
-    z-index: 0;
-}
-
-.profile-details-flex {
+    right: 0;
+    height: 64px;
+    background: rgba(247, 249, 251, 0.8);
+    /* Matches the profile page background */
+    backdrop-filter: blur(16px);
     display: flex;
-    align-items: flex-start;
-    /* Changed from center */
-    gap: 2.5rem;
-    padding: 2.5rem;
-    padding-top: 60px;
-    /* Space for the overlapping avatar */
-    position: relative;
-    z-index: 1;
-    flex-grow: 1;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    z-index: 50;
+    border-bottom: 1px solid var(--sp-border);
 }
 
-.profile-picture-container {
-    width: 120px;
-    height: 120px;
-    flex-shrink: 0;
+.sh-nav-left,
+.sh-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.sh-brand-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--sp-indigo);
+    font-style: italic;
+    margin-right: 1rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.sh-desktop-links {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .sh-desktop-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+}
+
+.sh-nav-link {
+    color: var(--sp-text-muted);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.sh-nav-link:hover {
+    color: var(--sp-indigo);
+}
+
+.sh-nav-link.active {
+    color: var(--sp-indigo);
+    border-bottom: 2px solid var(--sp-indigo);
+    padding-bottom: 4px;
+}
+
+.sh-search-box {
+    display: none;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid var(--sp-border);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+@media (min-width: 1024px) {
+    .sh-search-box {
+        display: flex;
+    }
+}
+
+.sh-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    margin-left: 8px;
+    width: 180px;
+    font-family: 'Inter', sans-serif;
+}
+
+.sh-icon-btn {
+    color: var(--sp-text-muted);
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sh-icon-btn:hover {
+    background: rgba(58, 56, 139, 0.05);
+    color: var(--sp-indigo);
+}
+
+.logout-icon-btn:hover {
+    color: #ba1a1a;
+    background: rgba(186, 26, 26, 0.05);
+}
+
+.sh-profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.border-active {
+    border: 2px solid var(--sp-indigo);
+}
+
+/* Highlights the avatar when on the profile page */
+
+.sp-label-tiny {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--sp-text-muted);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.sp-panel-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e1b4b;
+    margin: 0;
+}
+
+.sp-panel-subtitle {
+    font-size: 0.9rem;
+    color: var(--sp-text-sub);
+    font-weight: 500;
+    margin: 0;
+    margin-top: 4px;
+}
+
+/* --- 1. HERO SECTION --- */
+.sp-hero-section {
+    position: relative;
+    background: linear-gradient(to bottom right, #eef2ff, #f3e8ff);
+    border-radius: 2.5rem;
+    min-height: 350px;
+    padding: 3rem;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.sp-hero-bg-blurs {
+    position: absolute;
+    inset: 0;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
+
+.sp-blur-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+}
+
+.blur-blue {
+    width: 300px;
+    height: 300px;
+    background: #c7d2fe;
+    top: -50px;
+    left: -50px;
+}
+
+.blur-purple {
+    width: 400px;
+    height: 400px;
+    background: #e9d5ff;
+    bottom: -100px;
+    right: 10%;
+}
+
+.sp-hero-content-flex {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media (min-width: 900px) {
+    .sp-hero-content-flex {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+}
+
+/* Glassmorphism Cards */
+.sp-glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+}
+
+.sp-identity-card {
+    padding: 1.5rem 2.5rem;
+    max-width: 450px;
+}
+
+.sp-identity-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.sp-avatar-box {
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    border: 5px solid white;
-    background: white;
-    margin-top: -30px;
-    /* Pull it up over the cover photo */
+    border: 3px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 }
 
-.profile-img-large {
+.sp-avatar-box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.profile-info-content {
-    flex-grow: 1;
-    margin-top: -10px;
-}
-
-.profile-name-title {
+.sp-profile-name {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #1e1b4b;
+    letter-spacing: -1px;
     margin: 0;
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #1e293b;
-    letter-spacing: -0.5px;
+    line-height: 1.1;
 }
 
-.profile-badge-role {
-    display: inline-block;
-    background: #e0e7ff;
-    color: #4338ca;
+.sp-profile-degree {
+    font-size: 1rem;
+    color: var(--sp-text-sub);
+    font-weight: 500;
+    margin: 0;
+    margin-top: 4px;
+}
+
+.sp-hero-tiles {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.sp-tile {
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    min-width: 100px;
+}
+
+.sp-tile.tile-wide {
+    min-width: 160px;
+}
+
+.sp-tile-value {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--sp-indigo);
+    line-height: 1;
+    margin-top: 4px;
+}
+
+/* --- 2. ASYMMETRICAL GRID --- */
+.sp-bento-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+    .sp-bento-grid {
+        grid-template-columns: 7fr 5fr;
+    }
+
+    /* 7 column left, 5 column right */
+}
+
+.sp-panel {
+    background: var(--sp-surface);
+    border-radius: 2rem;
+    padding: 2.5rem;
+    box-shadow: var(--sp-shadow);
+    border: 1px solid var(--sp-border);
+}
+
+/* Holistic Performance */
+.sp-panel-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.sp-percentile-pill {
+    background: rgba(58, 56, 139, 0.05);
+    color: var(--sp-indigo);
+    padding: 6px 16px;
+    border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-top: 20px;
-    margin-bottom: 2rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
-.student-info-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-top: 35px !important;
-}
-
-.info-row {
+.sp-performance-flex {
     display: flex;
     flex-direction: column;
-    /* Stack label over value */
-    align-items: flex-start;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-.info-label {
-    width: auto;
-    color: #64748b;
-    font-weight: 500;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.35rem;
-}
-
-.info-value {
-    color: #0f172a;
-    font-weight: 700;
-    font-size: 1.05rem;
-}
-
-.loading-text {
-    color: #64748b;
-    font-style: italic;
-}
-
-.chart-card {
-    display: flex;
-    flex-direction: column;
-    padding: 2.5rem;
-}
-
-.chart-title {
-    margin: 0 0 2rem 0;
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: #1e293b;
-    text-align: center;
-}
-
-.sprofile-pie-chart-container {
-    flex-grow: 1;
-    position: relative;
-    min-height: 250px;
-    display: flex;
-    justify-content: center;
+    gap: 3rem;
     align-items: center;
 }
 
-/* Typography and Header Flex */
-.section-header-flex h2 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #1e293b;
-    margin: 0;
+@media (min-width: 768px) {
+    .sp-performance-flex {
+        flex-direction: row;
+        align-items: center;
+    }
 }
 
-/* Modern Activity Table */
-.activity-section {
+.sp-chart-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    flex-shrink: 0;
+}
+
+.sp-chart-center-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.sp-chart-total {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #1e1b4b;
+    line-height: 1;
+}
+
+.sp-progress-container {
+    flex-grow: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.sp-progress-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sp-progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--sp-text-sub);
+}
+
+.sp-progress-track {
+    height: 8px;
+    width: 100%;
+    background: #eef2ff;
+    border-radius: 10px;
     overflow: hidden;
 }
 
-.table-wrapper {
-    overflow-x: auto;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
+.sp-progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s ease-in-out;
 }
 
-.modern-activity-table {
-    width: 100%;
-    border-collapse: collapse;
-    white-space: nowrap;
+.text-indigo {
+    color: var(--sp-indigo);
 }
 
-.modern-activity-table th,
-.modern-activity-table td {
-    padding: 1rem 1.5rem;
-    text-align: left;
-    line-height: 1.5;
+.fill-indigo {
+    background: linear-gradient(to right, var(--sp-indigo), #6366f1);
 }
 
-.modern-activity-table th {
-    background-color: #f8fafc;
-    color: #475569;
+.text-purple {
+    color: var(--sp-purple);
+}
+
+.fill-purple {
+    background: linear-gradient(to right, var(--sp-purple), #a855f7);
+}
+
+.text-blue {
+    color: var(--sp-blue);
+}
+
+.fill-blue {
+    background: linear-gradient(to right, var(--sp-blue), #3b82f6);
+}
+
+/* Aggregate Score Card */
+.sp-flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sp-aggregate-card {
+    background: linear-gradient(135deg, var(--sp-indigo), var(--sp-purple));
+    border-radius: 2rem;
+    padding: 2.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(58, 56, 139, 0.2);
+}
+
+.sp-glow-orb {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    filter: blur(40px);
+}
+
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.sp-score-flex {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 1rem 0 2rem 0;
+}
+
+.sp-score-huge {
+    font-family: 'Manrope', sans-serif;
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.sp-score-unit {
+    font-size: 1.25rem;
     font-weight: 600;
+    opacity: 0.8;
+}
+
+.sp-score-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 2px solid #e2e8f0;
+    font-weight: 500;
+    opacity: 0.9;
 }
 
-.modern-activity-table td {
-    border-bottom: 1px solid #e2e8f0;
-    color: #64748b;
-    font-size: 0.95rem;
+.sp-icon-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.modern-activity-table tbody tr {
-    transition: background-color 0.2s;
+.sp-icon-circle span {
+    font-size: 18px;
 }
 
-.modern-activity-table tbody tr:hover {
-    background-color: #f1f5f9;
+/* Events Count Card */
+.sp-events-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2.5rem;
 }
 
-.modern-activity-table tr:last-child td {
-    border-bottom: none;
+.sp-events-count {
+    font-family: 'Manrope', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #1e1b4b;
+    line-height: 1;
+    margin-top: 8px;
+    display: block;
 }
 
-.sr-no-cell {
+.sp-events-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 1.5rem;
+    background: #f3e8ff;
+    color: var(--sp-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sp-events-icon span {
+    font-size: 40px;
+}
+
+
+/* --- 3. ENGAGEMENT LEDGER --- */
+.sp-ledger-section {
+    margin-top: 4rem;
+}
+
+.sp-ledger-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.sp-view-history-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--sp-indigo);
     font-weight: 700;
-    color: #94a3b8 !important;
-    text-align: center;
+    font-size: 0.9rem;
+    transition: gap 0.2s;
 }
 
-.fw-600 {
-    font-weight: 700;
+.sp-view-history-btn:hover {
+    gap: 12px;
 }
 
-.dark-text {
-    color: #1e293b !important;
+.sp-table-wrapper {
+    overflow-x: auto;
+    padding: 1rem;
+    margin: -1rem;
+    /* Allows shadow bleed */
 }
 
-.points-cell {
-    font-weight: 700;
-    color: #1e3a8a !important;
+.sp-ledger-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+    /* Creates the gap between rows! */
+    text-align: left;
+    min-width: 800px;
 }
 
-/* Modern Status Chips */
-.status-chip {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
+.sp-ledger-table th {
+    padding: 0 2rem 0.5rem 2rem;
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 800;
+    color: var(--sp-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
 }
 
-.chip-ongoing {
-    background: #d1fae5;
-    color: #065f46;
+.sp-ledger-row {
+    background: var(--sp-surface);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
 }
 
-.chip-upcoming {
-    background: #dbeafe;
-    color: #1e40af;
+.sp-ledger-row:hover {
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(58, 56, 139, 0.08);
+    transform: translateY(-2px);
 }
 
-.chip-completed {
+.sp-ledger-table td {
+    padding: 1.5rem 2rem;
+    vertical-align: middle;
+    border-top: 1px solid var(--sp-border);
+    border-bottom: 1px solid var(--sp-border);
+}
+
+.sp-td-first {
+    border-left: 1px solid var(--sp-border);
+    border-radius: 1.5rem 0 0 1.5rem;
+}
+
+.sp-td-last {
+    border-right: 1px solid var(--sp-border);
+    border-radius: 0 1.5rem 1.5rem 0;
+}
+
+.sp-activity-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sp-act-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.icon-technical {
+    background: #eef2ff;
+    color: var(--sp-indigo);
+}
+
+.icon-social {
+    background: #fdf4ff;
+    color: var(--sp-purple);
+}
+
+.icon-internship {
+    background: #eff6ff;
+    color: var(--sp-blue);
+}
+
+.icon-sports {
+    background: #fff7ed;
+    color: var(--sp-orange);
+}
+
+.icon-cultural {
+    background: #fdf2f8;
+    color: #db2777;
+}
+
+.icon-default {
     background: #f1f5f9;
     color: #475569;
 }
 
-/* Buttons */
-.action-btn-modern {
-    background: white;
-    border: 1px solid #e2e8f0;
-    color: #3b82f6;
+.sp-act-title {
+    font-weight: 800;
+    color: #1e1b4b;
+    font-size: 1rem;
+    margin-bottom: 2px;
+}
+
+.sp-act-subtitle {
+    font-size: 0.75rem;
+    color: var(--sp-text-muted);
     font-weight: 600;
+}
+
+.sp-level-pill {
     padding: 6px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.sp-pill-intl {
+    background: #eef2ff;
+    color: #4338ca;
+}
+
+.sp-pill-nat {
+    background: #f0fdf4;
+    color: #047857;
+}
+
+.sp-pill-state {
+    background: #faf5ff;
+    color: #be185d;
+}
+
+.sp-pill-uni {
+    background: #fffbeb;
+    color: #b45309;
+}
+
+.sp-pill-default {
+    background: #f8fafc;
+    color: #475569;
+}
+
+.sp-act-contribution {
     font-size: 0.85rem;
+    color: var(--sp-text-sub);
+    font-weight: 600;
+    line-height: 1.5;
 }
 
-.action-btn-modern:hover {
-    background: #eff6ff;
-    border-color: #bfdbfe;
-}
-
-/* Footer (Match Homepage) */
-.student-footer {
-    text-align: center;
-    padding: 2rem;
-    background: white;
-    border-top: 1px solid #e2e8f0;
-    color: #64748b;
-    margin-top: 3rem;
-}
-
-.student-footer p {
-    margin: 0;
+.sp-venue-text {
+    font-size: 0.75rem;
+    color: var(--sp-text-muted);
     font-weight: 500;
 }
 
-.footer-sub {
-    font-size: 0.85rem;
-    margin-top: 0.5rem !important;
-    color: #94a3b8 !important;
+.sp-act-points {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 900;
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-    .profile-details-flex {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding-top: 80px;
-    }
-
-    .profile-info-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .student-info-grid {
-        grid-template-columns: 1fr;
-        /* Stack into 1 column on mobile */
-        width: 100%;
-    }
-
-    .info-row {
-        align-items: center;
-        /* Center text on mobile */
-    }
-
-    .chart-card {
-        padding: 1.5rem;
-    }
+.text-approved {
+    color: #1e1b4b;
 }
 
-@media (max-width: 768px) {
-    .section-card {
-        padding: 1.5rem;
-    }
+.text-pending {
+    color: var(--sp-text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.text-right {
+    text-align: right;
 }
