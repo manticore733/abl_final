@@ -1,135 +1,133 @@
-/* SNavbar.css - Material UI AppBar Aesthetic */
+/* SNavbar.css - Lumina Scholar Global Navbar */
 
-/* Primary AppBar Container */
-.mui-appbar {
+.sh-top-nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: rgba(247, 249, 251, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
-    flex-direction: row;
-    background-color: #0f172a;
-    padding: 0.5cm 1cm;
-    width: 100%;
-    align-items: center;
     justify-content: space-between;
-    margin-bottom: 0;
-    /* Classic Material UI AppBar Elevation (Shadow 4) */
-    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
-        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    font-family: 'Inter', 'Roboto', sans-serif;
-    position: relative;
-    z-index: 1100;
-    /* Standard MUI AppBar Z-index */
+    align-items: center;
+    padding: 0 2rem;
+    z-index: 50;
+    border-bottom: 1px solid rgba(197, 197, 212, 0.3);
+    font-family: 'Inter', sans-serif;
     box-sizing: border-box;
-    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
 
-/* Typography elements */
-.mui-role-text {
-    color: #ffffff;
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0.00938em;
-    white-space: nowrap;
-    opacity: 0.9;
-}
-
-.mui-role-text strong {
-    font-weight: 600;
-    opacity: 1;
-}
-
-/* Center Navigation Group */
-.mui-nav-center {
+.sh-nav-left,
+.sh-nav-right {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
     align-items: center;
     gap: 1.5rem;
-    /* Replaced fixed cm gap with a more standard relative gap for flex */
 }
 
-/* Navigation Links - MUI Tab Aesthetic */
-.mui-nav-link {
-    color: rgba(255, 255, 255, 0.7);
-    /* Standard unselected MUI tab opacity */
+.sh-brand-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #3a388b;
+    /* Lumina Indigo */
+    font-style: italic;
+    margin-right: 1rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.sh-desktop-links {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .sh-desktop-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+}
+
+.sh-nav-link {
+    color: #757684;
+    /* Text muted */
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
     text-decoration: none;
-    font-size: 0.875rem;
-    /* MUI button/tab text size */
-    font-weight: 500;
-    line-height: 1.75;
-    letter-spacing: 0.02857em;
-    text-transform: uppercase;
-    padding: 6px 8px;
-    border-radius: 4px;
-    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
-        color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
 }
 
-.mui-nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    /* MUI subtle hover state */
-    color: #ffffff;
+.sh-nav-link:hover {
+    color: #3a388b;
 }
 
-/* Active Tab State */
-.mui-nav-link.mui-active {
-    color: #ffffff;
-    /* Full opacity when active */
-    background-color: rgba(255, 255, 255, 0.12);
-    /* Slightly stronger than hover */
+.sh-nav-link.active {
+    color: #3a388b;
+    border-bottom: 2px solid #3a388b;
 }
 
-/* Icon Buttons Group */
-.mui-action-group {
+.sh-search-box {
+    display: none;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid rgba(197, 197, 212, 0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+}
+
+@media (min-width: 1024px) {
+    .sh-search-box {
+        display: flex;
+    }
+}
+
+.sh-search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    margin-left: 8px;
+    width: 180px;
+    font-family: 'Inter', sans-serif;
+    color: #191c1e;
+}
+
+.sh-search-box input::placeholder {
+    color: #94a3b8;
+}
+
+.sh-icon-btn {
+    color: #757684;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.2s;
     display: flex;
     align-items: center;
-    gap: 8px;
-}
-
-/* Material UI IconButton Aesthetic */
-.mui-icon-button {
-    display: inline-flex;
-    align-items: center;
     justify-content: center;
-    position: relative;
-    box-sizing: border-box;
-    background-color: transparent;
-    outline: 0;
-    border: 0;
-    margin: 0;
+    border: none;
+    background: transparent;
     cursor: pointer;
-    vertical-align: middle;
-    text-decoration: none;
-    color: #ffffff;
-    text-align: center;
-    flex: 0 0 auto;
-    font-size: 1.5rem;
-    padding: 8px;
+}
+
+.sh-icon-btn:hover {
+    background: rgba(58, 56, 139, 0.05);
+    color: #3a388b;
+}
+
+.logout-icon-btn:hover {
+    color: #ba1a1a;
+    background: rgba(186, 26, 26, 0.05);
+}
+
+.sh-profile-avatar {
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    /* Perfect circle */
-    overflow: visible;
-    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    opacity: 0.9;
+    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: border 0.2s;
 }
 
-.mui-icon-button:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    opacity: 1;
-}
-
-/* Logout Button Special Hover */
-.mui-logout-button:hover {
-    background-color: rgba(239, 68, 68, 0.15);
-    /* MUI Error light background */
-    color: #fca5a5;
-    /* Subtle red icon */
-}
-
-/* Responsive adjustments if needed, while respecting margins */
-@media (max-width: 900px) {
-    .mui-appbar {
-        flex-direction: column;
-        gap: 1rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
+.border-active {
+    border: 2px solid #3a388b;
 }

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import SNavbar from "../../Components/StudentC/SNavbar";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Card, CardContent, CardHeader } from "@mui/material";
-import { Container, TextField, MenuItem, Button, Grid } from "@mui/material";
 import { motion } from "framer-motion";
 import "./css/SMakeEntry.css";
-import "./css/sHomepage.css";
+import SNavbar from "../../Components/StudentC/SNavbar";
+import { useToast } from "../../Components/ToastContext";
 
 // Dummy Club List
 const clubOptions = [
@@ -85,11 +84,21 @@ const subCategoryOptions = {
 };
 
 const SMakeEntry = () => {
+  const navigate = useNavigate();
+  const { showToast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/session/logout", { method: "POST", credentials: "include" });
+      if (response.ok) navigate("/", { replace: true });
+    } catch (error) { console.error("Error during logout:", error); }
+  };
+
   const [formData, setFormData] = useState({
     s_id: "", roll_number: "", name: "", department: "", division: "",
     semester: "", event_name: "", event_type: "", subcategory: "",
     sub_activity_type: "", organised_by: "", participation_date: "",
-    venue: "", allocated_points: "", status: "Pending", remarks: "",
+    venue: "", allocated_points: 0, status: "Pending", remarks: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -142,23 +151,23 @@ const SMakeEntry = () => {
 
   const validateForm = () => {
     let newErrors = {};
-    if (!formData.organised_by) newErrors.organised_by = "Club Name / Organised by required!!";
-    if (!formData.event_name.trim()) newErrors.event_name = "Event Name is required.";
-    if (!formData.event_type) newErrors.event_type = "Event Type is required.";
-    if (!formData.subcategory) newErrors.subcategory = "Subcategory is required.";
+    if (!formData.organised_by) newErrors.organised_by = "Required";
+    if (!formData.event_name.trim()) newErrors.event_name = "Required";
+    if (!formData.event_type) newErrors.event_type = "Required";
+    if (!formData.subcategory) newErrors.subcategory = "Required";
     if (subCategoryOptions[formData.subcategory] && !formData.sub_activity_type) {
-      newErrors.sub_activity_type = "Sub Activity Type is required.";
+      newErrors.sub_activity_type = "Required";
     }
     if (!formData.participation_date) {
-      newErrors.participation_date = "Participation Date is required.";
+      newErrors.participation_date = "Required";
     } else {
       const year = new Date(formData.participation_date).getFullYear();
-      if (year < 2021) newErrors.participation_date = "Date must be after 2021.";
+      if (year < 2021) newErrors.participation_date = "Must be after 2021";
     }
     if (!formData.venue.trim()) {
-      newErrors.venue = "Venue is required.";
+      newErrors.venue = "Required";
     } else if (/[!@#$%^&*]/.test(formData.venue)) {
-      newErrors.venue = "Venue cannot contain special characters like @, #, $.";
+      newErrors.venue = "No special chars allowed";
     }
 
     setErrors(newErrors);
@@ -167,15 +176,19 @@ const SMakeEntry = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      // Optional: Trigger an error toast if validation fails!
+      showToast('error', 'Submission Failed', 'Please fill out all required fields.');
+      return;
+    }
 
     try {
       await axios.post("http://localhost:5000/api/student/activity-summary", formData);
-      alert("Activity added successfully!");
+      showToast('success', 'Success', 'Activity submitted successfully!');
       setFormData((prev) => ({
         ...prev, event_name: "", event_type: "", subcategory: "",
         sub_activity_type: "", organised_by: "", participation_date: "",
-        venue: "", allocated_points: "",
+        venue: "", allocated_points: 0,
       }));
       setErrors({});
     } catch (error) {
@@ -184,244 +197,238 @@ const SMakeEntry = () => {
   };
 
   return (
-    <div className="student-page-wrapper">
-      <SNavbar />
+    <div className="sme-page-wrapper">
 
-      <div className="student-hero" style={{ height: "35vh", minHeight: "250px" }}>
-        <div className="student-hero-content">
-          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            Log Activity
-          </motion.h1>
-          <div className="student-hero-instruction">
-            Submit your achievements and earn ABL points
+      {/* Top Navigation Bar (Unified with Profile/Calendar) */}
+      <SNavbar />
+      {/* Main Content Area */}
+      <main className="sme-main-content">
+
+        {/* Editorial Header */}
+        <header className="sme-header">
+          <span className="sme-eyebrow">Student Portal</span>
+          <h1 className="sme-page-title">Activity Submission</h1>
+          <p className="sme-page-desc">
+            Log your extracurricular achievements and academic milestones. Curate your digital portfolio for internal review and credit allocation.
+          </p>
+        </header>
+
+        {/* Form Container */}
+        <div className="sme-form-card editorial-shadow">
+          <form onSubmit={handleSubmit}>
+
+            {/* Section 1: Student Identity (Read-only) */}
+            <section className="sme-form-section">
+              <div className="sme-section-heading">
+                <div className="sme-icon-box text-primary bg-primary-light">
+                  <span className="material-symbols-outlined">person_outline</span>
+                </div>
+                <h2>Student Identity</h2>
+              </div>
+
+              <div className="sme-grid-identity">
+                <div className="sme-input-group">
+                  <label>Roll Number</label>
+                  <div className="sme-readonly-field">{formData.roll_number || "-"}</div>
+                </div>
+                <div className="sme-input-group col-span-2">
+                  <label>Full Name</label>
+                  <div className="sme-readonly-field">{formData.name || "Loading..."}</div>
+                </div>
+                <div className="sme-input-group">
+                  <label>Department</label>
+                  <div className="sme-readonly-field">{formData.department || "-"}</div>
+                </div>
+                <div className="sme-input-group">
+                  <label>Division</label>
+                  <div className="sme-readonly-field">{formData.division || "-"}</div>
+                </div>
+                <div className="sme-input-group">
+                  <label>Semester</label>
+                  <div className="sme-readonly-field">{formData.semester || "-"}</div>
+                </div>
+              </div>
+            </section>
+
+            {/* Section 2: Activity Entry */}
+            <section className="sme-form-section no-border">
+              <div className="sme-section-heading">
+                <div className="sme-icon-box text-cyan bg-cyan-light">
+                  <span className="material-symbols-outlined">edit_note</span>
+                </div>
+                <h2>Activity Entry</h2>
+              </div>
+
+              <div className="sme-grid-entry">
+                {/* Event Name */}
+                <div className="sme-input-group col-span-2">
+                  <label htmlFor="event_name">
+                    Event Name {errors.event_name && <span className="sme-error">({errors.event_name})</span>}
+                  </label>
+                  <input
+                    type="text" id="event_name" name="event_name"
+                    placeholder="e.g., Global Tech Symposium 2024"
+                    className={`sme-input ${errors.event_name ? 'input-error' : ''}`}
+                    value={formData.event_name} onChange={handleChange}
+                  />
+                </div>
+
+                {/* Event Type */}
+                <div className="sme-input-group">
+                  <label htmlFor="event_type">
+                    Event Type {errors.event_type && <span className="sme-error">({errors.event_type})</span>}
+                  </label>
+                  <div className="sme-select-wrapper">
+                    <select id="event_type" name="event_type" className={`sme-input ${errors.event_type ? 'input-error' : ''}`} value={formData.event_type} onChange={handleChange}>
+                      <option value="">Select Category</option>
+                      {Object.keys(categoryOptions).map((type) => (
+                        <option key={type} value={type}>{type}</option>
+                      ))}
+                    </select>
+                    <span className="material-symbols-outlined sme-select-icon">expand_more</span>
+                  </div>
+                </div>
+
+                {/* Subcategory */}
+                <div className="sme-input-group">
+                  <label htmlFor="subcategory">
+                    Subcategory {errors.subcategory && <span className="sme-error">({errors.subcategory})</span>}
+                  </label>
+                  <div className="sme-select-wrapper">
+                    <select id="subcategory" name="subcategory" className={`sme-input ${errors.subcategory ? 'input-error' : ''}`} value={formData.subcategory} onChange={handleChange} disabled={!formData.event_type}>
+                      <option value="">Select Subcategory</option>
+                      {categoryOptions[formData.event_type]?.map((event) => (
+                        <option key={event} value={event}>{event}</option>
+                      ))}
+                    </select>
+                    <span className="material-symbols-outlined sme-select-icon">expand_more</span>
+                  </div>
+                </div>
+
+                {/* Sub Activity Type */}
+                <div className="sme-input-group">
+                  <label htmlFor="sub_activity_type">
+                    Sub Activity Type {errors.sub_activity_type && <span className="sme-error">({errors.sub_activity_type})</span>}
+                  </label>
+                  <div className="sme-select-wrapper">
+                    <select id="sub_activity_type" name="sub_activity_type" className={`sme-input ${errors.sub_activity_type ? 'input-error' : ''}`} value={formData.sub_activity_type} onChange={handleChange} disabled={!subCategoryOptions[formData.subcategory]}>
+                      <option value="">Select Activity Type</option>
+                      {(subCategoryOptions[formData.subcategory] || []).map((sub) => (
+                        <option key={sub} value={sub}>{sub}</option>
+                      ))}
+                    </select>
+                    <span className="material-symbols-outlined sme-select-icon">expand_more</span>
+                  </div>
+                </div>
+
+                {/* Organised By */}
+                <div className="sme-input-group">
+                  <label htmlFor="organised_by">
+                    Organised By {errors.organised_by && <span className="sme-error">({errors.organised_by})</span>}
+                  </label>
+                  <div className="sme-select-wrapper">
+                    <select id="organised_by" name="organised_by" className={`sme-input ${errors.organised_by ? 'input-error' : ''}`} value={formData.organised_by} onChange={handleChange}>
+                      <option value="">Organization Name</option>
+                      {clubOptions.map((club) => (
+                        <option key={club} value={club}>{club}</option>
+                      ))}
+                    </select>
+                    <span className="material-symbols-outlined sme-select-icon">expand_more</span>
+                  </div>
+                </div>
+
+                {/* Participation Date */}
+                <div className="sme-input-group">
+                  <label htmlFor="participation_date">
+                    Participation Date {errors.participation_date && <span className="sme-error">({errors.participation_date})</span>}
+                  </label>
+                  <input
+                    type="date" id="participation_date" name="participation_date"
+                    className={`sme-input ${errors.participation_date ? 'input-error' : ''}`}
+                    value={formData.participation_date} onChange={handleChange}
+                  />
+                </div>
+
+                {/* Venue */}
+                <div className="sme-input-group">
+                  <label htmlFor="venue">
+                    Venue {errors.venue && <span className="sme-error">({errors.venue})</span>}
+                  </label>
+                  <input
+                    type="text" id="venue" name="venue"
+                    placeholder="Physical or Virtual Location"
+                    className={`sme-input ${errors.venue ? 'input-error' : ''}`}
+                    value={formData.venue} onChange={handleChange}
+                  />
+                </div>
+
+                {/* Allocated Points Box */}
+                <div className="sme-points-box col-span-2">
+                  <div className="sme-points-text">
+                    <h4>Credit Allocation</h4>
+                    <p>Based on current selection and academic guidelines.</p>
+                  </div>
+                  <div className="sme-points-value">
+                    <span className="sme-big-num">{formData.allocated_points}</span>
+                    <span className="sme-unit">Points</span>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Form Actions */}
+              <div className="sme-form-actions">
+                <button type="button" className="sme-btn-draft" onClick={() => showToast('info', 'Draft Saved', 'Your activity progress has been saved locally.')}>
+                  Save as Draft
+                </button>
+                <button type="submit" className="sme-btn-submit">
+                  <span>Submit for Review</span>
+                  <span className="material-symbols-outlined">send</span>
+                </button>
+              </div>
+            </section>
+
+          </form>
+        </div>
+
+        {/* Supportive Info Cards */}
+        <aside className="sme-info-cards">
+          <div className="sme-info-card">
+            <div className="sme-info-icon bg-orange-light text-orange">
+              <span className="material-symbols-outlined">info</span>
+            </div>
+            <h3>Submission Guide</h3>
+            <p>Ensure all certificates are attached in the next step. Late submissions might require department head approval.</p>
+          </div>
+          <div className="sme-info-card">
+            <div className="sme-info-icon bg-primary-light text-primary">
+              <span className="material-symbols-outlined">verified</span>
+            </div>
+            <h3>Verification Timeline</h3>
+            <p>Most activities are verified within 3-5 working days by your assigned mentor.</p>
+          </div>
+          <div className="sme-info-card">
+            <div className="sme-info-icon bg-cyan-light text-cyan">
+              <span className="material-symbols-outlined">stars</span>
+            </div>
+            <h3>Credit Milestone</h3>
+            <p>You are currently 45 points away from reaching the 'Gold' achievement tier for this semester.</p>
+          </div>
+        </aside>
+
+      </main>
+
+      {/* Footer */}
+      <footer className="sh-footer">
+        <div className="sh-footer-content">
+          <div><p className="sh-copyright">© 2024 Academic Editorial University. All rights reserved.</p></div>
+          <div className="sh-footer-links">
+            <Link to="#">Privacy Policy</Link>
+            <Link to="#">Terms of Service</Link>
+            <Link to="#">Accessibility</Link>
           </div>
         </div>
-        <div className="student-hero-shape student-shape-1"></div>
-        <div className="student-hero-shape student-shape-2"></div>
-      </div>
-
-      <div className="student-main-container entry-overlap-container">
-        <Container maxWidth="md">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-            <Card className="section-card form-card-enhancement">
-              <CardHeader
-                title="Activity Entry Form"
-                sx={{
-                  textAlign: "center", py: 1,
-                  "& .MuiCardHeader-title": { fontWeight: 700, color: "#1e293b", fontSize: "1.5rem" },
-                }}
-              />
-              <CardContent sx={{ px: { xs: 2, sm: 4 } }}>
-                <form onSubmit={handleSubmit}>
-                  <Grid container spacing={3}>
-
-                    {/* Read-only Student Info Section */}
-                    <Grid item xs={12}>
-                      <div className="form-section-title">Student Details</div>
-                    </Grid>
-
-                    {["roll_number", "name", "department", "division", "semester"].map((field) => (
-                      <Grid key={field} item xs={12} sm={6} md={4}>
-                        <div className="input-group">
-                          <label>{field.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())}</label>
-                          <TextField
-                            fullWidth
-                            size="small"
-                            placeholder={`Enter ${field}`}
-                            value={formData[field]}
-                            disabled
-                            className="modern-input disabled-input"
-                          />
-                        </div>
-                      </Grid>
-                    ))}
-
-                    <Grid item xs={12}>
-                      <hr className="form-divider" />
-                      <div className="form-section-title">Activity Information</div>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <div className="input-group">
-                        <label>Event Name</label>
-                        <TextField
-                          fullWidth
-                          size="small"
-                          placeholder="e.g. Annual Tech Fest"
-                          name="event_name"
-                          value={formData.event_name}
-                          onChange={handleChange}
-                          error={!!errors.event_name}
-                          helperText={errors.event_name}
-                          className="modern-input"
-                        />
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <div className="input-group">
-                        <label>Event Type</label>
-                        <TextField
-                          select
-                          fullWidth
-                          size="small"
-                          SelectProps={{ displayEmpty: true }}
-                          name="event_type"
-                          value={formData.event_type}
-                          onChange={handleChange}
-                          error={!!errors.event_type}
-                          helperText={errors.event_type}
-                          className="modern-input"
-                        >
-                          <MenuItem value="" disabled>Select Type</MenuItem>
-                          {Object.keys(categoryOptions).map((type) => (
-                            <MenuItem key={type} value={type}>{type}</MenuItem>
-                          ))}
-                        </TextField>
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <div className="input-group">
-                        <label>Subcategory</label>
-                        <TextField
-                          select
-                          fullWidth
-                          size="small"
-                          SelectProps={{ displayEmpty: true }}
-                          name="subcategory"
-                          value={formData.subcategory}
-                          onChange={handleChange}
-                          disabled={!formData.event_type}
-                          error={!!errors.subcategory}
-                          helperText={errors.subcategory}
-                          className="modern-input"
-                        >
-                          <MenuItem value="" disabled>Select Subcategory</MenuItem>
-                          {categoryOptions[formData.event_type]?.map((event) => (
-                            <MenuItem key={event} value={event}>{event}</MenuItem>
-                          ))}
-                        </TextField>
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <div className="input-group">
-                        <label>Sub Activity Type</label>
-                        <TextField
-                          select
-                          fullWidth
-                          size="small"
-                          SelectProps={{ displayEmpty: true }}
-                          name="sub_activity_type"
-                          value={formData.sub_activity_type}
-                          onChange={handleChange}
-                          disabled={!subCategoryOptions[formData.subcategory]}
-                          error={!!errors.sub_activity_type}
-                          helperText={errors.sub_activity_type}
-                          className="modern-input"
-                        >
-                          <MenuItem value="" disabled>Select Activity</MenuItem>
-                          {(subCategoryOptions[formData.subcategory] || []).map((sub) => (
-                            <MenuItem key={sub} value={sub}>{sub}</MenuItem>
-                          ))}
-                        </TextField>
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <div className="input-group">
-                        <label>Organised By</label>
-                        <TextField
-                          select
-                          fullWidth
-                          size="small"
-                          SelectProps={{ displayEmpty: true }}
-                          name="organised_by"
-                          value={formData.organised_by}
-                          onChange={handleChange}
-                          error={!!errors.organised_by}
-                          helperText={errors.organised_by}
-                          className="modern-input"
-                        >
-                          <MenuItem value="" disabled>Select Club</MenuItem>
-                          {clubOptions.map((club) => (
-                            <MenuItem key={club} value={club}>{club}</MenuItem>
-                          ))}
-                        </TextField>
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <div className="input-group">
-                        <label>Participation Date</label>
-                        <TextField
-                          type="date"
-                          fullWidth
-                          size="small"
-                          name="participation_date"
-                          value={formData.participation_date}
-                          onChange={handleChange}
-                          error={!!errors.participation_date}
-                          helperText={errors.participation_date}
-                          className="modern-input"
-                        />
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <div className="input-group">
-                        <label>Venue</label>
-                        <TextField
-                          fullWidth
-                          size="small"
-                          placeholder="e.g. Seminar Hall"
-                          name="venue"
-                          value={formData.venue}
-                          onChange={handleChange}
-                          error={!!errors.venue}
-                          helperText={errors.venue}
-                          className="modern-input"
-                        />
-                      </div>
-                    </Grid>
-
-                    {/* Points Allocation - Removed the negative margin! */}
-                    <Grid item xs={12} sm={6} md={4}>
-                      <div className="input-group">
-                        <label>Allocated Points</label>
-                        <TextField
-                          fullWidth
-                          size="small"
-                          placeholder="0"
-                          name="allocated_points"
-                          value={formData.allocated_points}
-                          InputProps={{ readOnly: true }}
-                          className="modern-input points-input"
-                        />
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <Button type="submit" variant="contained" className="modern-submit-btn" fullWidth>
-                        Submit Activity
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </form>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </Container>
-      </div>
-
-      {/* Keeping your global footer here */}
-
-      <footer className="student-footer">
-        <p>© {new Date().getFullYear()} FCRIT ABL Portal</p>
-        <p className="footer-sub">Contact: info@fcrit.ac.in | Designed for Students</p>
       </footer>
-
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { fetchStudentCredentials, getClubAdminStatus } from "../api/studentApi";
 import { fetchAdminCredentials } from "../api/adminApi";
 import { fetchMentorCredentials } from "../api/mentorApi";
 import "./css/LoginForm.css";
+import { useToast } from "../Components/ToastContext";
 
 const LoginForm = ({ role }) => {
     const [username, setUsername] = useState("");
@@ -11,7 +12,7 @@ const LoginForm = ({ role }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-
+    const { showToast } = useToast();
     const navigate = useNavigate();
 
     const getRoleIcon = (currentRole) => {
@@ -70,6 +71,7 @@ const LoginForm = ({ role }) => {
             const sessionData = await sessionResponse.json();
 
             if (sessionResponse.ok) {
+                showToast('success', 'Welcome Back!', `Successfully logged in as ${role}.`);
                 if (role === "Club Admin") navigate("/cHomepage");
                 else if (role === "Student") navigate("/sHomepage");
                 else if (role === "Admin") navigate("/aHomepage");
@@ -81,6 +83,7 @@ const LoginForm = ({ role }) => {
         } catch (err) {
             console.error("Login Error:", err);
             setError(err.message || "Server error. Please try again.");
+            showToast('error', 'Access Denied', err.message);
         } finally {
             setIsLoading(false);
         }

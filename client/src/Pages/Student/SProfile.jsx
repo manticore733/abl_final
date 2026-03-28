@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import './css/SProfile.css';
 import profileImage from "../../assets/image.png";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SProfile = () => {
 
@@ -25,9 +26,6 @@ const SProfile = () => {
     }
   };
 
-
-
-
   const [studentInfo, setStudentInfo] = useState(null);
   const [activities, setActivities] = useState([]);
   const [catPoints, setCatPoints] = useState({ Technical: 0, Cultural: 0, Social: 0, Sports: 0, Internship: 0 });
@@ -36,7 +34,20 @@ const SProfile = () => {
   const itemsPerPage = 5;
   const chartRef = useRef(null);
 
+  // NEW: Expanded formData to hold all the rich data from your new API response
+  const [formData, setFormData] = useState({
+    s_id: "",
+    roll_number: "",
+    name: "",
+    department: "",
+    division: "",
+    semester: "",
+    batch: "",
+    total_credits: ""
+  });
+
   useEffect(() => {
+    // Keep your existing fetches
     const getStudentData = async () => {
       const data = await fetchStudentInfo();
       if (data) setStudentInfo(data);
@@ -49,7 +60,33 @@ const SProfile = () => {
 
     getStudentData();
     getStudentActivities();
+
+    // Trigger your new API call
+    const rollNumber = sessionStorage.getItem("username");
+    if (rollNumber) fetchStudentDetails(rollNumber);
   }, []);
+
+  const fetchStudentDetails = async (rollNumber) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/student/student-details/${rollNumber}`);
+      const data = response.data;
+
+      // Update formData using the new JSON response keys
+      setFormData({
+        s_id: data.s_id,
+        roll_number: data.s_username,
+        name: data.name,
+        department: data.department,
+        division: data.division,
+        semester: data.semester,
+        batch: data.batch,
+        total_credits: data.total_credits
+      });
+      console.log("Student details: ", data);
+    } catch (error) {
+      console.error("Error fetching student details:", error);
+    }
+  };
 
   useEffect(() => {
     if (!activities.length) return;
@@ -98,7 +135,7 @@ const SProfile = () => {
           maintainAspectRatio: false,
           cutout: "80%",
           plugins: {
-            legend: { display: false } // Hidden to match the clean Lumina look
+            legend: { display: false }
           }
         },
       });
@@ -133,17 +170,15 @@ const SProfile = () => {
   };
 
   const totalPages = Math.ceil(activities.length / itemsPerPage);
-  // ADD THESE THREE LINES RIGHT HERE:
+
   const handlePageChange = (event, value) => {
     setPage(value);
   };
 
   const currentActivities = activities.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
-
   return (
     <div className="sp-page-wrapper">
-      {/* NEW: Top Navigation Bar perfectly matching the Homepage */}
       <nav className="sh-top-nav">
         <div className="sh-nav-left">
           <span className="sh-brand-text">Academic Portal</span>
@@ -168,7 +203,6 @@ const SProfile = () => {
             <span className="material-symbols-outlined">logout</span>
           </button>
           <Link to="/profile">
-            {/* Added border-active class so the user knows they are ON the profile page */}
             <img className="sh-profile-avatar border-active" alt="Student Profile Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-01cNusPj6qq-SqdEc78yD6RCE2i37nxrydaMSyXPS0x8xyoL2-jPlLqLKdJHXJPqzsBLaJVv_x19BKsfrWF00x9arEtsk-oZ6k_J0SNo2tVGpuoNGSFCGeEbMNRWWaeVNmOpS6XsmGRqt9ATEfZi526ZUaNLUIGRIHuWtbAHqsDJ-x18LdyNtbAVeG9r0r5d6Ahe_jIO-AXGewrH017f1xSJXK4pZHA-A-g_VJU4zeU-r9bxZK126UWiQK6ygAd6NZjQeoBxQXY" />
           </Link>
         </div>
@@ -177,16 +211,13 @@ const SProfile = () => {
       <main className="sp-main-content">
         <div className="sp-container">
 
-          {/* 1. IMMERSIVE HERO SECTION */}
           <section className="sp-hero-section">
-            {/* Abstract Background Blurs */}
             <div className="sp-hero-bg-blurs">
               <div className="sp-blur-blob blur-blue"></div>
               <div className="sp-blur-blob blur-purple"></div>
             </div>
 
             <div className="sp-hero-content-flex">
-              {/* Glassmorphic Identity Card */}
               <motion.div className="sp-glass-card sp-identity-card" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
                 <div className="sp-identity-header">
                   <div className="sp-avatar-box">
@@ -194,34 +225,40 @@ const SProfile = () => {
                   </div>
                   <div>
                     <span className="sp-label-tiny">Student Profile</span>
-                    <h1 className="sp-profile-name">{studentInfo ? studentInfo.s_name : "Loading..."}</h1>
-                    <p className="sp-profile-degree">{studentInfo ? studentInfo.s_branch : ""}</p>
+                    {/* WIRED UP: Uses new API data for Name */}
+                    <h1 className="sp-profile-name">{formData.name || "Loading..."}</h1>
+                    {/* WIRED UP: Uses new API data for Department */}
+                    <p className="sp-profile-degree">{formData.department ? `Bachelor of ${formData.department}` : ""}</p>
                   </div>
                 </div>
               </motion.div>
 
-              {/* Floating Data Tiles */}
               <div className="sp-hero-tiles">
                 <motion.div className="sp-glass-card sp-tile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
                   <span className="sp-label-tiny">Semester</span>
-                  <span className="sp-tile-value">{studentInfo?.s_sem || "-"}</span>
+                  {/* WIRED UP: Semester */}
+                  <span className="sp-tile-value">{formData.semester || "-"}</span>
                 </motion.div>
                 <motion.div className="sp-glass-card sp-tile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
                   <span className="sp-label-tiny">Section</span>
-                  <span className="sp-tile-value">{studentInfo?.s_csec || "-"}</span>
+                  {/* WIRED UP: Division */}
+                  <span className="sp-tile-value">{formData.division || "-"}</span>
                 </motion.div>
                 <motion.div className="sp-glass-card sp-tile" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
                   <span className="sp-label-tiny">Batch</span>
-                  <span className="sp-tile-value">{studentInfo?.s_batch || "-"}</span>
+                  {/* WIRED UP: Batch */}
+                  <span className="sp-tile-value">{formData.batch || "-"}</span>
+                </motion.div>
+                <motion.div className="sp-glass-card sp-tile tile-wide" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
+                  <span className="sp-label-tiny">Roll Number</span>
+                  {/* WIRED UP: Roll Number */}
+                  <span className="sp-tile-value">{formData.roll_number || "-"}</span>
                 </motion.div>
               </div>
             </div>
           </section>
 
-          {/* 2. ASYMMETRICAL CONTENT GRID */}
           <div className="sp-bento-grid">
-
-            {/* Left: Holistic Performance */}
             <div className="sp-panel sp-col-7">
               <div className="sp-panel-header-flex">
                 <div>
@@ -232,7 +269,6 @@ const SProfile = () => {
               </div>
 
               <div className="sp-performance-flex">
-                {/* Chart Area */}
                 <div className="sp-chart-container">
                   <div className="sp-chart-center-label">
                     <span className="sp-chart-total">{totalPoints}</span>
@@ -241,7 +277,6 @@ const SProfile = () => {
                   <canvas id="pointsPieChart"></canvas>
                 </div>
 
-                {/* Progress Bars */}
                 <div className="sp-progress-container">
                   <div className="sp-progress-block">
                     <div className="sp-progress-labels">
@@ -268,9 +303,7 @@ const SProfile = () => {
               </div>
             </div>
 
-            {/* Right: Aggregate Score & Events */}
             <div className="sp-col-5 sp-flex-col">
-              {/* Aggregate Card */}
               <div className="sp-aggregate-card">
                 <div className="sp-glow-orb"></div>
                 <span className="sp-label-tiny text-white-50">Aggregate Score</span>
@@ -284,7 +317,6 @@ const SProfile = () => {
                 </div>
               </div>
 
-              {/* Events Count Card */}
               <div className="sp-panel sp-events-card">
                 <div>
                   <span className="sp-label-tiny">Activities Logged</span>
@@ -295,7 +327,6 @@ const SProfile = () => {
             </div>
           </div>
 
-          {/* 3. ENGAGEMENT LEDGER (Custom Table) */}
           <section className="sp-ledger-section">
             <div className="sp-ledger-header">
               <div>
@@ -311,7 +342,6 @@ const SProfile = () => {
               <table className="sp-ledger-table">
                 <thead>
                   <tr>
-                    {/* NEW: Added Sr No Header */}
                     <th className="text-center" style={{ width: "60px" }}>No.</th>
                     <th>Activity & Focus</th>
                     <th>Classification</th>
@@ -323,13 +353,9 @@ const SProfile = () => {
                   {currentActivities.length > 0 ? (
                     currentActivities.map((act, index) => (
                       <tr key={act.a_id} className="sp-ledger-row group">
-
-                        {/* NEW: Serial Number Cell. Notice it now holds 'sp-td-first' */}
                         <td className="sp-td-first sp-sr-cell">
                           {(page - 1) * itemsPerPage + index + 1}
                         </td>
-
-                        {/* UPDATED: Removed 'sp-td-first' from this td */}
                         <td>
                           <div className="sp-activity-cell">
                             <div className={`sp-act-icon icon-${act.a_type?.toLowerCase() || 'default'}`}>
@@ -379,7 +405,6 @@ const SProfile = () => {
         </div>
       </main>
 
-      {/* Footer - Now fully spanning the bottom */}
       <footer className="sh-footer">
         <div className="sh-footer-content">
           <div>

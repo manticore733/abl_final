@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./css/sHomepage.css";
+import SNavbar from "../../Components/StudentC/SNavbar";
 
 const SHomepage = () => {
   const navigate = useNavigate();
@@ -22,38 +23,7 @@ const SHomepage = () => {
   return (
     <div className="sh-page-wrapper">
       {/* Top Navigation Bar */}
-      <nav className="sh-top-nav">
-        <div className="sh-nav-left">
-          <span className="sh-brand-text">ABL Portal</span>
-          <div className="sh-desktop-links">
-            <Link className="sh-nav-link active" to="/sHomepage">Dashboard</Link>
-            <Link className="sh-nav-link" to="/student-calendar">Schedule</Link>
-            <Link className="sh-nav-link" to="/make-entry">Grades</Link>
-          </div>
-        </div>
-        <div className="sh-nav-right">
-          <div className="sh-search-box">
-            <span className="material-symbols-outlined">search</span>
-            <input placeholder="Search resources..." type="text" />
-          </div>
-          <button className="sh-icon-btn">
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <button className="sh-icon-btn">
-            <span className="material-symbols-outlined">settings</span>
-          </button>
-
-          {/* Logout Button moved to Navbar */}
-          <button onClick={handleLogout} className="sh-icon-btn logout-icon-btn" title="Logout">
-            <span className="material-symbols-outlined">logout</span>
-          </button>
-
-          <Link to="/profile">
-            <img className="sh-profile-avatar" alt="Student Profile Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-01cNusPj6qq-SqdEc78yD6RCE2i37nxrydaMSyXPS0x8xyoL2-jPlLqLKdJHXJPqzsBLaJVv_x19BKsfrWF00x9arEtsk-oZ6k_J0SNo2tVGpuoNGSFCGeEbMNRWWaeVNmOpS6XsmGRqt9ATEfZi526ZUaNLUIGRIHuWtbAHqsDJ-x18LdyNtbAVeG9r0r5d6Ahe_jIO-AXGewrH017f1xSJXK4pZHA-A-g_VJU4zeU-r9bxZK126UWiQK6ygAd6NZjQeoBxQXY" />
-          </Link>
-        </div>
-      </nav>
-
+      <SNavbar />
       {/* Main Content Canvas - Now perfectly centered without the sidebar! */}
       <main className="sh-main-content">
         <div className="sh-content-container">
