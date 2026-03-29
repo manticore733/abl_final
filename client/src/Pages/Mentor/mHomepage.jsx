@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import MNavbar from '../../Components/MentorC/MNavbar';
-import './css/mHomepage.css';
-import { Grid, Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
-import {
-  Users,
-  FileCheck,
-  Activity,
-  BellRing,
-  ChevronRight,
-  TrendingUp,
-  Award
-} from 'lucide-react';
+import { useToast } from '../../Components/ToastContext';
+import './css/mHomepage.css';
+import MNavbar from '../../Components/MentorC/MNavbar';
 
-const mHomepage = () => {
+const MHomepage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { showToast } = useToast();
 
   const [mentorName, setMentorName] = useState("Mentor");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAndStoreMentorInfo = async () => {
@@ -34,212 +29,273 @@ const mHomepage = () => {
         sessionStorage.setItem("m_csec", m_csec);
         sessionStorage.setItem("m_sem", m_sem);
 
-        // Extract basic ID or assign a placeholder generic name for greeting
         setMentorName(mentorId || "Mentor");
-
-        console.log("✅ Mentor info stored in sessionStorage!");
+        setIsLoading(false);
       } catch (error) {
         console.error("⛔ Failed to fetch mentor credentials:", error);
+        showToast('error', 'Connection Error', 'Failed to sync mentor profile data.');
+        setIsLoading(false);
       }
     };
 
     fetchAndStoreMentorInfo();
-  }, []);
+  }, [showToast]);
 
-  // Dummy mock data for recent submissions feeding notifications
-  const recentSubmissions = [
-    { id: 1, user: "Pranav Batki", action: "submitted a cultural activity", time: "2 hours ago", status: "Pending" },
-    { id: 2, user: "Rohan Sharma", action: "uploaded a tech certificate", time: "5 hours ago", status: "Pending" },
-    { id: 3, user: "Ananya Desai", action: "requested activity verification", time: "Yesterday", status: "Pending" },
-    { id: 4, user: "Karan Johar", action: "completed internal internship", time: "Yesterday", status: "Approved" },
-    { id: 5, user: "Smriti Irani", action: "submitted sports achievement", time: "2 days ago", status: "Pending" },
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/session/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      if (response.ok) {
+        showToast('success', 'Logged Out', 'You have securely logged out of the portal.');
+        navigate("/", { replace: true });
+      }
+    } catch (error) {
+      showToast('error', 'Logout Failed', 'An error occurred while logging out.');
+    }
+  };
+
+  const isActive = (path) => location.pathname === path ? "active" : "";
+
+  // Dummy Data mapped to the new UI structure
+  const pendingApprovals = [
+    { id: 1, initials: "JD", name: "Julianna Drago", activity: "Tech Ethics Symposium", category: "Technical", date: "Oct 24, 2023" },
+    { id: 2, initials: "MA", name: "Marcus Aurelius", activity: "Community Outreach", category: "Social", date: "Oct 23, 2023" },
+    { id: 3, initials: "SL", name: "Sarah Linn", activity: "Varsity Swim Finals", category: "Sports", date: "Oct 22, 2023" },
+  ];
+
+  const recentFeed = [
+    { id: 1, type: "approve", text: "Approved: Creative Writing Workshop", student: "Elena Gilbert", time: "2 hours ago", color: "text-green", bg: "bg-green-light", icon: "check_circle" },
+    { id: 2, type: "approve", text: "Approved: Python for Data Science", student: "David Miller", time: "5 hours ago", color: "text-green", bg: "bg-green-light", icon: "check_circle" },
+    { id: 3, type: "reject", text: "Rejected: Uncertified Marathon", student: "Peter Parker", time: "Yesterday", color: "text-red", bg: "bg-red-light", icon: "cancel" },
+  ];
+
+  const activeStudents = [
+    { id: 1, img: "17", name: "Alex Johnson", progress: 85, color: "bg-primary" },
+    { id: 2, img: "18", name: "Sarah Chen", progress: 92, color: "bg-cyan" },
+    { id: 3, img: "19", name: "Sofia Martinez", progress: 64, color: "bg-orange" },
   ];
 
   return (
-    <div className="mentor-page-wrapper">
+    <div className="mh-page-wrapper">
+
+      {/* 1. UNIFIED TOP NAVBAR */}
       <MNavbar />
 
-      {/* 1. HERO SECTION (Deep Academic Blue) */}
-      <div className="mentor-hero">
-        <div className="mentor-hero-content">
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Welcome back, {mentorName}!
-          </motion.h1>
-          <div className="mentor-hero-instruction">
-            Mentor Control Center &bull; Quick access to student activities
-          </div>
-        </div>
+      <main className="mh-main-content">
+        <div className="mh-container">
 
-        {/* Decorative background shapes */}
-        <div className="mentor-hero-shape mentor-shape-1"></div>
-        <div className="mentor-hero-shape mentor-shape-2"></div>
-      </div>
+          {/* 2. IMMERSIVE HERO */}
+          <section className="mh-hero-section">
+            <div className="mh-hero-bg-icon">
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>school</span>
+            </div>
+            <div className="mh-hero-content">
+              <p className="mh-hero-eyebrow">Welcome back, Mentor</p>
+              <h1 className="mh-hero-title">Academic Pulse Overview</h1>
+              <p className="mh-hero-desc">
+                {isLoading
+                  ? "Loading your dashboard data..."
+                  : `Hello ${mentorName}, your students have submitted 15 new activities for review today. Overall performance is up by 12% compared to last semester.`}
+              </p>
+            </div>
+          </section>
 
-      <div className="mentor-main-container">
-        {/* 2. OVERLAPPING QUICK STATS */}
-        <div className="stats-overlap-container">
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={4}>
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-              >
-                <Users size={32} className="stat-icon primary-text" />
-                <div className="stat-value primary-text">64</div>
-                <div className="stat-label">Assigned Students</div>
-              </motion.div>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                <FileCheck size={32} className="stat-icon secondary-text" />
-                <div className="stat-value secondary-text">12</div>
-                <div className="stat-label">Pending Reviews</div>
-              </motion.div>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <motion.div
-                className="stat-card"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Award size={32} className="stat-icon success-text" />
-                <div className="stat-value success-text">342</div>
-                <div className="stat-label">Total Verifications</div>
-              </motion.div>
-            </Grid>
-          </Grid>
-        </div>
-
-        {/* 3. MAIN DASHBOARD PANELS */}
-        <Box sx={{ mt: 6, mb: 10 }}>
-          <Grid container spacing={4}>
-
-            {/* Quick Actions (Left Side) */}
-            <Grid item xs={12} md={7}>
-              <div className="section-card">
-                <div className="section-header-flex">
-                  <h2>Mentor Hub Tools</h2>
-                </div>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={6}>
-                    <Link to="/view-students" className="action-card-link">
-                      <motion.div
-                        className="action-pro-card"
-                        whileHover={{ y: -5, borderColor: '#3b82f6' }}
-                      >
-                        <div className="action-icon-wrapper bg-blue-light">
-                          <Users size={24} className="text-blue" />
-                        </div>
-                        <h3>View Students</h3>
-                        <p>Access your batch, check individual profiles, and monitor progression.</p>
-                      </motion.div>
-                    </Link>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                    <Link to="#" className="action-card-link">
-                      <motion.div
-                        className="action-pro-card"
-                        whileHover={{ y: -5, borderColor: '#10b981' }}
-                      >
-                        <div className="action-icon-wrapper bg-green-light">
-                          <FileCheck size={24} className="text-green" />
-                        </div>
-                        <h3>Activity Approvals</h3>
-                        <p>Review and verify certificates uploaded by your assigned students.</p>
-                      </motion.div>
-                    </Link>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                    <Link to="#" className="action-card-link">
-                      <motion.div
-                        className="action-pro-card"
-                        whileHover={{ y: -5, borderColor: '#f59e0b' }}
-                      >
-                        <div className="action-icon-wrapper bg-yellow-light">
-                          <TrendingUp size={24} className="text-yellow" />
-                        </div>
-                        <h3>Analytics</h3>
-                        <p>View class performance reports and point distribution charts.</p>
-                      </motion.div>
-                    </Link>
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                    <Link to="#" className="action-card-link">
-                      <motion.div
-                        className="action-pro-card"
-                        whileHover={{ y: -5, borderColor: '#8b5cf6' }}
-                      >
-                        <div className="action-icon-wrapper bg-purple-light">
-                          <Activity size={24} className="text-purple" />
-                        </div>
-                        <h3>Batch Insights</h3>
-                        <p>Check the overall status of your assigned branch and section.</p>
-                      </motion.div>
-                    </Link>
-                  </Grid>
-                </Grid>
+          {/* 3. KPI BENTO GRID */}
+          <div className="mh-kpi-grid">
+            <div className="mh-kpi-card editorial-shadow">
+              <div className="mh-kpi-header">
+                <div className="mh-kpi-icon bg-primary-light text-primary"><span className="material-symbols-outlined">group</span></div>
+                <span className="mh-kpi-badge bg-primary-light text-primary">+3 this week</span>
               </div>
-            </Grid>
+              <p className="mh-kpi-label">Assigned Students</p>
+              <h3 className="mh-kpi-value">42</h3>
+            </div>
+            <div className="mh-kpi-card editorial-shadow">
+              <div className="mh-kpi-header">
+                <div className="mh-kpi-icon bg-orange-light text-orange"><span className="material-symbols-outlined">rule</span></div>
+                <span className="mh-kpi-badge bg-orange-light text-orange">High Priority</span>
+              </div>
+              <p className="mh-kpi-label">Pending Reviews</p>
+              <h3 className="mh-kpi-value">15</h3>
+            </div>
+            <div className="mh-kpi-card editorial-shadow">
+              <div className="mh-kpi-header">
+                <div className="mh-kpi-icon bg-cyan-light text-cyan"><span className="material-symbols-outlined">military_tech</span></div>
+                <span className="mh-kpi-badge bg-cyan-light text-cyan">Top 5%</span>
+              </div>
+              <p className="mh-kpi-label">Average Credit Score</p>
+              <h3 className="mh-kpi-value">88</h3>
+            </div>
+            <div className="mh-kpi-card editorial-shadow">
+              <div className="mh-kpi-header">
+                <div className="mh-kpi-icon bg-primary-light text-primary"><span className="material-symbols-outlined">bar_chart</span></div>
+                <span className="mh-kpi-badge bg-primary-light text-primary">Record High</span>
+              </div>
+              <p className="mh-kpi-label">Activity Submissions</p>
+              <h3 className="mh-kpi-value">124</h3>
+            </div>
+          </div>
 
-            {/* Notifications / Inbox (Right Side) */}
-            <Grid item xs={12} md={5}>
-              <div className="section-card">
-                <div className="section-header-flex">
-                  <h2>Activity Inbox</h2>
-                  <BellRing size={20} className="text-slate-400" />
+          {/* 4. SPLIT DASHBOARD LAYOUT */}
+          <div className="mh-dashboard-split">
+
+            {/* LEFT COLUMN (The Work) */}
+            <div className="mh-col-main">
+
+              {/* Pending Approvals Table */}
+              <div className="mh-panel editorial-shadow">
+                <div className="mh-panel-header border-bottom">
+                  <h2>Pending Approvals</h2>
+                  <button className="mh-view-all text-primary">View All</button>
                 </div>
-                <div className="inbox-list">
-                  {recentSubmissions.map((item) => (
-                    <motion.div
-                      key={item.id}
-                      className="inbox-item"
-                      whileHover={{ backgroundColor: '#f8fafc' }}
-                    >
-                      <div className="inbox-content">
-                        <h4>{item.user}</h4>
-                        <p>{item.action}</p>
-                        <span className="inbox-time">{item.time}</span>
+                <div className="mh-table-wrapper">
+                  <table className="mh-table">
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Activity</th>
+                        <th>Date</th>
+                        <th className="text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pendingApprovals.map(app => (
+                        <tr key={app.id}>
+                          <td>
+                            <div className="mh-student-cell">
+                              <div className="mh-avatar-initials">{app.initials}</div>
+                              <span className="mh-student-name">{app.name}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <span className="mh-activity-name">{app.activity}</span>
+                            <span className="mh-activity-cat">{app.category}</span>
+                          </td>
+                          <td className="mh-date-cell">{app.date}</td>
+                          <td className="text-right">
+                            <div className="mh-action-btns">
+                              <button className="mh-action-btn text-primary" title="View"><span className="material-symbols-outlined">visibility</span></button>
+                              <button className="mh-action-btn text-green" title="Approve"><span className="material-symbols-outlined">check_circle</span></button>
+                              <button className="mh-action-btn text-red" title="Reject"><span className="material-symbols-outlined">cancel</span></button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* CSS Bar Chart: Activity Distribution */}
+              <div className="mh-panel editorial-shadow mh-chart-panel">
+                <div className="mh-panel-header">
+                  <h2>Student Activity Distribution</h2>
+                  <div className="mh-chart-legend">
+                    <span><div className="mh-dot bg-primary"></div> Technical</span>
+                    <span><div className="mh-dot bg-cyan"></div> Social</span>
+                    <span><div className="mh-dot bg-orange"></div> Sports</span>
+                  </div>
+                </div>
+
+                <div className="mh-bar-chart">
+                  {/* Mock Chart Bars */}
+                  <div className="mh-bar-group"><div className="mh-bar bg-primary" style={{ height: "85%" }}></div><span>Mon</span></div>
+                  <div className="mh-bar-group"><div className="mh-bar bg-cyan" style={{ height: "60%" }}></div><span>Tue</span></div>
+                  <div className="mh-bar-group"><div className="mh-bar bg-orange" style={{ height: "40%" }}></div><span>Wed</span></div>
+                  <div className="mh-bar-group"><div className="mh-bar bg-primary-light text-primary" style={{ height: "75%" }}></div><span>Thu</span></div>
+                  <div className="mh-bar-group"><div className="mh-bar bg-primary" style={{ height: "95%" }}></div><span>Fri</span></div>
+                  <div className="mh-bar-group"><div className="mh-bar bg-cyan" style={{ height: "55%" }}></div><span>Sat</span></div>
+                  <div className="mh-bar-group"><div className="mh-bar bg-orange" style={{ height: "30%" }}></div><span>Sun</span></div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* RIGHT COLUMN (The Feed & Insights) */}
+            <div className="mh-col-side">
+
+              {/* Recent Approvals Feed */}
+              <div className="mh-panel">
+                <h2 className="mh-panel-title mb-6">Recent Approvals</h2>
+                <div className="mh-feed-list">
+                  {recentFeed.map((feed, index) => (
+                    <div className="mh-feed-item" key={feed.id}>
+                      {/* Only draw a line if it's not the last item */}
+                      {index !== recentFeed.length - 1 && <div className="mh-feed-line"></div>}
+                      <div className={`mh-feed-icon ${feed.bg} ${feed.color}`}>
+                        <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>{feed.icon}</span>
                       </div>
-                      <div className="inbox-status">
-                        <span className={`status-badge ${item.status === 'Pending' ? 'badge-warning' : 'badge-success'}`}>
-                          {item.status}
-                        </span>
-                        <ChevronRight size={16} className="text-slate-400 ml-2" />
+                      <div className="mh-feed-text">
+                        <p className="mh-feed-action">{feed.text}</p>
+                        <p className="mh-feed-student">Student: {feed.student}</p>
+                        <p className="mh-feed-time">{feed.time}</p>
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
-                <button className="view-all-btn">
-                  View All Submissions
+              </div>
+
+              {/* Mentor Insight Card */}
+              <div className="mh-insight-card">
+                <div className="mh-insight-header text-primary">
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>lightbulb</span>
+                  <h3>Mentor Insight</h3>
+                </div>
+                <p>Engagement in "Social" activities is currently below target for the Sophomore group. Consider suggesting the upcoming University Volunteer Fair.</p>
+                <button className="mh-insight-btn" onClick={() => showToast('info', 'Broadcast Sent', 'Suggestion sent to Sophomore group.')}>
+                  Broadcast Suggestion <span className="material-symbols-outlined">send</span>
                 </button>
               </div>
-            </Grid>
-          </Grid>
-        </Box>
-      </div>
 
-      {/* Footer */}
-      <footer className="mentor-footer">
-        <p>© {new Date().getFullYear()} FCRIT ABL Portal</p>
-        <p className="footer-sub">Contact: info@fcrit.ac.in | Designed for Mentors</p>
+              {/* Active Mentorships */}
+              <div className="mh-panel editorial-shadow">
+                <h2 className="mh-panel-title mb-4">Active Mentorships</h2>
+                <div className="mh-mentorship-list">
+                  {activeStudents.map(student => (
+                    <div className="mh-mentorship-item" key={student.id}>
+                      <div className="mh-mentor-student-info">
+                        <img src={`http://googleusercontent.com/profile/picture/${student.img}`} alt="Student" />
+                        <div>
+                          <p className="mh-ms-name">{student.name}</p>
+                          <div className="mh-progress-track">
+                            <div className={`mh-progress-fill ${student.color}`} style={{ width: `${student.progress}%` }}></div>
+                          </div>
+                        </div>
+                      </div>
+                      <span className={`mh-ms-percent ${student.color.replace('bg-', 'text-')}`}>{student.progress}%</span>
+                    </div>
+                  ))}
+                </div>
+                <button className="mh-view-all-btn text-primary mt-6" onClick={() => navigate('/view-students')}>
+                  View All Students
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Floating Action Button for Mentors */}
+      <button className="mh-fab" onClick={() => showToast('info', 'Quick Action', 'Opening assignment modal...')} title="Quick Assign Task">
+        <span className="material-symbols-outlined">add_task</span>
+      </button>
+
+      {/* Unified Footer */}
+      <footer className="sh-footer">
+        <div className="sh-footer-content">
+          <div><p className="sh-copyright">© 2024 Scholar Pulse University. All rights reserved.</p></div>
+          <div className="sh-footer-links">
+            <Link to="#">Privacy Policy</Link>
+            <Link to="#">Terms of Service</Link>
+            <Link to="#">Help Center</Link>
+          </div>
+        </div>
       </footer>
     </div>
   );
 };
 
-export default mHomepage;
+export default MHomepage;

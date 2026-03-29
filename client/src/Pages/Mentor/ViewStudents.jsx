@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import MNavbar from "../../Components/MentorC/MNavbar";
+import { useNavigate, Link } from "react-router-dom";
+import SNavbar from "../../Components/StudentC/SNavbar"; // Using unified navbar
 import axios from "axios";
+import { useToast } from "../../Components/ToastContext";
 import "./css/ViewStudents.css";
-import { Search, ChevronRight } from "lucide-react"; // Using Lucide
+import MNavbar from "../../Components/MentorC/MNavbar";
 
 const ViewStudents = () => {
   const [students, setStudents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,21 +25,22 @@ const ViewStudents = () => {
 
         if (typeof response.data === "string") {
           console.error("Received HTML instead of JSON:", response.data);
+          showToast("error", "Data Error", "Received invalid data format from server.");
         } else {
           setStudents(Array.isArray(response.data.students) ? response.data.students : []);
         }
       } catch (error) {
         console.error("Error fetching student list:", error);
+        showToast("error", "Connection Error", "Failed to load student roster.");
       }
     };
     fetchData();
-  }, []);
+  }, [showToast]);
 
   const handleViewActivities = (s_id, name) => {
     navigate(`/get-student/${s_id}`, { state: { studentName: name } });
   };
 
-  // Filter students based on search query (by name or roll number)
   const filteredStudents = students.filter((student) => {
     const query = searchQuery.toLowerCase();
     const nameMatch = student.name?.toLowerCase().includes(query);
@@ -45,98 +48,177 @@ const ViewStudents = () => {
     return nameMatch || rollMatch;
   });
 
+  // Helper to get initials for the avatar
+  const getInitials = (name) => {
+    if (!name) return "ST";
+    return name.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
+  };
+
+  // Mock data generator for the performance bar chart (Replace with real data later)
+  const getMockPerformance = () => {
+    return [
+      Math.floor(Math.random() * 60) + 40, // Tech
+      Math.floor(Math.random() * 60) + 40, // Social
+      Math.floor(Math.random() * 60) + 40, // Sports
+      Math.floor(Math.random() * 60) + 40, // Cultural
+      Math.floor(Math.random() * 60) + 40, // Internship
+      Math.floor(Math.random() * 60) + 40, // Leadership
+    ];
+  };
+
   return (
-    <div className="mentor-page-wrapper">
+    <div className="vs-page-wrapper">
       <MNavbar />
 
-      {/* Mini-Hero Banner */}
-      <div className="page-header-banner">
-        <h2>Student Roster</h2>
-        <p>Manage and review the activity logs of your assigned batch.</p>
-      </div>
+      <main className="vs-main-content">
+        <div className="vs-container">
 
-      <div className="mentor-main-container roaster-container">
+          {/* Header Section */}
+          <div className="vs-header-flex">
+            <div>
+              <h2 className="vs-page-title">Student Roster</h2>
+              <p className="vs-page-desc">Managing <span className="text-primary font-bold">{students.length} academic pulses</span> across your assigned batch.</p>
+            </div>
 
-        {/* Toolbar: Search and Filters */}
-        <div className="toolbar-flex">
-          <div className="search-input-wrapper">
-            <Search size={20} className="search-icon" />
-            <input
-              type="text"
-              className="roster-search-input"
-              placeholder="Search by student name or roll number..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            {/* Roster Stats Bento */}
+            <div className="vs-stats-group">
+              <div className="vs-stat-box bg-surface-low">
+                <span className="vs-stat-label text-muted">Total</span>
+                <span className="vs-stat-val text-main">{students.length}</span>
+              </div>
+              <div className="vs-stat-box bg-cyan-light">
+                <span className="vs-stat-label text-cyan">Active</span>
+                <span className="vs-stat-val text-cyan">{Math.floor(students.length * 0.9)}</span>
+              </div>
+              <div className="vs-stat-box bg-error-light border-error">
+                <span className="vs-stat-label text-error">Attention</span>
+                <span className="vs-stat-val text-error">{Math.floor(students.length * 0.1)}</span>
+              </div>
+            </div>
           </div>
-          <div className="roster-stats">
-            Total Students: <strong>{filteredStudents.length}</strong>
+
+          {/* Filter & Search Bar */}
+          <div className="vs-toolbar-section">
+            <div className="vs-filter-bar glass-effect">
+              <div className="vs-filter-title">
+                <span className="material-symbols-outlined">tune</span>
+                <span>Filters</span>
+              </div>
+              <select className="vs-select">
+                <option>All Semesters</option>
+                <option>Semester 3</option>
+                <option>Semester 5</option>
+                <option>Semester 7</option>
+              </select>
+              <select className="vs-select">
+                <option>All Branches</option>
+                <option>Computer Science</option>
+                <option>Electronics</option>
+              </select>
+              <select className="vs-select">
+                <option>Performance: High to Low</option>
+                <option>Need Attention</option>
+              </select>
+              <div className="vs-view-toggles">
+                <button className="active"><span className="material-symbols-outlined">grid_view</span></button>
+                <button><span className="material-symbols-outlined">list</span></button>
+              </div>
+            </div>
+
+            {/* Prominent Search */}
+            <div className="vs-search-wrapper">
+              <span className="material-symbols-outlined vs-search-icon">search</span>
+              <input
+                type="text"
+                className="vs-search-input"
+                placeholder="Search by Student Name or Roll Number..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
+
+          {/* Student Grid */}
+          <div className="vs-student-grid">
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student) => {
+                const isWarning = Math.random() > 0.8; // Randomly assign "Need Attention" status for UI mockup
+                const perfData = getMockPerformance();
+                const avgScore = (perfData.reduce((a, b) => a + b, 0) / perfData.length / 10).toFixed(1);
+
+                return (
+                  <div key={student.s_id} className={`vs-student-card ${isWarning ? 'warning-card' : ''}`}>
+                    <div className="vs-card-bg-accent"></div>
+
+                    <div className="vs-card-header">
+                      <div className="vs-avatar">{getInitials(student.name)}</div>
+                      <div className="vs-info">
+                        <div className="vs-name-row">
+                          <h3>{student.name}</h3>
+                          {isWarning && <span className="material-symbols-outlined text-error">error</span>}
+                        </div>
+                        <p>ID: {student.s_username}</p>
+                        <div className="vs-badges">
+                          <span className="vs-badge-sem">Sem {student.semester}</span>
+                          <span className="vs-badge-dept">{student.department || "Engineering"}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="vs-performance-section">
+                      <div className="vs-perf-header">
+                        <p>Performance Pulse</p>
+                        <span className={isWarning ? "text-error" : "text-primary"}>{avgScore} / 10.0</span>
+                      </div>
+
+                      {/* Mini CSS Bar Chart */}
+                      <div className="vs-mini-chart">
+                        {perfData.map((val, idx) => (
+                          <div
+                            key={idx}
+                            className="vs-mini-bar"
+                            style={{ height: `${val}%` }}
+                            title={`Score: ${val}%`}
+                          ></div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="vs-card-actions">
+                      <button className="vs-btn-view" onClick={() => handleViewActivities(student.s_id, student.name)}>
+                        View Profile
+                      </button>
+                      <button className={`vs-btn-review ${isWarning ? 'btn-error' : ''}`}>
+                        {isWarning ? "Intervention Required" : <>Review <span className="vs-review-badge">3</span></>}
+                      </button>
+                    </div>
+                  </div>
+                )
+              })
+            ) : (
+              <div className="vs-empty-state">
+                <span className="material-symbols-outlined">search_off</span>
+                <h3>No students found</h3>
+                <p>Try adjusting your search query or filters.</p>
+              </div>
+            )}
+          </div>
+
         </div>
-
-        {/* Modern Table Section */}
-        {/* Modern Table Section */}
-        <div className="modern-table-card">
-          <div className="table-responsive-wrapper">
-            <table className="modern-roster-table">
-              <thead>
-                <tr>
-                  {/* Hardcoded widths prevent the table from shrinking or shifting! */}
-                  <th style={{ width: "8%" }}>Sr No</th>
-                  <th style={{ width: "25%" }}>Name</th>
-                  <th style={{ width: "15%" }}>Roll No</th>
-                  <th style={{ width: "15%" }}>Department</th>
-                  <th style={{ width: "8%" }}>Sem</th>
-                  <th style={{ width: "8%" }}>Batch</th>
-                  <th style={{ width: "6%" }}>Div</th>
-                  <th style={{ width: "15%" }} className="text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredStudents.length === 0 ? (
-                  /* Empty State Row */
-                  <tr>
-                    <td colSpan="8" className="empty-table-cell">
-                      No students found matching "{searchQuery}"
-                    </td>
-                  </tr>
-                ) : (
-                  /* Data Rows */
-                  filteredStudents.map((student, index) => (
-                    <tr key={student.s_id} className="roster-row">
-                      <td className="sr-no-cell">{index + 1}</td>
-                      <td className="fw-700 primary-text">{student.name}</td>
-                      <td className="mono-text">{student.s_username}</td>
-                      <td>{student.department}</td>
-                      <td>{student.semester}</td>
-                      <td>
-                        <span className="batch-badge">{student.batch}</span>
-                      </td>
-                      <td>{student.division}</td>
-                      <td className="action-cell">
-                        <button
-                          className="modern-view-btn"
-                          onClick={() => handleViewActivities(student.s_id, student.name)}
-                        >
-                          View Profile
-                          <ChevronRight size={16} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-
-      </div>
+      </main>
 
       {/* Footer */}
-      <footer className="mentor-footer">
-        <p>© {new Date().getFullYear()} FCRIT ABL Portal</p>
+      <footer className="sh-footer">
+        <div className="sh-footer-content">
+          <div><p className="sh-copyright">© 2024 Scholar Pulse University. All rights reserved.</p></div>
+          <div className="sh-footer-links">
+            <Link to="#">Privacy Policy</Link>
+            <Link to="#">Terms of Service</Link>
+            <Link to="#">Support</Link>
+          </div>
+        </div>
       </footer>
+
     </div>
   );
 };

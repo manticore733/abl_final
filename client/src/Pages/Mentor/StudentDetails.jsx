@@ -1,424 +1,435 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Modal, Pagination } from "@mui/material";
 import MNavbar from "../../Components/MentorC/MNavbar";
-import {
-  Search,
-  CheckCircle,
-  XCircle,
-  Undo,
-  ArrowLeft,
-  User,
-  GraduationCap,
-  Award,
-  Hash
-} from "lucide-react";
+import { useToast } from "../../Components/ToastContext";
 import "./css/StudentDetails.css";
 import defaultAvatar from "../../assets/pfp_icon.jpg";
 
 const StudentDetails = () => {
   const { id: s_id } = useParams();
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
-  // State for activities
+  // State
   const [pendingActivities, setPendingActivities] = useState([]);
   const [processedActivities, setProcessedActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  // State for student info
   const [student, setStudent] = useState(null);
 
-  // Reject Modal
+  // Tab & Filter State
+  const [activeTab, setActiveTab] = useState("pending"); // pending, approved, rejected, all
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // ---> THESE WERE MISSING! <---
+  const [filterType, setFilterType] = useState("");
+  const [filterCategory, setFilterCategory] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 5;
+
+  // Custom Modal State
   const [openModal, setOpenModal] = useState(false);
   const [rejectReason, setRejectReason] = useState("");
   const [rejectActivityId, setRejectActivityId] = useState(null);
 
-  // Pagination & Search States
-  const ITEMS_PER_PAGE = 5;
-  const [pendingPage, setPendingPage] = useState(1);
-  const [processedPage, setProcessedPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("");
-
   const fetchStudentData = async () => {
     try {
       setLoading(true);
-      const studentRes = await axios.get(
-        `http://localhost:5000/api/mentor/getstudentdetails/${s_id}`
-      );
+      const studentRes = await axios.get(`http://localhost:5000/api/mentor/getstudentdetails/${s_id}`);
       setStudent(studentRes.data);
     } catch (error) {
-      setError("Failed to fetch student details.");
+      showToast('error', 'Error', 'Failed to fetch student details.');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchStudentData(); // Fetch student details on load
+    fetchStudentData();
 
     const fetchActivities = async () => {
       setLoading(true);
-      setError("");
-
       try {
         const [pendingRes, processedRes] = await Promise.allSettled([
           axios.get(`http://localhost:5000/api/mentor/student-pending-activities/${s_id}`),
           axios.get(`http://localhost:5000/api/mentor/student-processed-activities/${s_id}`),
         ]);
 
-        if (pendingRes.status === "fulfilled") {
-          setPendingActivities(pendingRes.value.data);
-        } else {
-          setPendingActivities([]);
-        }
-
-        if (processedRes.status === "fulfilled") {
-          setProcessedActivities(processedRes.value.data);
-        } else if (processedRes.reason.response?.status === 404) {
-          setProcessedActivities([]);
-        }
+        if (pendingRes.status === "fulfilled") setPendingActivities(pendingRes.value.data);
+        if (processedRes.status === "fulfilled") setProcessedActivities(processedRes.value.data);
       } catch (error) {
-        setError("Something went wrong while loading activities.");
+        showToast('error', 'Error', 'Failed to load activities.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchActivities();
-  }, [s_id]);
+  }, [s_id, showToast]);
 
-  // Derived Derived state for Search and Pagination
-  const filteredProcessed = processedActivities.filter(act =>
-    act.event_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    act.subcategory?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // Reset page when search changes
+  // Reset page when tab or search changes
   useEffect(() => {
-    setProcessedPage(1);
-  }, [searchQuery]);
+    setCurrentPage(1);
+  }, [activeTab, searchQuery, filterType, filterCategory]);
 
-  const pendingStart = (pendingPage - 1) * ITEMS_PER_PAGE;
-  const paginatedPending = pendingActivities.slice(pendingStart, pendingStart + ITEMS_PER_PAGE);
+  const handleResetFilters = () => {
+    setSearchQuery("");
+    setFilterType("");
+    setFilterCategory("");
+    setActiveTab("pending");
+  };
 
-  const processedStart = (processedPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProcessed = filteredProcessed.slice(processedStart, processedStart + ITEMS_PER_PAGE);
+  // --- Data Processing for Tabs ---
+  let currentDataset = [];
+  if (activeTab === "pending") currentDataset = pendingActivities;
+  else if (activeTab === "approved") currentDataset = processedActivities.filter(a => a.status === "Approved");
+  else if (activeTab === "rejected") currentDataset = processedActivities.filter(a => a.status === "Rejected");
+  else if (activeTab === "all") currentDataset = [...pendingActivities, ...processedActivities];
 
+  // Updated filter logic to include the dropdowns
+  const filteredData = currentDataset.filter(act => {
+    const matchesSearch = act.event_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      act.subcategory?.toLowerCase().includes(searchQuery.toLowerCase());
 
-  // Action: Approve
+    // Match type/category if a filter is selected, otherwise return true
+    const matchesType = filterType ? act.event_type === filterType : true;
+
+    // Using subcategory as 'Category' here, adjust if your DB uses a different field
+    const matchesCategory = filterCategory ? act.subcategory?.includes(filterCategory) : true;
+
+    return matchesSearch && matchesType && matchesCategory;
+  });
+
+  const paginatedData = filteredData.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+  // --- Actions ---
   const handleApprove = async (activityId) => {
-    if (!window.confirm("Are you sure you want to approve this activity?")) return;
-
     try {
       await axios.put(`http://localhost:5000/api/mentor/approve-activity/${activityId}`);
+      showToast('success', 'Activity Approved', 'The activity has been successfully approved.');
 
       setPendingActivities((prev) => prev.filter((act) => act.id !== activityId));
       setProcessedActivities((prev) => [
         { ...pendingActivities.find((act) => act.id === activityId), status: "Approved" },
         ...prev
       ]);
-
-      fetchStudentData(); // Refresh total credits
+      fetchStudentData();
     } catch (err) {
-      console.error("Error approving activity:", err);
+      showToast('error', 'Approval Failed', 'An error occurred while approving.');
     }
   };
 
-  // Action: Reject (Open Modal)
+  const handleApproveAll = async () => {
+    if (pendingActivities.length === 0) return showToast('info', 'No Pending Items', 'There are no activities to approve.');
+    // Implementing a bulk approve would require a specific backend endpoint. 
+    showToast('info', 'Feature Coming Soon', 'Bulk approval is being configured.');
+  };
+
   const handleRejectClick = (activityId) => {
     setRejectActivityId(activityId);
+    setRejectReason("");
     setOpenModal(true);
   };
 
-  // Confirm Reject
   const handleRejectConfirm = async () => {
-    if (!rejectReason) {
-      alert("Please enter a rejection reason.");
+    if (!rejectReason.trim()) {
+      showToast('error', 'Reason Required', 'Please provide a reason for rejection.');
       return;
     }
-
     try {
       await axios.put(`http://localhost:5000/api/mentor/reject-activity/${rejectActivityId}`, {
         rejectionReason: rejectReason,
       });
+      showToast('success', 'Activity Rejected', 'The activity has been rejected and student notified.');
 
       setPendingActivities((prev) => prev.filter((act) => act.id !== rejectActivityId));
       setProcessedActivities((prev) => [
         { ...pendingActivities.find((act) => act.id === rejectActivityId), status: "Rejected", remarks: rejectReason },
         ...prev
       ]);
-
       setOpenModal(false);
-      setRejectReason("");
       fetchStudentData();
     } catch (err) {
-      console.error("Error rejecting activity:", err);
+      showToast('error', 'Rejection Failed', 'An error occurred while rejecting.');
     }
   };
 
-  // Action: Undo
   const handleUndo = async (activityId) => {
-    if (!window.confirm("Are you sure you want to undo this action?")) return;
-
     try {
       await axios.put(`http://localhost:5000/api/mentor/undo-activity/${activityId}`);
+      showToast('info', 'Action Undone', 'The activity has been moved back to Pending.');
 
       setProcessedActivities((prev) => prev.filter((act) => act.id !== activityId));
       setPendingActivities((prev) => [
-        ...prev,
         { ...processedActivities.find((act) => act.id === activityId), status: "Pending" },
+        ...prev,
       ]);
-
       fetchStudentData();
     } catch (err) {
-      console.error("Error undoing activity:", err);
+      showToast('error', 'Undo Failed', 'An error occurred while undoing the action.');
     }
   };
 
   return (
-    <div className="mentor-page-wrapper">
+    <div className="sd-page-wrapper">
       <MNavbar />
 
-      {/* 1. Header Banner */}
-      <div className="page-header-banner case-header-banner">
-        <button className="back-nav-btn" onClick={() => navigate(-1)}>
-          <ArrowLeft size={18} />
-          Back to Roster
-        </button>
-        <h2>Student Verification Profile</h2>
-        <p>Review and validate activity submissions for this student</p>
-      </div>
+      <main className="sd-main-content">
 
-      <div className="mentor-main-container student-case-container">
-        {loading ? (
-          <div className="loading-state">Loading student data...</div>
-        ) : error ? (
-          <div className="error-state">{error}</div>
-        ) : (
-          <>
-            {/* 2. Premium Student Profile Card */}
-            {student && (
-              <div className="ms-profile-card">
-                <div className="ms-profile-header-bg"></div>
-                <div className="ms-profile-content">
-                  <div className="ms-avatar-wrapper">
-                    <img src={student.profile_picture || defaultAvatar} alt={student.name} className="ms-avatar-img" />
-                  </div>
-                  <div className="ms-info-section">
-                    <div className="ms-name-block">
-                      <h3>{student.name}</h3>
-                      <span className="ms-batch-tag">Batch {student.batch}</span>
-                    </div>
+        {/* Breadcrumb Navigation */}
+        <nav className="sd-breadcrumb">
+          <Link to="/view-students">Student Roster</Link>
+          <span className="material-symbols-outlined">chevron_right</span>
+          <span>Profile</span>
+          <span className="material-symbols-outlined">chevron_right</span>
+          <span className="sd-current-crumb">{student?.name || "Loading..."}</span>
+        </nav>
 
-                    <div className="ms-stats-grid">
-                      <div className="ms-stat-item">
-                        <User size={18} className="ms-icon" />
-                        <div>
-                          <label>Roll Number</label>
-                          <span>{student.s_username}</span>
-                        </div>
-                      </div>
-                      <div className="ms-stat-item">
-                        <GraduationCap size={18} className="ms-icon" />
-                        <div>
-                          <label>Department / Div</label>
-                          <span>{student.department} • {student.division}</span>
-                        </div>
-                      </div>
-                      <div className="ms-stat-item">
-                        <Hash size={18} className="ms-icon" />
-                        <div>
-                          <label>Year / Sem</label>
-                          <span>FE • Sem {student.semester}</span>
-                        </div>
-                      </div>
-                      <div className="ms-stat-item highlight-stat">
-                        <Award size={20} className="ms-icon" />
-                        <div>
-                          <label>Total Credits Earned</label>
-                          <span className="credits-val">{student.total_credits} Pts</span>
-                        </div>
-                      </div>
-                    </div>
+        <div className="sd-container">
+
+          {/* 1. Hero Profile Card */}
+          {student && (
+            <section className="sd-hero-card editorial-shadow">
+              <div className="sd-hero-bg-accent"></div>
+
+              <div className="sd-identity-group">
+                <div className="sd-avatar-container">
+                  <img src={student.profile_picture || defaultAvatar} alt={student.name} />
+                  <div className="sd-status-badge">ACTIVE</div>
+                </div>
+
+                <div className="sd-identity-info">
+                  <h2>{student.name}</h2>
+                  <p className="sd-degree-text">{student.department ? `B.Tech ${student.department}` : "Engineering Department"}</p>
+                  <div className="sd-badge-row">
+                    <span className="sd-pill-credits">
+                      <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>stars</span>
+                      {student.total_credits} Credits Earned
+                    </span>
+                    <span className="sd-pill-dean">Dean's List Candidate</span>
                   </div>
                 </div>
+              </div>
+
+              {/* Secondary Info Grid */}
+              <div className="sd-info-grid glass-effect">
+                <div className="sd-info-item">
+                  <label>Batch</label>
+                  <p>{student.batch || "N/A"}</p>
+                </div>
+                <div className="sd-info-item">
+                  <label>Roll Number</label>
+                  <p>{student.s_username}</p>
+                </div>
+                <div className="sd-info-item">
+                  <label>Division</label>
+                  <p>{student.division || "N/A"}</p>
+                </div>
+                <div className="sd-info-item">
+                  <label>Year</label>
+                  <p>FE</p>
+                </div>
+                <div className="sd-info-item">
+                  <label>Semester</label>
+                  <p>Sem {student.semester}</p>
+                </div>
+                <div className="sd-info-item">
+                  <label>Department</label>
+                  <p>{student.department}</p>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* 2. Activity Approval Queue */}
+          <section className="sd-queue-section">
+            <div className="sd-queue-header">
+              <div>
+                <h3>Activity Approval Queue</h3>
+                <p>Review and validate student activity submissions for credit allocation.</p>
+              </div>
+              <button className="sd-btn-approve-all" onClick={handleApproveAll}>
+                <span className="material-symbols-outlined">done_all</span> Approve All Pending
+              </button>
+            </div>
+
+            {/* Tabs */}
+            <div className="sd-tabs">
+              <button className={activeTab === 'pending' ? 'active' : ''} onClick={() => setActiveTab('pending')}>
+                Pending Approvals ({pendingActivities.length})
+              </button>
+              <button className={activeTab === 'approved' ? 'active' : ''} onClick={() => setActiveTab('approved')}>
+                Approved ({processedActivities.filter(a => a.status === 'Approved').length})
+              </button>
+              <button className={activeTab === 'rejected' ? 'active' : ''} onClick={() => setActiveTab('rejected')}>
+                Rejected ({processedActivities.filter(a => a.status === 'Rejected').length})
+              </button>
+              <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')}>
+                All Activities
+              </button>
+            </div>
+
+            {/* Filters */}
+            <div className="sd-filters">
+              <div className="sd-filters-left">
+                <div className="sd-search-box">
+                  <span className="material-symbols-outlined">search</span>
+                  <input
+                    type="text"
+                    placeholder="Search activity by name..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+
+                {/* New Activity Type Dropdown */}
+                <div className="sd-dropdown-wrapper">
+                  <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+                    <option value="">Activity Type</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Social">Social</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Cultural">Cultural</option>
+                    <option value="Internship">Internship</option>
+                  </select>
+                  <span className="material-symbols-outlined">expand_more</span>
+                </div>
+
+                {/* New Category Dropdown */}
+                <div className="sd-dropdown-wrapper">
+                  <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+                    <option value="">Category</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="Competition">Competition</option>
+                    <option value="Certification">Certification</option>
+                  </select>
+                  <span className="material-symbols-outlined">expand_more</span>
+                </div>
+              </div>
+
+              <button className="sd-btn-reset" onClick={handleResetFilters}>
+                <span className="material-symbols-outlined">restart_alt</span> Reset Filters
+              </button>
+            </div>
+
+            {/* Data Table */}
+            <div className="sd-table-card editorial-shadow">
+              <table className="sd-table">
+                <thead>
+                  <tr>
+                    <th>Activity Name</th>
+                    <th>Category</th>
+                    <th>Participation Date</th>
+                    <th>Venue</th>
+                    <th className="text-center">Points</th>
+                    <th className="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedData.length === 0 ? (
+                    <tr>
+                      <td colSpan="6" className="sd-empty-state">No activities found in this category.</td>
+                    </tr>
+                  ) : (
+                    paginatedData.map((act) => (
+                      <tr key={act.id}>
+                        <td className="sd-td-main">
+                          <span className="sd-act-title">{act.event_name}</span>
+                          <span className="sd-act-sub">{act.subcategory || act.event_type}</span>
+                        </td>
+                        <td><span className={`sd-cat-pill cat-${act.event_type?.toLowerCase()}`}>{act.event_type}</span></td>
+                        <td className="sd-td-text">{act.participation_date}</td>
+                        <td className="sd-td-text">{act.venue || "N/A"}</td>
+                        <td className="text-center"><span className="sd-pts-val">{act.allocated_points}</span></td>
+                        <td className="text-right">
+                          <div className="sd-actions-flex">
+                            {act.status === "Pending" ? (
+                              <>
+                                <button className="sd-btn-reject" onClick={() => handleRejectClick(act.id)}>
+                                  <span className="material-symbols-outlined">close</span> Reject
+                                </button>
+                                <button className="sd-btn-approve" onClick={() => handleApprove(act.id)}>
+                                  <span className="material-symbols-outlined">check</span> Approve
+                                </button>
+                              </>
+                            ) : (
+                              <div className="sd-processed-action">
+                                <span className={`sd-status-text ${act.status === 'Approved' ? 'text-success' : 'text-error'}`}>
+                                  {act.status}
+                                </span>
+                                <button className="sd-btn-undo" onClick={() => handleUndo(act.id)}>
+                                  <span className="material-symbols-outlined">undo</span> Undo
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Custom Pagination */}
+            {totalPages > 1 && (
+              <div className="sd-pagination">
+                <button disabled={currentPage === 1} onClick={() => setCurrentPage(p => p - 1)}>
+                  <span className="material-symbols-outlined">chevron_left</span>
+                </button>
+                <span className="sd-page-indicator">Page {currentPage} of {totalPages}</span>
+                <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => p + 1)}>
+                  <span className="material-symbols-outlined">chevron_right</span>
+                </button>
               </div>
             )}
+          </section>
 
-            {/* 3. Pending Activities Table */}
-            <div className="section-flex-header">
-              <h3>Pending Verifications
-                <span className="count-badge pending-count">{pendingActivities.length}</span>
-              </h3>
+        </div>
+      </main>
+
+      {/* Floating Action Button */}
+      <button className="sd-fab" title="Send Feedback">
+        <span className="material-symbols-outlined">chat_bubble</span>
+      </button>
+
+      {/* Custom Rejection Modal */}
+      {openModal && (
+        <div className="sd-modal-overlay">
+          <div className="sd-modal-box">
+            <div className="sd-modal-header">
+              <div className="sd-modal-icon"><span className="material-symbols-outlined">error</span></div>
+              <h3>Reject Activity</h3>
             </div>
-            <div className="modern-table-card">
-              <div className="table-responsive-wrapper">
-                <table className="modern-roster-table ms-activity-table">
-                  <thead>
-                    <tr>
-                      <th style={{ width: '6%' }}>No</th>
-                      <th style={{ width: '24%' }}>Event Details</th>
-                      <th style={{ width: '15%' }}>Category</th>
-                      <th style={{ width: '15%' }}>Date & Venue</th>
-                      <th style={{ width: '10%' }}>Organized By</th>
-                      <th style={{ width: '8%' }}>Pts</th>
-                      <th style={{ width: '22%' }} className="text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedPending.length === 0 ? (
-                      <tr>
-                        <td colSpan="7" className="empty-table-cell">No pending activities requiring verification.</td>
-                      </tr>
-                    ) : (
-                      paginatedPending.map((act, index) => (
-                        <tr key={act.id}>
-                          <td className="sr-no-cell">{pendingStart + index + 1}</td>
-                          <td>
-                            <div className="event-name-primary">{act.event_name}</div>
-                            <div className="event-type-sub">{act.event_type}</div>
-                          </td>
-                          <td>{act.subcategory}</td>
-                          <td>
-                            <div className="td-stack">
-                              <span>{act.participation_date}</span>
-                              <span className="td-subtext">{act.venue}</span>
-                            </div>
-                          </td>
-                          <td>{act.organised_by}</td>
-                          <td className="points-cell">{act.allocated_points}</td>
-                          <td className="action-cell flex-actions">
-                            <button className="action-pill-btn approve-btn" onClick={() => handleApprove(act.id)}>
-                              <CheckCircle size={16} /> Approve
-                            </button>
-                            <button className="action-pill-btn reject-btn" onClick={() => handleRejectClick(act.id)}>
-                              <XCircle size={16} /> Reject
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              {pendingActivities.length > ITEMS_PER_PAGE && (
-                <div className="pagination-wrapper">
-                  <Pagination
-                    count={Math.ceil(pendingActivities.length / ITEMS_PER_PAGE)}
-                    page={pendingPage}
-                    onChange={(e, val) => setPendingPage(val)}
-                    color="primary"
-                  />
-                </div>
-              )}
+            <p className="sd-modal-desc">Please provide a reason for rejecting this submission. The student will be notified.</p>
+            <textarea
+              className="sd-modal-textarea"
+              placeholder="e.g., Invalid certificate, missing details..."
+              rows="4"
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+            ></textarea>
+            <div className="sd-modal-actions">
+              <button className="sd-btn-cancel" onClick={() => setOpenModal(false)}>Cancel</button>
+              <button className="sd-btn-confirm-reject" onClick={handleRejectConfirm}>Confirm Rejection</button>
             </div>
+          </div>
+        </div>
+      )}
 
-            {/* 4. Processed Activities Table */}
-            <div className="section-flex-header" style={{ marginTop: '3rem' }}>
-              <h3>Activity History
-                <span className="count-badge processed-count">{filteredProcessed.length}</span>
-              </h3>
-              <div className="search-input-wrapper small-search">
-                <Search size={18} className="search-icon" />
-                <input
-                  type="text"
-                  className="roster-search-input"
-                  placeholder="Search past activities..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="modern-table-card">
-              <div className="table-responsive-wrapper">
-                <table className="modern-roster-table ms-activity-table">
-                  <thead>
-                    <tr>
-                      <th style={{ width: '5%' }}>No</th>
-                      <th style={{ width: '20%' }}>Event Details</th>
-                      <th style={{ width: '12%' }}>Date</th>
-                      <th style={{ width: '6%' }}>Pts</th>
-                      <th style={{ width: '12%' }}>Status</th>
-                      <th style={{ width: '30%' }}>Remarks</th>
-                      <th style={{ width: '15%' }} className="text-right">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginatedProcessed.length === 0 ? (
-                      <tr>
-                        <td colSpan="7" className="empty-table-cell">No history found matching "{searchQuery}"</td>
-                      </tr>
-                    ) : (
-                      paginatedProcessed.map((act, index) => (
-                        <tr key={act.id}>
-                          <td className="sr-no-cell">{processedStart + index + 1}</td>
-                          <td>
-                            <div className="event-name-primary">{act.event_name}</div>
-                            <div className="event-type-sub">{act.subcategory}</div>
-                          </td>
-                          <td>{act.participation_date}</td>
-                          <td className="points-cell">{act.allocated_points}</td>
-                          <td>
-                            <span className={`status-pill ${act.status === 'Approved' ? 'pill-success' : 'pill-danger'}`}>
-                              {act.status}
-                            </span>
-                          </td>
-                          <td className="remarks-cell">{act.remarks || "—"}</td>
-                          <td className="action-cell text-right">
-                            <button className="action-pill-btn undo-btn" onClick={() => handleUndo(act.id)}>
-                              <Undo size={16} /> Undo
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-              {filteredProcessed.length > ITEMS_PER_PAGE && (
-                <div className="pagination-wrapper">
-                  <Pagination
-                    count={Math.ceil(filteredProcessed.length / ITEMS_PER_PAGE)}
-                    page={processedPage}
-                    onChange={(e, val) => setProcessedPage(val)}
-                    color="primary"
-                    shape="rounded"
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* 5. Reject Modal */}
-            <Modal open={openModal} onClose={() => setOpenModal(false)} className="custom-reject-modal">
-              <div className="reject-modal-box">
-                <div className="rmodal-header">
-                  <div className="rmodal-icon"><XCircle size={24} /></div>
-                  <h3>Reject Activity</h3>
-                </div>
-                <p className="rmodal-sub">Please provide a reason for rejecting this submission.</p>
-                <textarea
-                  className="rmodal-textarea"
-                  placeholder="e.g., Invalid certificate, missing details..."
-                  rows={4}
-                  value={rejectReason}
-                  onChange={(e) => setRejectReason(e.target.value)}
-                />
-                <div className="rmodal-actions">
-                  <button className="rmodal-cancel" onClick={() => setOpenModal(false)}>Cancel</button>
-                  <button className="rmodal-confirm" onClick={handleRejectConfirm}>Confirm Rejection</button>
-                </div>
-              </div>
-            </Modal>
-
-          </>
-        )}
-      </div>
-
-      <footer className="mentor-footer">
-        <p>© {new Date().getFullYear()} FCRIT ABL Portal</p>
+      {/* Footer */}
+      <footer className="sh-footer">
+        <div className="sh-footer-content">
+          <div><p className="sh-copyright">© 2024 Scholar Pulse University. All rights reserved.</p></div>
+          <div className="sh-footer-links">
+            <Link to="#">Privacy Policy</Link>
+            <Link to="#">Terms of Service</Link>
+            <Link to="#">Help Center</Link>
+          </div>
+        </div>
       </footer>
     </div>
   );

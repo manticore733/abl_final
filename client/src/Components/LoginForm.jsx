@@ -92,7 +92,7 @@ const LoginForm = ({ role }) => {
     return (
         <div className="login-portal-wrapper bg-surface font-body text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen">
             {/* TopAppBar Navigation */}
-            <header className="fixed top-0 left-0 w-full z-50 px-8 py-6 flex justify-between items-center pointer-events-none">
+            <header className="top-0 left-0 w-full z-50 px-8 py-6 flex justify-between items-center pointer-events-none">
                 <div
                     className="flex items-center gap-2 pointer-events-auto cursor-pointer group"
                     onClick={() => navigate('/')}

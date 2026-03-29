@@ -1,13 +1,13 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import "./css/MNavbar.css";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useToast } from "../ToastContext"; // Adjust path if needed
 import { FetchStudentList } from "../../api/mentorApi";
-import { LogOut, UserCircle } from "lucide-react"; // Matching SNavbar
+import "./css/MNavbar.css";
 
 const MNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const rollNumber = sessionStorage.getItem("username") || "Guest";
+  const { showToast } = useToast();
 
   const handleLogout = async () => {
     try {
@@ -16,14 +16,15 @@ const MNavbar = () => {
         credentials: "include",
       });
 
-      const data = await response.json();
       if (response.ok) {
+        showToast('success', 'Logged Out', 'You have securely logged out of the portal.');
         navigate("/", { replace: true });
       } else {
-        console.error("Logout failed:", data.message);
+        showToast('error', 'Logout Failed', 'An error occurred during logout.');
       }
     } catch (error) {
       console.error("Error during logout:", error);
+      showToast('error', 'Connection Error', 'Could not connect to the server.');
     }
   };
 
@@ -35,38 +36,50 @@ const MNavbar = () => {
     }
   };
 
+  // Helper to determine active route
+  const isActive = (path) => location.pathname === path ? "active" : "";
+
   return (
-    <nav className="mui-appbar">
-      {/* Left side: Role Text (MUI Typography style) */}
-      <div className="mui-role-text">
-        Logged in as <strong>Mentor: {rollNumber}</strong>
+    <nav className="sh-top-nav">
+      <div className="sh-nav-left">
+        <span className="sh-brand-text">Faculty Portal</span>
+        <div className="sh-desktop-links">
+          <Link className={`sh-nav-link ${isActive('/mHomepage')}`} to="/mHomepage">Overview</Link>
+          <a
+            className={`sh-nav-link ${isActive('/view-students')}`}
+            href="/view-students"
+            onClick={handleViewStudents}
+          >
+            Students
+          </a>
+        </div>
       </div>
 
-      {/* Center: Navigation Links (MUI Tabs style) */}
-      <div className="mui-nav-center">
-        <a
-          className={`mui-nav-link ${location.pathname === '/mHomepage' ? 'mui-active' : ''}`}
-          href="/mHomepage"
-        >
-          Home
-        </a>
-        <a
-          className={`mui-nav-link ${location.pathname === '/view-students' ? 'mui-active' : ''}`}
-          href="/view-students"
-          onClick={handleViewStudents}
-        >
-          View Students
-        </a>
-      </div>
+      <div className="sh-nav-right">
+        <div className="sh-search-box">
+          <span className="material-symbols-outlined">search</span>
+          <input placeholder="Search students..." type="text" />
+        </div>
 
-      {/* Right side: Actions (MUI IconButton style) */}
-      <div className="mui-action-group">
-        <a href="/mprofile" className="mui-icon-button" title="Profile">
-          <UserCircle size={24} />
-        </a>
-        <button className="mui-icon-button mui-logout-button" onClick={handleLogout} title="Logout">
-          <LogOut size={22} />
+        <button className="sh-icon-btn">
+          <span className="material-symbols-outlined">notifications</span>
         </button>
+
+        <button className="sh-icon-btn">
+          <span className="material-symbols-outlined">help_outline</span>
+        </button>
+
+        <button onClick={handleLogout} className="sh-icon-btn logout-icon-btn" title="Logout">
+          <span className="material-symbols-outlined">logout</span>
+        </button>
+
+        <Link to="/mprofile">
+          <img
+            className={`sh-profile-avatar ${isActive('/mprofile') ? 'border-active' : ''}`}
+            alt="Mentor Profile"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuARPwWo51AkmWe0-FeHnbNWyIARhWlN5GxLLqF9qc8kuf2F-sVkQY6HHooaTUoRHmbJRJ-xhVZ68MMSkLci7FatIeCrGxo01Hp2PtwglQdGOQglGpwTM2YpNw6GG0o-9knJ-k2algYoIuqUBvIZbvBBbS6b7_XoCYY3n4093FXnRlNMgyBU_i1Aw8c4nrtcyraE3qnwnp9-Sk6KfjRtz0k5C--_I9BzGX1vOClDkcRyyDhyS50O-jTCLyioQ5e8N7_YQDylMnEG4uk"
+          />
+        </Link>
       </div>
     </nav>
   );

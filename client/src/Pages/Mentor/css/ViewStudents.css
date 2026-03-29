@@ -1,268 +1,566 @@
-/* ViewStudents.css - Modern Roster Dashboard Styling */
-.empty-table-cell {
-    text-align: center !important;
-    padding: 6rem 2rem !important;
-    /* The 6rem top/bottom padding acts as a height lock */
-    color: #64748b;
-    font-size: 1.1rem;
-    background-color: #f8fafc;
-    /* Very subtle gray to show it's an empty area */
-    border-bottom: none !important;
+/* ViewStudents.css - Lumina Scholar Design System */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --vs-bg: #f5f7f9;
+    --vs-surface: #ffffff;
+    --vs-surface-alt: #eef1f3;
+    --vs-primary: #0053cc;
+    --vs-cyan: #006479;
+    --vs-error: #b31b25;
+
+    --vs-text-main: #2c2f31;
+    --vs-text-sub: #595c5e;
+    --vs-text-muted: #94a3b8;
+    --vs-border: rgba(197, 197, 212, 0.3);
+    --vs-shadow: 0 20px 48px rgba(44, 47, 49, 0.08);
 }
 
-/* Page Setup */
-.mentor-page-wrapper {
-    min-height: 100vh;
-    background-color: #f1f5f9;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    display: flex;
-    flex-direction: column;
-}
-
-.roaster-container {
-    padding-top: 2rem !important;
-    padding-bottom: 4rem !important;
-    flex-grow: 1;
-}
-
-/* Mini-Hero Banner */
-/* Mini-Hero Banner */
-.page-header-banner {
-    /* Updated to match the deeper blue from your reference image */
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-    padding: 3rem 2rem;
-    color: white;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-
-    /* The Flexbox magic to center everything */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.page-header-banner h2 {
-    margin: 0 0 1rem 0;
-    /* Slightly more gap at the bottom */
-    font-size: 2.2rem;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-}
-
-.page-header-banner p {
-    margin: 0;
-    color: #e2e8f0;
-    font-size: 0.95rem;
-
-    /* Recreating the beautiful semi-transparent "pill" from your reference */
-    background: rgba(255, 255, 255, 0.1);
-    padding: 8px 24px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-}
-
-/* Toolbar & Search */
-.toolbar-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.search-input-wrapper {
-    position: relative;
-    flex-grow: 1;
-    max-width: 500px;
-}
-
-.search-icon {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-}
-
-.roster-search-input {
-    width: 100%;
-    padding: 12px 16px 12px 42px;
-    border-radius: 30px;
-    border: 1px solid #cbd5e1;
-    font-size: 1rem;
+.vs-page-wrapper {
+    background-color: var(--vs-bg);
     font-family: 'Inter', sans-serif;
-    color: #1e293b;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    transition: all 0.2s ease;
-    box-sizing: border-box;
-    background: white;
+    color: var(--vs-text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.roster-search-input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Manrope', sans-serif;
+    margin: 0;
+    color: var(--vs-text-main);
 }
 
-.roster-stats {
-    background: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    border: 1px solid #cbd5e1;
-    color: #475569;
+p {
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Layout */
+.vs-main-content {
+    flex-grow: 1;
+    padding: 2rem 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .vs-main-content {
+        padding: 3rem 4rem;
+    }
+}
+
+.vs-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* --- Header & Stats --- */
+.vs-header-flex {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 1024px) {
+    .vs-header-flex {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+}
+
+.vs-page-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+    .vs-page-title {
+        font-size: 3rem;
+    }
+}
+
+.vs-page-desc {
+    font-size: 1.1rem;
+    color: var(--vs-text-sub);
     font-weight: 500;
 }
 
-.roster-stats strong {
-    color: #3b82f6;
-    font-size: 1.1rem;
-    margin-left: 6px;
+.text-primary {
+    color: var(--vs-primary);
 }
 
-/* Modern Roster Table */
-.modern-table-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.05), 0 2px 6px -2px rgba(0, 0, 0, 0.03);
-    border: 1px solid #e2e8f0;
-    overflow: hidden;
-    /* To ensure table border radius works */
+.vs-stats-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-.table-responsive-wrapper {
-    width: 100%;
-    overflow-x: auto;
+.vs-stat-box {
+    padding: 1.25rem 1.5rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 120px;
 }
 
-.modern-roster-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-    white-space: nowrap;
-    table-layout: fixed;
+.vs-stat-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 
-.mentor-main-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+.vs-stat-val {
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: 'Manrope', sans-serif;
+    line-height: 1;
 }
 
-
-.modern-roster-table th,
-.modern-roster-table td {
-    padding: 16px 20px;
-    border-bottom: 1px solid #f1f5f9;
+.bg-surface-low {
+    background: var(--vs-surface-alt);
 }
 
-.modern-roster-table th {
-    background-color: #f8fafc;
-    color: #475569;
-    font-weight: 600;
+.text-muted {
+    color: var(--vs-text-muted);
+}
+
+.text-main {
+    color: var(--vs-text-main);
+}
+
+.bg-cyan-light {
+    background: rgba(119, 223, 255, 0.2);
+}
+
+.text-cyan {
+    color: var(--vs-cyan);
+}
+
+.bg-error-light {
+    background: rgba(251, 81, 81, 0.1);
+}
+
+.border-error {
+    border: 1px solid rgba(251, 81, 81, 0.2);
+}
+
+.text-error {
+    color: var(--vs-error);
+}
+
+/* --- Toolbar (Filters & Search) --- */
+.vs-toolbar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.vs-filter-bar {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 1rem;
+    padding: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.vs-filter-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    border-right: 1px solid var(--vs-border);
+}
+
+.vs-filter-title span {
+    color: var(--vs-text-sub);
     font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.vs-select {
+    background: transparent;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--vs-text-main);
+    cursor: pointer;
+    outline: none;
+    padding: 0.5rem;
+}
+
+.vs-view-toggles {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+}
+
+.vs-view-toggles button {
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--vs-text-muted);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vs-view-toggles button.active {
+    background: white;
+    color: var(--vs-primary);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.vs-search-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.vs-search-icon {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--vs-primary);
+    font-size: 24px;
+    pointer-events: none;
+}
+
+.vs-search-input {
+    width: 100%;
+    background: white;
+    border: none;
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem 1.25rem 4rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    color: var(--vs-text-main);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+.vs-search-input::placeholder {
+    color: rgba(89, 92, 94, 0.4);
+}
+
+.vs-search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--vs-primary), 0 8px 25px rgba(0, 83, 204, 0.15);
+}
+
+/* --- Student Grid (The Pulse Cards) --- */
+.vs-student-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .vs-student-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1536px) {
+    .vs-student-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 2xl screens */
+
+.vs-student-card {
+    background: var(--vs-surface);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.vs-student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--vs-shadow);
+    border-color: rgba(0, 83, 204, 0.1);
+}
+
+/* Asymmetrical background accent */
+.vs-card-bg-accent {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: rgba(0, 83, 204, 0.05);
+    border-bottom-left-radius: 100%;
+    margin-right: -20px;
+    margin-top: -20px;
+    transition: background 0.3s;
+    pointer-events: none;
+}
+
+.vs-student-card:hover .vs-card-bg-accent {
+    background: rgba(0, 83, 204, 0.08);
+}
+
+/* Header / Identity */
+.vs-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.vs-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 1rem;
+    background: #0f172a;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    font-family: 'Manrope';
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.vs-info {
+    flex-grow: 1;
+}
+
+.vs-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.vs-name-row h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.vs-info p {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--vs-text-sub);
+    margin-bottom: 8px;
+}
+
+.vs-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.vs-badge-sem {
+    background: rgba(119, 223, 255, 0.3);
+    color: var(--vs-cyan);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
-.modern-roster-table tbody tr {
-    transition: background-color 0.2s ease;
+.vs-badge-dept {
+    background: var(--vs-surface-alt);
+    color: var(--vs-text-sub);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-.modern-roster-table tbody tr:hover {
-    background-color: #f8fafc;
+/* Performance Mini-Chart */
+.vs-performance-section {
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 2;
 }
 
-.modern-roster-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* Cell Specific Styling */
-.sr-no-cell {
-    color: #94a3b8;
-    font-weight: 600;
-    width: 60px;
-}
-
-.fw-700 {
-    font-weight: 700;
-}
-
-.primary-text {
-    color: #0f172a;
-    font-size: 1.05rem;
-}
-
-.mono-text {
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    color: #64748b;
-    font-size: 0.95rem;
-}
-
-.batch-badge {
-    background: #eff6ff;
-    color: #2563eb;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-/* Actions */
-.text-right {
-    text-align: right;
-}
-
-.action-cell {
-    text-align: right;
-}
-
-.modern-view-btn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    display: inline-flex;
+.vs-perf-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 12px;
+}
+
+.vs-perf-header p {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--vs-text-sub);
+}
+
+.vs-perf-header span {
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.vs-mini-chart {
+    height: 80px;
+    display: flex;
+    align-items: flex-end;
     gap: 4px;
+    padding: 0 4px;
+}
+
+.vs-mini-bar {
+    flex: 1;
+    background: rgba(0, 83, 204, 0.2);
+    border-radius: 2px 2px 0 0;
+    transition: background 0.2s;
+    cursor: help;
+}
+
+.vs-mini-bar:hover {
+    background: var(--vs-primary);
+}
+
+/* Card Actions */
+.vs-card-actions {
+    display: flex;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+}
+
+.vs-btn-view {
+    flex: 1;
+    background: var(--vs-surface-alt);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: background 0.2s;
+}
+
+.vs-btn-view:hover {
+    background: #dfe3e6;
+}
+
+.vs-btn-review {
+    flex: 1;
+    border: 2px solid rgba(0, 83, 204, 0.2);
+    color: var(--vs-primary);
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     transition: all 0.2s;
 }
 
-.modern-view-btn:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+.vs-btn-review:hover {
+    border-color: var(--vs-primary);
 }
 
-.empty-state {
-    padding: 4rem;
-    text-align: center;
-    color: #64748b;
-    font-size: 1.1rem;
+.vs-review-badge {
+    background: var(--vs-primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.6rem;
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-    .page-header-banner {
-        padding: 2rem 1.5rem;
-    }
+/* Warning Card Overrides */
+.vs-student-card.warning-card .vs-card-bg-accent {
+    background: rgba(179, 27, 37, 0.05);
+}
 
-    .toolbar-flex {
-        flex-direction: column;
-        align-items: stretch;
-    }
+.vs-student-card.warning-card:hover .vs-card-bg-accent {
+    background: rgba(179, 27, 37, 0.08);
+}
 
-    .search-input-wrapper {
-        max-width: none;
-    }
+.vs-student-card.warning-card .vs-mini-bar {
+    background: rgba(179, 27, 37, 0.2);
+}
 
-    .roster-stats {
-        text-align: center;
-    }
+.vs-student-card.warning-card .vs-mini-bar:hover {
+    background: var(--vs-error);
+}
+
+.vs-student-card.warning-card:hover {
+    border-color: rgba(179, 27, 37, 0.15);
+}
+
+.vs-btn-review.btn-error {
+    background: var(--vs-error);
+    color: white;
+    border: none;
+    padding: 12px;
+    box-shadow: 0 4px 15px rgba(179, 27, 37, 0.2);
+}
+
+/* Empty State */
+.vs-empty-state {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem;
+    color: var(--vs-text-sub);
+}
+
+.vs-empty-state span {
+    font-size: 48px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.vs-empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }

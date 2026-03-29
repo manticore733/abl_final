@@ -1,1112 +1,86 @@
-
-
-
-//stataic template important
-
-
-// import React, { useState } from "react";
-// import { Card, CardContent, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from "@mui/material";
-// import MNavbar from "../../Components/MentorC/MNavbar";
-// import { BarChart, PieChart, LineChart } from "@mui/x-charts";
-
-// const mProfile = () => {
-//   const [selectedStudent, setSelectedStudent] = useState(null);
-
-//   // Sample data
-//   const students = [
-//     { id: 1, name: "John Doe", rollNumber: "123", branch: "CSE" },
-//     { id: 2, name: "Jane Smith", rollNumber: "124", branch: "ECE" },
-//   ];
-
-//   return (
-//     <div>
-//       <MNavbar />
-//       <div className="mentor-profile" style={{ padding: "20px", display: "flex", flexDirection: "column", gap: "20px" }}>
-
-//         {/* SECTION 1: Mentor Info & Student Table */}
-//         <div style={{ display: "flex", gap: "20px" }}>
-          
-//           {/* Mentor Info Card (30%) */}
-//           <Card sx={{ width: "30%", padding: "20px" }}>
-//             <CardContent>
-//               <Typography variant="h5">Mentor Name</Typography>
-//               <Typography variant="body1">Department: CSE</Typography>
-//               <Typography variant="body1">Designation: Professor</Typography>
-//               <Typography variant="body1">Email: mentor@example.com</Typography>
-//               <Typography variant="body1">Phone: 9876543210</Typography>
-//               <Typography variant="h6" sx={{ marginTop: "10px", display: "flex", alignItems: "center" }}>
-//                 <img src="/student-icon.png" alt="Students" width="30" height="30" />
-//                 Total Students: 20
-//               </Typography>
-//             </CardContent>
-//           </Card>
-
-//           {/* Student List Table (70%) */}
-//           <Card sx={{ width: "70%", padding: "20px" }}>
-//             <Typography variant="h6">Students Under Mentor</Typography>
-//             <TableContainer component={Paper}>
-//               <Table>
-//                 <TableHead>
-//                   <TableRow>
-//                     <TableCell>Roll Number</TableCell>
-//                     <TableCell>Name</TableCell>
-//                     <TableCell>Branch</TableCell>
-//                     <TableCell>Actions</TableCell>
-//                   </TableRow>
-//                 </TableHead>
-//                 <TableBody>
-//                   {students.map((student) => (
-//                     <TableRow key={student.id}>
-//                       <TableCell>{student.rollNumber}</TableCell>
-//                       <TableCell>{student.name}</TableCell>
-//                       <TableCell>{student.branch}</TableCell>
-//                       <TableCell>
-//                         <Button
-//                           variant="contained"
-//                           onClick={() => setSelectedStudent(student)}
-//                         >
-//                           View Statistics
-//                         </Button>
-//                       </TableCell>
-//                     </TableRow>
-//                   ))}
-//                 </TableBody>
-//               </Table>
-//             </TableContainer>
-//             <Pagination count={5} variant="outlined" shape="rounded" sx={{ marginTop: "10px", display: "flex", justifyContent: "center" }} />
-//           </Card>
-//         </div>
-
-//         {/* SECTION 2: Student Statistics (Visible on Click) */}
-//         {selectedStudent && (
-//           <Card sx={{ padding: "20px" }}>
-//             <Typography variant="h6">Statistics for {selectedStudent.name}</Typography>
-//             <div style={{ display: "flex", gap: "20px" }}>
-              
-//               {/* Bar Chart: Category-wise Participation */}
-//               <BarChart
-//                 width={400}
-//                 height={300}
-//                 series={[{ data: [10, 5, 8, 7, 3], label: "Participation", type: "bar" }]}
-//                 xAxis={[{ scaleType: "band", data: ["Technical", "Cultural", "Sports", "Social", "Internship"] }]}
-//               />
-
-//               {/* Pie Chart: Activity Status */}
-//               <PieChart
-//                 width={350}
-//                 height={300}
-//                 series={[{ 
-//                   data: [
-//                     { id: 0, value: 10, label: "Approved" }, 
-//                     { id: 1, value: 5, label: "Rejected" }, 
-//                     { id: 2, value: 3, label: "Pending" }
-//                   ] 
-//                 }]}
-//                 legend={{ position: "bottom" }}
-//               />
-
-//               {/* Line Chart: Performance Trends */}
-//               <LineChart
-//                 width={400}
-//                 height={300}
-//                 series={[{ data: [2, 5, 8, 3, 7], label: "Performance Trend" }]}
-//                 xAxis={[{ scaleType: "point", data: ["Jan", "Feb", "Mar", "Apr", "May"] }]}
-//               />
-//             </div>
-//           </Card>
-//         )}
-
-//         {/* SECTION 3: Overall Statistics for All Students */}
-//         <Card sx={{ padding: "20px" }}>
-//           <Typography variant="h6">Overall Statistics for Students Under Mentor</Typography>
-//           <div style={{ display: "flex", gap: "20px", justifyContent: "space-between" }}>
-
-//             {/* Bar Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" }}>
-//               <BarChart
-//                 width={300}
-//                 height={300}
-//                 series={[{ data: [10, 5, 8, 7, 3], label: "Participation", type: "bar" }]}
-//                 xAxis={[{ scaleType: "band", data: ["Technical", "Cultural", "Sports", "Social", "Internship"] }]}
-//               />
-//             </Card>
-
-//             {/* Pie Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" ,display: "flex", 
-//   flexDirection: "column", 
-//   alignItems: "center", 
-//   justifyContent: "center"  }}>
-//               <PieChart
-//                 width={300}
-//                 height={300}
-//                 series={[{ 
-//                   data: [
-//                     { id: 0, value: 40, label: "Approved" }, 
-//                     { id: 1, value: 10, label: "Rejected" }, 
-//                     { id: 2, value: 15, label: "Pending" }
-//                   ] 
-//                 }]}
-
-//                 slotProps={{
-//                   legend: { direction: "row", position: { vertical: "bottom", horizontal: "center" } , padding: 2}
-//                 }}
-             
-//               />
-//             </Card>
-
-//             {/* Line Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" }}>
-//               <LineChart
-//                 width={500}
-//                 height={300}
-//                 series={[{ data: [5, 10, 15, 12, 18], label: "Overall Performance" }]}
-//                 xAxis={[{ scaleType: "point", data: ["Jan", "Feb", "Mar", "Apr", "May"] }]}
-//               />
-//             </Card>
-
-//           </div>
-//         </Card>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default mProfile;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///WORKING PERFECT
-
-
-// import React, { useState ,useEffect} from "react";
-// import { Card, CardContent, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from "@mui/material";
-// import MNavbar from "../../Components/MentorC/MNavbar";
-// import { BarChart, PieChart, LineChart } from "@mui/x-charts";
-// import axios from 'axios';
-// import { Avatar } from "@mui/material";
-// import PersonIcon from "@mui/icons-material/Person";
-// import {Box, Divider } from "@mui/material";
-// import AssessmentIcon from '@mui/icons-material/Assessment';
-
-
-
-
-// const mProfile = () => {
-//   const [selectedStudent, setSelectedStudent] = useState(null);
-
-
-//   const [mentorInfo, setMentorInfo] = useState(null); // State to store mentor info
-//   const [loading, setLoading] = useState(true); // Loading state
-//   const [error, setError] = useState(null); // Error state
-
-//   const [studentsList, setStudentsList] = useState([]); // Store student data
-//   const [loadingStudents, setLoadingStudents] = useState(true); // Loading state for students
-// const [errorStudents, setErrorStudents] = useState(null); // Error state for students
-
-
-
-
-//   useEffect(() => {
-//     // Fetch mentor details on component mount
-//     const mentorId = sessionStorage.getItem("mentorId"); // Fetch mentorId from sessionStorage
-//     const mentorName = sessionStorage.getItem("username"); // Fetch mentor name from sessionStorage
-
-//     if (!mentorId || !mentorName) {
-//       setError("Mentor information is missing in session storage.");
-//       setLoading(false);
-//       return;
-//     }
-
-//     // Fetch data from API
-//     const fetchMentorData = async () => {
-//       try {
-//         const response = await axios.get(`http://localhost:5000/api/mentor/mentor/profile/${mentorId}`);
-//         setMentorInfo(response.data); // Set fetched data to state
-//         setLoading(false);
-//       } catch (err) {
-//         console.error("Error fetching mentor data:", err);
-//         setError("Error fetching mentor details.");
-//         setLoading(false);
-//       }
-//     };
-
-//         // Fetch student list
-//         const fetchStudents = async () => {
-//           try {
-//             const response = await axios.get(
-//               `http://localhost:5000/api/mentor/allstudentsformentor/${mentorId}`
-//             );
-//             setStudentsList(response.data.students);
-//             setLoadingStudents(false);
-//           } catch (err) {
-//             console.error("Error fetching students:", err);
-//             setErrorStudents("Error fetching students.");
-//             setLoadingStudents(false);
-//           }
-//         };
-
-
-
-
-//     fetchMentorData();
-
-//     fetchStudents();
-//   }, []);
-
-
-//   // Sample data
-//   const students = [
-//     { id: 1, name: "John Doe", rollNumber: "123", branch: "CSE" },
-//     { id: 2, name: "Jane Smith", rollNumber: "124", branch: "ECE" },
-//   ];
-
-//   return (
-//     <div>
-//       <MNavbar />
-//       <div className="mentor-profile" style={{ padding: "50px", display: "flex", flexDirection: "column", gap: "20px" }}>
-
-//         {/* SECTION 1: Mentor Info & Student Table */}
-//         <div style={{ display: "flex", gap: "20px" }}>
-
-
-//           {/*Mentor info card*/ }
-
-          
-//           <Card sx={{ display: "flex", width: "45%", borderRadius: "12px", overflow: "hidden", boxShadow: 3 }}>
-//             {/* Left Section - Profile with Gradient */}
-//             <Box sx={{
-//                     width: "30%",
-//                     background: "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)",
-//                     display: "flex",
-//                     flexDirection: "column",
-//                     alignItems: "center",
-//                     justifyContent: "center",
-//                     padding: "20px",
-//                     color: "white",
-//                   }}>
-//                 {/* Profile Picture */}
-//                 <Avatar sx={{ width: 80, height: 80, bgcolor: "white", mb: 2 }}>
-//                   <PersonIcon sx={{ fontSize: 50, color: "#ff9a9e" }} />
-//                 </Avatar>
-//                 <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-//                   {sessionStorage.getItem("username")}
-//                 </Typography>
-//                 <Typography variant="body2">Mentor</Typography>
-//               </Box>
-
-//               {/* Right Section - Mentor Details */}
-//               <CardContent sx={{ width: "65%", padding: "20px" }}>
-//               <Typography variant="h6" sx={{ fontWeight: "bold" }}>Information</Typography>
-//               <Divider sx={{ my: 1 }} />
-
-//               {loading ? (
-//                 <Typography>Loading mentor details...</Typography>
-//               ) : error ? (
-//                 <Typography color="error">{error}</Typography>
-//               ) : mentorInfo ? ( // ✅ Ensure mentorInfo is NOT null before accessing properties
-//                 <>
-//                   <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-//                     <Typography variant="body1"><strong>Department:</strong> {mentorInfo.m_branch}</Typography>
-//                     <Typography variant="body1"><strong>Batch:</strong> {mentorInfo.m_batch}</Typography>
-          
-//                   </Box>
-//                   <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-//                     <Typography variant="body1"><strong>Semester:</strong> {mentorInfo.m_sem}</Typography>
-//                     <Typography variant="body1"><strong>Section:</strong> {mentorInfo.m_csec}</Typography>
-//                   </Box>
-
-//                   <Divider sx={{ my: 2 }} />
-//                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>Total Students: 20</Typography>
-//                 </>
-//               ) : (
-//                 <Typography color="error">Mentor data not available.</Typography>
-//               )}
-//             </CardContent>
-//             </Card>
-
-
-
-
-
-//                  {/* Student List Table (70%) */}
-    
-                          
-//                   <Card sx={{ width: "70%", padding: "20px" }}>
-//                     <Typography variant="h6"> <strong>Students Under Mentor</strong></Typography>
-
-//                     {/* Show loading/error message for student data */}
-//                     {loadingStudents ? (
-//                       <Typography>Loading student list...</Typography>
-//                     ) : errorStudents ? (
-//                       <Typography color="error">{errorStudents}</Typography>
-//                     ) : studentsList.length > 0 ? (
-//                       <TableContainer component={Paper} sx={{mt:2}}>
-//                         <Table>
-//                           <TableHead>
-//                             <TableRow sx={{ backgroundColor: "#448aff" }}>
-//                               <TableCell><strong>Sr No.</strong></TableCell> {/* Added Serial Number Column */}
-//                               <TableCell><strong>Roll Number</strong></TableCell>
-//                               <TableCell><strong>Name</strong></TableCell>
-//                               <TableCell><strong>Branch</strong></TableCell>
-//                               <TableCell><strong>Division</strong></TableCell>
-//                               <TableCell><strong>Total Credits</strong></TableCell>
-//                               <TableCell><strong>Actions</strong></TableCell>
-//                             </TableRow>
-//                           </TableHead>
-//                           <TableBody>
-//                             {studentsList.map((student, index) => (
-//                               <TableRow key={student.id}>
-//                                 <TableCell>{index + 1}</TableCell> {/* Serial Number increments automatically */}
-//                                 <TableCell>{student.s_username}</TableCell>
-//                                 <TableCell>{student.name}</TableCell>
-//                                 <TableCell>{student.department}</TableCell>
-//                                 <TableCell>{student.division}</TableCell>
-//                                 <TableCell>{student.total_credits}</TableCell>
-//                                 <TableCell>
-//                                   <Button
-//                                     variant="contained"
-//                                     onClick={() => setSelectedStudent(student)} endIcon={<AssessmentIcon/>}>
-//                                     View Statistics
-//                                   </Button>
-//                                 </TableCell>
-//                               </TableRow>
-//                             ))}
-//                           </TableBody>
-//                         </Table>
-//                       </TableContainer>
-//                     ) : (
-//                       <Typography>No students found under this mentor.</Typography>
-//                     )}
-
-//                     {/* Pagination - Adjust count dynamically */}
-//                     <Pagination
-//                       count={Math.ceil(studentsList.length / 5)} // Adjust based on total students
-//                       variant="outlined"
-//                       shape="rounded"
-//                       sx={{ marginTop: "10px", display: "flex", justifyContent: "center" }}
-//                     />
-//                   </Card>
-
-//         </div>
-
-
-
-
-
-//         {/* SECTION 2: Student Statistics (Visible on Click) */}
-//         {selectedStudent && (
-//           <Card sx={{ padding: "20px" }}>
-//             <Typography variant="h6">Statistics for {selectedStudent.name}</Typography>
-//             <div style={{ display: "flex", gap: "20px" }}>
-              
-//               {/* Bar Chart: Category-wise Participation */}
-//               <BarChart
-//                 width={400}
-//                 height={300}
-//                 series={[{ data: [10, 5, 8, 7, 3], label: "Participation", type: "bar" }]}
-//                 xAxis={[{ scaleType: "band", data: ["Technical", "Cultural", "Sports", "Social", "Internship"] }]}
-//               />
-
-//               {/* Pie Chart: Activity Status */}
-//               <PieChart
-//                 width={350}
-//                 height={300}
-//                 series={[{ 
-//                   data: [
-//                     { id: 0, value: 10, label: "Approved" }, 
-//                     { id: 1, value: 5, label: "Rejected" }, 
-//                     { id: 2, value: 3, label: "Pending" }
-//                   ] 
-//                 }]}
-//                 legend={{ position: "bottom" }}
-//               />
-
-//               {/* Line Chart: Performance Trends */}
-//               <LineChart
-//                 width={400}
-//                 height={300}
-//                 series={[{ data: [2, 5, 8, 3, 7], label: "Performance Trend" }]}
-//                 xAxis={[{ scaleType: "point", data: ["Jan", "Feb", "Mar", "Apr", "May"] }]}
-//               />
-//             </div>
-//           </Card>
-//         )}
-
-//         {/* SECTION 3: Overall Statistics for All Students */}
-//         <Card sx={{ padding: "20px" }}>
-//           <Typography variant="h6">Overall Statistics for Students Under Mentor</Typography>
-//           <div style={{ display: "flex", gap: "20px", justifyContent: "space-between" }}>
-
-//             {/* Bar Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" }}>
-//               <BarChart
-//                 width={300}
-//                 height={300}
-//                 series={[{ data: [10, 5, 8, 7, 3], label: "Participation", type: "bar" }]}
-//                 xAxis={[{ scaleType: "band", data: ["Technical", "Cultural", "Sports", "Social", "Internship"] }]}
-//               />
-//             </Card>
-
-//             {/* Pie Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" ,display: "flex", 
-//                 flexDirection: "column", 
-//                 alignItems: "center", 
-//                 justifyContent: "center"  }}>
-//                             <PieChart
-//                 width={300}
-//                 height={300}
-//                 series={[{ 
-//                   data: [
-//                     { id: 0, value: 40, label: "Approved" }, 
-//                     { id: 1, value: 10, label: "Rejected" }, 
-//                     { id: 2, value: 15, label: "Pending" }
-//                   ] 
-//                 }]}
-
-//                 slotProps={{
-//                   legend: { direction: "row", position: { vertical: "bottom", horizontal: "center" } , padding: 2}
-//                 }}
-             
-//               />
-//             </Card>
-
-//             {/* Line Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" }}>
-//               <LineChart
-//                 width={500}
-//                 height={300}
-//                 series={[{ data: [5, 10, 15, 12, 18], label: "Overall Performance" }]}
-//                 xAxis={[{ scaleType: "point", data: ["Jan", "Feb", "Mar", "Apr", "May"] }]}
-//               />
-//             </Card>
-
-//           </div>
-//         </Card>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default mProfile;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////trying statistics
-
-
-
-
-
-// import React, { useState ,useEffect} from "react";
-// import { Card, CardContent, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from "@mui/material";
-// import MNavbar from "../../Components/MentorC/MNavbar";
-// import { BarChart, PieChart, LineChart } from "@mui/x-charts";
-// import axios from 'axios';
-// import { Avatar } from "@mui/material";
-// import PersonIcon from "@mui/icons-material/Person";
-// import {Box, Divider } from "@mui/material";
-// import AssessmentIcon from '@mui/icons-material/Assessment';
-
-
-
-
-// const mProfile = () => {
-//   const [selectedStudent, setSelectedStudent] = useState(null);
-
-
-//   const [mentorInfo, setMentorInfo] = useState(null); // State to store mentor info
-//   const [loading, setLoading] = useState(true); // Loading state
-//   const [error, setError] = useState(null); // Error state
-
-//   const [studentsList, setStudentsList] = useState([]); // Store student data
-//   const [loadingStudents, setLoadingStudents] = useState(true); // Loading state for students
-// const [errorStudents, setErrorStudents] = useState(null); // Error state for students
-
-
-
-// const [studentStatistics, setStudentStatistics] = useState(null);
-// const [loadingStats, setLoadingStats] = useState(false);
-// const [errorStats, setErrorStats] = useState(null);
-
-// const [filteredEventCounts, setFilteredEventCounts] = useState({});
-// const [filteredSemesterWiseEvents, setFilteredSemesterWiseEvents] = useState({});
-
-
-
-//       // On button click, fetch data and update the selected student
-//       const handleViewStatistics = (student) => {
-//         setSelectedStudent(student);
-//         fetchStudentStatistics(student.s_id);
-//       };
-              
-      
-//       const fetchStudentStatistics = async (studentId) => {
-//         setLoadingStats(true);
-//         setErrorStats(null);
-      
-//         try {
-//           const response = await axios.get(`http://localhost:5000/api/mentor/student-statistics/${studentId}`);
-//           setStudentStatistics(response.data);
-//         } catch (err) {
-//           console.error("Error fetching statistics:", err);
-//           setErrorStats("Failed to fetch student statistics.");
-//         } finally {
-//           setLoadingStats(false);
-//         }
-//       };
-
-      
-
-
-
-
-
-//   useEffect(() => {
-//     // Fetch mentor details on component mount
-//     const mentorId = sessionStorage.getItem("mentorId"); // Fetch mentorId from sessionStorage
-//     const mentorName = sessionStorage.getItem("username"); // Fetch mentor name from sessionStorage
-
-//     if (!mentorId || !mentorName) {
-//       setError("Mentor information is missing in session storage.");
-//       setLoading(false);
-//       return;
-//     }
-
-//     // Fetch data from API
-//     const fetchMentorData = async () => {
-//       try {
-//         const response = await axios.get(`http://localhost:5000/api/mentor/mentor/profile/${mentorId}`);
-//         setMentorInfo(response.data); // Set fetched data to state
-//         setLoading(false);
-//       } catch (err) {
-//         console.error("Error fetching mentor data:", err);
-//         setError("Error fetching mentor details.");
-//         setLoading(false);
-//       }
-//     };
-
-//         // Fetch student list
-//         const fetchStudents = async () => {
-//           try {
-//             const response = await axios.get(
-//               `http://localhost:5000/api/mentor/allstudentsformentor/${mentorId}`
-//             );
-//             setStudentsList(response.data.students);
-//             setLoadingStudents(false);
-//           } catch (err) {
-//             console.error("Error fetching students:", err);
-//             setErrorStudents("Error fetching students.");
-//             setLoadingStudents(false);
-//           }
-//         };
-
-
-
-
-
-
-
-//     fetchMentorData();
-
-//     fetchStudents();
-//   }, []);
-
-
-//   // Sample data
-//   const students = [
-//     { id: 1, name: "John Doe", rollNumber: "123", branch: "CSE" },
-//     { id: 2, name: "Jane Smith", rollNumber: "124", branch: "ECE" },
-//   ];
-
-//   return (
-//     <div>
-//       <MNavbar />
-//       <div className="mentor-profile" style={{ padding: "50px", display: "flex", flexDirection: "column", gap: "20px" }}>
-
-//         {/* SECTION 1: Mentor Info & Student Table */}
-//         <div style={{ display: "flex", gap: "20px" }}>
-
-
-//           {/*Mentor info card*/ }
-
-          
-//           <Card sx={{ display: "flex", width: "45%", borderRadius: "12px", overflow: "hidden", boxShadow: 3 }}>
-//             {/* Left Section - Profile with Gradient */}
-//             <Box sx={{
-//                     width: "30%",
-//                     background: "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)",
-//                     display: "flex",
-//                     flexDirection: "column",
-//                     alignItems: "center",
-//                     justifyContent: "center",
-//                     padding: "20px",
-//                     color: "white",
-//                   }}>
-//                 {/* Profile Picture */}
-//                 <Avatar sx={{ width: 80, height: 80, bgcolor: "white", mb: 2 }}>
-//                   <PersonIcon sx={{ fontSize: 50, color: "#ff9a9e" }} />
-//                 </Avatar>
-//                 <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-//                   {sessionStorage.getItem("username")}
-//                 </Typography>
-//                 <Typography variant="body2">Mentor</Typography>
-//               </Box>
-
-//               {/* Right Section - Mentor Details */}
-//               <CardContent sx={{ width: "65%", padding: "20px" }}>
-//               <Typography variant="h6" sx={{ fontWeight: "bold" }}>Information</Typography>
-//               <Divider sx={{ my: 1 }} />
-
-//               {loading ? (
-//                 <Typography>Loading mentor details...</Typography>
-//               ) : error ? (
-//                 <Typography color="error">{error}</Typography>
-//               ) : mentorInfo ? ( // ✅ Ensure mentorInfo is NOT null before accessing properties
-//                 <>
-//                   <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-//                     <Typography variant="body1"><strong>Department:</strong> {mentorInfo.m_branch}</Typography>
-//                     <Typography variant="body1"><strong>Batch:</strong> {mentorInfo.m_batch}</Typography>
-          
-//                   </Box>
-//                   <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-//                     <Typography variant="body1"><strong>Semester:</strong> {mentorInfo.m_sem}</Typography>
-//                     <Typography variant="body1"><strong>Section:</strong> {mentorInfo.m_csec}</Typography>
-//                   </Box>
-
-//                   <Divider sx={{ my: 2 }} />
-//                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>Total Students: 20</Typography>
-//                 </>
-//               ) : (
-//                 <Typography color="error">Mentor data not available.</Typography>
-//               )}
-//             </CardContent>
-//             </Card>
-
-
-
-
-
-//                  {/* Student List Table (70%) */}
-    
-                          
-//                   <Card sx={{ width: "70%", padding: "20px" }}>
-//                     <Typography variant="h6"> <strong>Students Under Mentor</strong></Typography>
-
-//                     {/* Show loading/error message for student data */}
-//                     {loadingStudents ? (
-//                       <Typography>Loading student list...</Typography>
-//                     ) : errorStudents ? (
-//                       <Typography color="error">{errorStudents}</Typography>
-//                     ) : studentsList.length > 0 ? (
-//                       <TableContainer component={Paper} sx={{mt:2}}>
-//                         <Table>
-//                           <TableHead>
-//                             <TableRow sx={{ backgroundColor: "#448aff" }}>
-//                               <TableCell><strong>Sr No.</strong></TableCell> {/* Added Serial Number Column */}
-//                               <TableCell><strong>Roll Number</strong></TableCell>
-//                               <TableCell><strong>Name</strong></TableCell>
-//                               <TableCell><strong>Branch</strong></TableCell>
-//                               <TableCell><strong>Division</strong></TableCell>
-//                               <TableCell><strong>Total Credits</strong></TableCell>
-//                               <TableCell><strong>Actions</strong></TableCell>
-//                             </TableRow>
-//                           </TableHead>
-//                           <TableBody>
-//                             {studentsList.map((student, index) => (
-//                               <TableRow key={student.id}>
-//                                 <TableCell>{index + 1}</TableCell> {/* Serial Number increments automatically */}
-//                                 <TableCell>{student.s_username}</TableCell>
-//                                 <TableCell>{student.name}</TableCell>
-//                                 <TableCell>{student.department}</TableCell>
-//                                 <TableCell>{student.division}</TableCell>
-//                                 <TableCell>{student.total_credits}</TableCell>
-//                                 <TableCell>
-//                                   <Button
-//                                     variant="contained"
-//                                     onClick={() => handleViewStatistics(student)} endIcon={<AssessmentIcon/>}>
-//                                     View Statistics
-//                                   </Button>
-//                                 </TableCell>
-//                               </TableRow>
-//                             ))}
-//                           </TableBody>
-//                         </Table>
-//                       </TableContainer>
-//                     ) : (
-//                       <Typography>No students found under this mentor.</Typography>
-//                     )}
-
-//                     {/* Pagination - Adjust count dynamically */}
-//                     <Pagination
-//                       count={Math.ceil(studentsList.length / 5)} // Adjust based on total students
-//                       variant="outlined"
-//                       shape="rounded"
-//                       sx={{ marginTop: "10px", display: "flex", justifyContent: "center" }}
-//                     />
-//                   </Card>
-
-//         </div>
-
-
-
-
-
-//         {/* SECTION 2: Student Statistics (Visible on Click) */}
-//         {selectedStudent && (
-//   <Card sx={{ padding: "20px" }}>
-//     <Typography variant="h6">Statistics for {selectedStudent.name}</Typography>
-
-//     {loadingStats ? (
-//       <Typography>Loading statistics...</Typography>
-//     ) : errorStats ? (
-//       <Typography color="error">{errorStats}</Typography>
-//     ) : studentStatistics ? (
-//       <div style={{ display: "flex", gap: "20px" }}>
-//         {/* Bar Chart: Event Type Participation */}
-//         <BarChart
-//           width={400}
-//           height={300}
-//           series={[{
-//             data: Object.values(studentStatistics.eventCounts),
-//             label: "Participation",
-//             type: "bar"
-//           }]}
-//           xAxis={[{ scaleType: "band", data: Object.keys(studentStatistics.eventCounts) }]}
-//         />
-
-//         {/* Pie Chart: Activity Status */}
-//         <PieChart
-//           width={350}
-//           height={300}
-//           series={[{
-//             data: Object.entries(studentStatistics.statusCounts).map(([label, value], index) => ({
-//               id: index, value, label
-//             }))
-//           }]}
-//           legend={{ position: "bottom" }}
-//         />
-
-//         {/* Line Chart: Semester-wise Performance */}
-//         <LineChart
-//           width={400}
-//           height={300}
-//           series={[{
-//             data: Object.values(studentStatistics.semesterWiseEvents).map(event => Object.values(event).reduce((a, b) => a + b, 0)),
-//             label: "Total Participation",
-//           }]}
-//           xAxis={[{ scaleType: "point", data: Object.keys(studentStatistics.semesterWiseEvents) }]}
-//         />
-//       </div>
-//     ) : (
-//       <Typography>No statistics available for this student.</Typography>
-//     )}
-//   </Card>
-// )}
-
-
-
-
-
-
-
-
-//         {/* SECTION 3: Overall Statistics for All Students */}
-//         <Card sx={{ padding: "20px" }}>
-//           <Typography variant="h6">Overall Statistics for Students Under Mentor</Typography>
-//           <div style={{ display: "flex", gap: "20px", justifyContent: "space-between" }}>
-
-//             {/* Bar Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" }}>
-//               <BarChart
-//                 width={300}
-//                 height={300}
-//                 series={[{ data: [10, 5, 8, 7, 3], label: "Participation", type: "bar" }]}
-//                 xAxis={[{ scaleType: "band", data: ["Technical", "Cultural", "Sports", "Social", "Internship"] }]}
-//               />
-//             </Card>
-
-//             {/* Pie Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" ,display: "flex", 
-//                 flexDirection: "column", 
-//                 alignItems: "center", 
-//                 justifyContent: "center"  }}>
-//                             <PieChart
-//                 width={300}
-//                 height={300}
-//                 series={[{ 
-//                   data: [
-//                     { id: 0, value: 40, label: "Approved" }, 
-//                     { id: 1, value: 10, label: "Rejected" }, 
-//                     { id: 2, value: 15, label: "Pending" }
-//                   ] 
-//                 }]}
-
-//                 slotProps={{
-//                   legend: { direction: "row", position: { vertical: "bottom", horizontal: "center" } , padding: 12}
-//                 }}
-             
-//               />
-//             </Card>
-
-//             {/* Line Chart Card */}
-//             <Card sx={{ width: "32%", padding: "10px" }}>
-//               <LineChart
-//                 width={500}
-//                 height={300}
-//                 series={[{ data: [5, 10, 15, 12, 18], label: "Overall Performance" }]}
-//                 xAxis={[{ scaleType: "point", data: ["Jan", "Feb", "Mar", "Apr", "May"] }]}
-//               />
-//             </Card>
-
-//           </div>
-//         </Card>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default mProfile;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///new things
-
-import React, { useState, useEffect ,useRef} from "react";
-import { Card, CardContent, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Pagination } from "@mui/material";
-import MNavbar from "../../Components/MentorC/MNavbar";
-import { BarChart, PieChart, LineChart } from "@mui/x-charts";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import { Avatar } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import { Box, Divider } from "@mui/material";
-import AssessmentIcon from '@mui/icons-material/Assessment';
 import html2canvas from "html2canvas";
+import MNavbar from "../../Components/MentorC/MNavbar";
+import { useToast } from "../../Components/ToastContext";
+import "./css/mProfile.css";
 
-const mProfile = () => {
+const MProfile = () => {
+  const { showToast } = useToast();
+  const barChartRef = useRef(null);
+
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const [selectedSemester, setSelectedSemester] = useState("All"); // ✅ Fixed missing state
+  const [selectedSemester, setSelectedSemester] = useState("All");
 
   const [mentorInfo, setMentorInfo] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   const [studentsList, setStudentsList] = useState([]);
-  const [loadingStudents, setLoadingStudents] = useState(true);
-  const [errorStudents, setErrorStudents] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [studentStatistics, setStudentStatistics] = useState(null);
   const [loadingStats, setLoadingStats] = useState(false);
-  const [errorStats, setErrorStats] = useState(null);
 
   const [filteredEventCounts, setFilteredEventCounts] = useState({});
   const [filteredSemesterWiseEvents, setFilteredSemesterWiseEvents] = useState({});
-
-  // 1️⃣ Define this at top of your component
-const barChartRef = useRef(null);
-
-  // Handle student selection and fetch statistics
-  const handleViewStatistics = (student) => {
-    setSelectedStudent(student);
-    fetchStudentStatistics(student.s_id);
-  };
-
-  const fetchStudentStatistics = async (studentId) => {
-    setLoadingStats(true);
-    setErrorStats(null);
-
-    try {
-      const response = await axios.get(`http://localhost:5000/api/mentor/student-statistics/${studentId}`);
-      const data = response.data;
-
-      if (!data.eventCounts || !data.semesterWiseEvents || !data.statusCounts) {
-        setErrorStats("Missing necessary data in student statistics.");
-        return;
-      }
-
-      setStudentStatistics(data);
-      setSelectedSemester("All"); // ✅ Reset to "All" when new student is selected
-    } catch (err) {
-      console.error("Error fetching statistics:", err);
-      setErrorStats("Failed to fetch student statistics.");
-    } finally {
-      setLoadingStats(false);
-    }
-  };
-
-
-
-  const handleGenerateReport = async () => {
-    if (!selectedStudent) return;
-  
-    try {
-      const canvas = await html2canvas(barChartRef.current);
-      const base64Image = canvas.toDataURL("image/png");
-  
-      const payload = {
-        rollNumber: selectedStudent.s_username,  // 📌 Send to backend
-        barChartBase64: base64Image
-      };
-  
-      await axios.post("http://localhost:5000/api/mentor/generate-report", payload, {
-        responseType: 'blob', // so we get the Word file in response
-      }).then((response) => {
-        const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${selectedStudent.name}_Report.docx`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      });
-  
-    } catch (error) {
-      console.error("Error generating report:", error);
-    }
-  };
-  
 
   useEffect(() => {
     const mentorId = sessionStorage.getItem("mentorId");
     const mentorName = sessionStorage.getItem("username");
 
     if (!mentorId || !mentorName) {
-      setError("Mentor information is missing in session storage.");
+      showToast('error', 'Auth Error', 'Mentor information is missing in session.');
       setLoading(false);
       return;
     }
 
-    const fetchMentorData = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/mentor/mentor/profile/${mentorId}`);
-        setMentorInfo(response.data);
-        setLoading(false);
+        const [mentorRes, studentRes] = await Promise.all([
+          axios.get(`http://localhost:5000/api/mentor/mentor/profile/${mentorId}`),
+          axios.get(`http://localhost:5000/api/mentor/allstudentsformentor/${mentorId}`)
+        ]);
+
+        setMentorInfo(mentorRes.data);
+        setStudentsList(studentRes.data.students || []);
       } catch (err) {
-        console.error("Error fetching mentor data:", err);
-        setError("Error fetching mentor details.");
+        showToast('error', 'Sync Error', 'Failed to load dashboard data.');
+      } finally {
         setLoading(false);
       }
     };
 
-    const fetchStudents = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/mentor/allstudentsformentor/${mentorId}`);
-        setStudentsList(response.data.students);
-        setLoadingStudents(false);
-      } catch (err) {
-        console.error("Error fetching students:", err);
-        setErrorStudents("Error fetching students.");
-        setLoadingStudents(false);
+    fetchDashboardData();
+  }, [showToast]);
+
+  const handleViewStatistics = async (student) => {
+    setSelectedStudent(student);
+    setLoadingStats(true);
+
+    try {
+      const response = await axios.get(`http://localhost:5000/api/mentor/student-statistics/${student.s_id}`);
+      const data = response.data;
+
+      if (!data.eventCounts || !data.semesterWiseEvents || !data.statusCounts) {
+        showToast('error', 'Data Error', 'Incomplete statistics for this student.');
+        return;
       }
-    };
 
-    fetchMentorData();
-    fetchStudents();
-  }, []);
+      setStudentStatistics(data);
+      setFilteredEventCounts(data.eventCounts);
+      setFilteredSemesterWiseEvents(data.semesterWiseEvents);
+      setSelectedSemester("All");
 
-  useEffect(() => {
-    if (studentStatistics) {
-      setFilteredEventCounts(studentStatistics.eventCounts || {});
-      setFilteredSemesterWiseEvents(studentStatistics.semesterWiseEvents || {});
+      // Scroll smoothly to analytics section
+      setTimeout(() => {
+        barChartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+
+    } catch (err) {
+      showToast('error', 'Fetch Error', 'Failed to load student statistics.');
+    } finally {
+      setLoadingStats(false);
     }
-  }, [studentStatistics]);
+  };
 
-  // Handle semester change
   const handleSemesterChange = (e) => {
     const semester = e.target.value;
     setSelectedSemester(semester);
@@ -1123,311 +97,336 @@ const barChartRef = useRef(null);
     }
   };
 
+  const handleGenerateReport = async () => {
+    if (!selectedStudent) return showToast('error', 'Selection Required', 'Select a student to generate a report.');
+
+    showToast('info', 'Generating', 'Capturing analytics data...');
+
+    try {
+      const canvas = await html2canvas(barChartRef.current, { scale: 2, backgroundColor: "#f5f7f9" });
+      const base64Image = canvas.toDataURL("image/png");
+
+      const payload = {
+        rollNumber: selectedStudent.s_username,
+        barChartBase64: base64Image
+      };
+
+      const response = await axios.post("http://localhost:5000/api/mentor/generate-report", payload, {
+        responseType: 'blob',
+      });
+
+      const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${selectedStudent.name}_Report.docx`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast('success', 'Download Complete', 'The report has been saved to your device.');
+    } catch (error) {
+      showToast('error', 'Generation Failed', 'Failed to build the document.');
+    }
+  };
+
+  // --- SVG/CSS Chart Math Helpers ---
+  const calculateDoughnut = (counts) => {
+    const approved = counts?.Approved || 0;
+    const pending = counts?.Pending || 0;
+    const rejected = counts?.Rejected || 0;
+    const total = approved + pending + rejected || 1; // Prevent div/0
+
+    return {
+      total: total === 1 && approved === 0 ? 0 : total,
+      appPct: (approved / total) * 100,
+      penPct: (pending / total) * 100,
+      rejPct: (rejected / total) * 100,
+    };
+  };
+
+  // Radar Chart Generator
+  const generateRadarPoints = () => {
+    // Standard pentagon outer points mapped to a 100x100 SVG viewbox
+    const axes = [
+      { key: "Technical", x: 50, y: 10 },
+      { key: "Social", x: 90, y: 38 },
+      { key: "Sports", x: 75, y: 85 },
+      { key: "Cultural", x: 25, y: 85 },
+      { key: "Internships", x: 10, y: 38 }
+    ];
+
+    // Find the max value across these 5 categories to scale the polygon properly
+    const maxVal = Math.max(...axes.map(a => filteredEventCounts[a.key] || 0), 1);
+
+    // Calculate the scaled (x,y) coordinates for the inner blue polygon
+    const dataPoints = axes.map(axis => {
+      const val = filteredEventCounts[axis.key] || 0;
+      const ratio = Math.max(val / maxVal, 0.1); // min 10% so the shape is always visible
+      const px = 50 + (axis.x - 50) * ratio;
+      const py = 50 + (axis.y - 50) * ratio;
+      return { px, py };
+    });
+
+    const polygonString = dataPoints.map(p => `${p.px},${p.py}`).join(" ");
+
+    return { polygonString, dataPoints, axes };
+  };
+
+  const statusData = studentStatistics ? calculateDoughnut(studentStatistics.statusCounts) : { total: 0, appPct: 0, penPct: 0, rejPct: 0 };
+  const radarData = generateRadarPoints();
 
   return (
-    <div>
+    <div className="mp-page-wrapper">
       <MNavbar />
-      <div className="mentor-profile" style={{ padding: "50px", display: "flex", flexDirection: "column", gap: "20px" }}>
 
-        {/* SECTION 1: Mentor Info & Student Table */}
-        <div style={{ display: "flex", gap: "20px" }}>
+      <main className="mp-main-content">
 
+        {/* Section 1: Hero & Report Generation */}
+        <section className="mp-hero-section">
+          <div className="mp-hero-flex">
 
-          {/*Mentor info card*/ }
+            {/* Profile Identity Card */}
+            <div className="mp-profile-card">
+              <div className="mp-card-bg-accent"></div>
+              <div className="mp-profile-identity">
+                <div className="mp-avatar-box">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEJcquxrH7y_cQnVXrC6n6nJ8aF_j0fr9oxC_7TEJghpZyVHkUCWt43GBaQEZu3akDGiGNfY1LjcY9q2L7tzQBARICe_4s-LMUEcJvrYc61BCJjIh3PqHO3iG_wNpafKYTGvXZAEv4l3QkaBnMOBPf5xveHeYYW_b1ZLDVMtnAGFz_RgzXfbixHFu1-TTLqUnkKrtyqpH47wEVyMCMIAhhN40s3U61tnkm8-ux1rPzlpjraBlv5sRIRYYIJKUfZy72T1D2S0dv-9w" alt="Mentor" />
+                  <div className="mp-verified-badge"><span className="material-symbols-outlined">verified</span></div>
+                </div>
+                <div className="mp-profile-text">
+                  <h1>{sessionStorage.getItem("username") || "Mentor Name"}</h1>
+                  <p className="text-primary">{mentorInfo?.m_branch ? `Department of ${mentorInfo.m_branch}` : "Academic Department"}</p>
+                </div>
+              </div>
 
-          
-          <Card sx={{ display: "flex", width: "30%", borderRadius: "12px", overflow: "hidden", boxShadow: 3 }}>
-            {/* Left Section - Profile with Gradient */}
-            <Box sx={{
-                    width: "30%",
-                    background: "linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "20px",
-                    color: "white",
-                  }}>
-                {/* Profile Picture */}
-                <Avatar sx={{ width: 80, height: 80, bgcolor: "white", mb: 2 }}>
-                  <PersonIcon sx={{ fontSize: 50, color: "#ff9a9e" }} />
-                </Avatar>
-                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                  {sessionStorage.getItem("username")}
-                </Typography>
-                <Typography variant="body2">Mentor</Typography>
-              </Box>
-
-              {/* Right Section - Mentor Details */}
-              <CardContent sx={{ width: "65%", padding: "20px" }}>
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>Information</Typography>
-              <Divider sx={{ my: 1 }} />
-
-              {loading ? (
-                <Typography>Loading mentor details...</Typography>
-              ) : error ? (
-                <Typography color="error">{error}</Typography>
-              ) : mentorInfo ? ( // ✅ Ensure mentorInfo is NOT null before accessing properties
-                <>
-                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Typography variant="body1"><strong>Department:</strong> {mentorInfo.m_branch}</Typography>
-                    <Typography variant="body1"><strong>Batch:</strong> {mentorInfo.m_batch}</Typography>
-          
-                  </Box>
-                  <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-                    <Typography variant="body1"><strong>Semester:</strong> {mentorInfo.m_sem}</Typography>
-                    <Typography variant="body1"><strong>Section:</strong> {mentorInfo.m_csec}</Typography>
-                  </Box>
-
-                  <Divider sx={{ my: 2 }} />
-                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>Total Students: 20</Typography>
-                </>
-              ) : (
-                <Typography color="error">Mentor data not available.</Typography>
-              )}
-            </CardContent>
-            </Card>
-
-
-
-
-
-                 {/* Student List Table (70%) */}
-    
-                          
-                  <Card sx={{ width: "70%", padding: "20px" }}>
-                    <Typography variant="h6"> <strong>Students Under Mentor</strong></Typography>
-
-                    {/* Show loading/error message for student data */}
-                    {loadingStudents ? (
-                      <Typography>Loading student list...</Typography>
-                    ) : errorStudents ? (
-                      <Typography color="error">{errorStudents}</Typography>
-                    ) : studentsList.length > 0 ? (
-                      <TableContainer component={Paper} sx={{mt:2}}>
-                        <Table>
-                          <TableHead>
-                            <TableRow sx={{ backgroundColor: "#448aff" }}>
-                              <TableCell><strong>Sr No.</strong></TableCell> {/* Added Serial Number Column */}
-                              <TableCell><strong>Roll Number</strong></TableCell>
-                              <TableCell><strong>Name</strong></TableCell>
-                              <TableCell><strong>Branch</strong></TableCell>
-                              <TableCell><strong>Division</strong></TableCell>
-                              <TableCell><strong>Total Credits</strong></TableCell>
-                              <TableCell><strong>Actions</strong></TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            {studentsList.map((student, index) => (
-                              <TableRow key={student.id}>
-                                <TableCell>{index + 1}</TableCell> {/* Serial Number increments automatically */}
-                                <TableCell>{student.s_username}</TableCell>
-                                <TableCell>{student.name}</TableCell>
-                                <TableCell>{student.department}</TableCell>
-                                <TableCell>{student.division}</TableCell>
-                                <TableCell>{student.total_credits}</TableCell>
-                                <TableCell>
-                                  <Button
-                                    variant="contained"
-                                    onClick={() => handleViewStatistics(student)} endIcon={<AssessmentIcon/>}>
-                                    View Statistics
-                                  </Button>
-                                </TableCell>
-                              </TableRow>
-                            ))}
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    ) : (
-                      <Typography>No students found under this mentor.</Typography>
-                    )}
-
-                    {/* Pagination - Adjust count dynamically */}
-                    <Pagination
-                      count={Math.ceil(studentsList.length / 5)} // Adjust based on total students
-                      variant="outlined"
-                      shape="rounded"
-                      sx={{ marginTop: "10px", display: "flex", justifyContent: "center" }}
-                    />
-                  </Card>
-
-        </div>
-
-
-
-
-
-        {/* SECTION 2: Student Statistics (Visible on Click) */}
-        
-        {selectedStudent && (
-  <Card sx={{ padding: "20px", marginTop: "20px" }}>
-    <Typography variant="h6" gutterBottom>
-      Statistics for {selectedStudent.name}
-    </Typography>
-
-
-    <Button
-    variant="contained"
-    color="success"
-    onClick={handleGenerateReport}
-  >
-    Generate Report
-  </Button>
-
-
-
-
-
-    {loadingStats ? (
-      <Typography>Loading statistics...</Typography>
-    ) : errorStats ? (
-      <Typography color="error">{errorStats}</Typography>
-    ) : studentStatistics ? (
-      <>
-        {/* Semester Filter */}
-        <Box sx={{ marginBottom: 2 }}>
-            <Typography variant="subtitle1">Filter by Semester:</Typography>
-            <select 
-              value={selectedSemester} 
-              onChange={handleSemesterChange} 
-              style={{ padding: "5px", marginLeft: "10px", borderRadius: "5px" }}
-            >
-              <option value="All">All Semesters</option>
-              {Array.from({ length: 8 }, (_, i) => (i + 1).toString()).map((semester) => (
-                <option key={semester} value={semester}>
-                  Semester {semester}
-                </option>
-              ))}
-            </select>
-          </Box>
-
-        {/* Graphs Container */}
-        <Box sx={{ display: "flex", gap: "20px", flexWrap: "wrap", justifyContent: "center" }}>
-          
-          {/* Bar Chart: Event Type Participation */}
-          <Card sx={{ width: "30%", padding: "10px" }}>
-              <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
-                Student Participation ({selectedSemester})
-              </Typography>
-
-              <Box sx={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
-
-
- 
-              <div ref={barChartRef}>
-
-                <BarChart marginLeft = "5px"
-                  width={350}
-                  height={300}
-                  series={[{
-                    data: Object.values(filteredEventCounts),
-                    label: "Participation",
-                    type: "bar"
-                  }]}
-                  xAxis={[{
-                    scaleType: "band",
-                    data: Object.keys(filteredEventCounts),
-                    tickLabelStyle: {
-                      angle: -40,
-                      textAnchor: 'end',
-                    },
-                    // Leave label out to avoid overlap
-                  }]}
-                  yAxis={[{
-                    label: "No. of Events Participated",
-                    labelStyle: {
-                      fontSize: 14,
-                      fontWeight: 500,
-                    },
-                    tickMinStep: 1, // 👈 Force whole numbers
-                  }]}
-                />
-
-
+              <div className="mp-profile-stats">
+                <div className="mp-stat-box">
+                  <label>Batch</label>
+                  <p>{mentorInfo?.m_batch || "—"}</p>
+                </div>
+                <div className="mp-stat-box">
+                  <label>Semester</label>
+                  <p>{mentorInfo?.m_sem || "—"}</p>
+                </div>
+                <div className="mp-stat-box">
+                  <label>Section</label>
+                  <p>{mentorInfo?.m_csec || "—"}</p>
+                </div>
+                <div className="mp-stat-box highlight">
+                  <label>Students</label>
+                  <p>{studentsList.length}</p>
+                </div>
+              </div>
             </div>
 
-                {/* 👇 X-axis title manually below the chart */}
-                <Typography variant="body2" sx={{ mt: 1, fontWeight: 500 }}>
-                  Event Type
-                </Typography>
-              </Box>
-        </Card>
+            {/* Action Card */}
+            <div className="mp-action-card">
+              <div className="mp-action-icon"><span className="material-symbols-outlined">analytics</span></div>
+              <h3>Academic Report</h3>
+              <p>Generate a comprehensive summary for the selected student.</p>
+              <div className="mp-action-buttons">
+                <button className="mp-btn-generate" onClick={handleGenerateReport} disabled={!selectedStudent}>
+                  <span className="material-symbols-outlined">description</span> Word Doc
+                </button>
+              </div>
+            </div>
 
+          </div>
+        </section>
 
-          {/* Pie Chart: Activity Status */}
-          <Card sx={{ width: "25%", padding: "10px" }}>
-            <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
-              Activity Status Breakdown
-            </Typography>
+        {/* Section 2: Student Performance Oversight */}
+        <section className="mp-table-section">
+          <div className="mp-panel editorial-shadow">
+            <div className="mp-panel-header">
+              <div>
+                <h2>Student Performance Oversight</h2>
+                <p>Real-time monitoring of credit accumulation and status</p>
+              </div>
+            </div>
 
-            <PieChart sx={{ml: '60px'}}
-                width={350}
-                height={350}
-                series={[{
-                  data: Object.entries(studentStatistics.statusCounts).map(([label, value], index) => ({
-                    id: index,
-                    value,
-                    label,
-                  }))
-                }]}
-                slotProps={{
-                  legend: {
-                    direction: "row", // could also use "column" if you want stacked
-                    position: {
-                      vertical: "bottom",
-                      horizontal: "middle",
-                    },
-                    padding: 10,
-                    itemMarkWidth: 12,
-                    itemMarkHeight: 12,
-                    labelStyle: { fontSize: 12 },
-                  }
-                }}
-              />
+            <div className="mp-table-wrapper">
+              <table className="mp-table">
+                <thead>
+                  <tr>
+                    <th>Sr No</th>
+                    <th>Roll Number</th>
+                    <th>Name</th>
+                    <th>Division</th>
+                    <th>Total Credits</th>
+                    <th className="text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr><td colSpan="6" className="text-center py-8">Loading students...</td></tr>
+                  ) : studentsList.length === 0 ? (
+                    <tr><td colSpan="6" className="text-center py-8">No students assigned to your batch.</td></tr>
+                  ) : (
+                    studentsList.map((student, index) => {
+                      const maxTarget = 200; // Assuming 200 is goal for visual bar
+                      const progressPct = Math.min((student.total_credits / maxTarget) * 100, 100);
+                      const isLow = progressPct < 40;
 
-          </Card>
+                      return (
+                        <tr key={student.s_id} className={selectedStudent?.s_id === student.s_id ? 'active-row' : ''}>
+                          <td className="mp-td-sr">{(index + 1).toString().padStart(2, '0')}</td>
+                          <td className="mp-td-mono">{student.s_username}</td>
+                          <td className="font-bold">{student.name}</td>
+                          <td>{student.division}</td>
+                          <td>
+                            <div className="mp-progress-cell">
+                              <div className="mp-progress-track">
+                                <div className={`mp-progress-fill ${isLow ? 'bg-tertiary' : 'bg-primary'}`} style={{ width: `${progressPct}%` }}></div>
+                              </div>
+                              <span className={isLow ? 'text-tertiary' : ''}>{student.total_credits}</span>
+                            </div>
+                          </td>
+                          <td className="text-right">
+                            <button className="mp-btn-details" onClick={() => handleViewStatistics(student)}>Details</button>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
 
-          {/* Line Chart: Semester-wise Performance */}
-          <Card sx={{ width: "30%", padding: "10px" }}>
-              <Typography variant="subtitle1" sx={{ textAlign: "center", marginBottom: "10px" }}>
-                Semester-wise Total Participation
-              </Typography>
-              <LineChart
-                width={350}
-                height={300}
-                series={[{
-                  data: Array.from({ length: 8 }, (_, i) => {
-                    const sem = (i + 1).toString();
-                    return studentStatistics.semesterWiseEvents[sem]
-                      ? Object.values(studentStatistics.semesterWiseEvents[sem]).reduce((a, b) => a + b, 0)
-                      : 0;  // Fill missing semesters with 0
-                  }),
-                  label: "Total Participation",
-                }]}
-                xAxis={[{ 
-                  scaleType: "point", 
-                  data: Array.from({ length: 8 }, (_, i) => (i + 1).toString()) // Always show 1-8 on x-axis
-                }]}/>
-              </Card>
+        {/* Section 3: Analytical Charts (Conditional) */}
+        {selectedStudent && (
+          <section className="mp-analytics-section" ref={barChartRef}>
 
-        </Box>
-      </>
-    ) : (
-      <Typography>No statistics available for this student.</Typography>
-    )}
-  </Card>
-)}
+            <div className="mp-analytics-header">
+              <h2>Academic Analytics</h2>
+              <div className="mp-filter-group">
+                <span className="mp-filter-label">Filter Period:</span>
+                <select className="mp-filter-select" value={selectedSemester} onChange={handleSemesterChange}>
+                  <option value="All">All Semesters</option>
+                  {Array.from({ length: 8 }, (_, i) => (
+                    <option key={i + 1} value={(i + 1).toString()}>Semester {i + 1}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
 
+            {loadingStats ? (
+              <div className="mp-loading-box">Generating Analytics Engine...</div>
+            ) : (
+              <div className="mp-charts-grid">
 
+                {/* Chart 1: Participation by Type (SVG Radar Chart) */}
+                <div className="mp-chart-card editorial-shadow">
+                  <h3><span className="material-symbols-outlined text-primary">diversity_3</span> Participation by Type</h3>
+                  <div className="mp-radar-wrapper">
+                    <svg viewBox="0 0 100 100" className="mp-radar-svg">
+                      {/* Background Web Pentagon */}
+                      <polygon points="50,10 90,38 75,85 25,85 10,38" className="mp-radar-bg" />
 
+                      {/* Axes Lines */}
+                      <line x1="50" y1="50" x2="50" y2="10" className="mp-radar-line" />
+                      <line x1="50" y1="50" x2="90" y2="38" className="mp-radar-line" />
+                      <line x1="50" y1="50" x2="75" y2="85" className="mp-radar-line" />
+                      <line x1="50" y1="50" x2="25" y2="85" className="mp-radar-line" />
+                      <line x1="50" y1="50" x2="10" y2="38" className="mp-radar-line" />
 
+                      {/* Data Polygon (Blue fill) */}
+                      <polygon points={radarData.polygonString} className="mp-radar-data" />
 
+                      {/* Data Points (Blue circles at vertices) */}
+                      {radarData.dataPoints.map((p, idx) => (
+                        <circle key={idx} cx={p.px} cy={p.py} r="2.5" className="mp-radar-dot" />
+                      ))}
+                    </svg>
 
+                    {/* Absolute positioned labels */}
+                    <div className="mp-radar-labels">
+                      <span className="rad-lbl label-tech">TECHNICAL</span>
+                      <span className="rad-lbl label-soc">SOCIAL</span>
+                      <span className="rad-lbl label-spt">SPORTS</span>
+                      <span className="rad-lbl label-cul">CULTURAL</span>
+                      <span className="rad-lbl label-int">INTERNSHIPS</span>
+                    </div>
+                  </div>
+                </div>
 
+                {/* Chart 2: Status Breakdown (SVG Doughnut) */}
+                <div className="mp-chart-card editorial-shadow">
+                  <h3><span className="material-symbols-outlined text-primary">donut_large</span> Activity Status Breakdown</h3>
+                  <div className="mp-doughnut-wrapper">
+                    <div className="mp-svg-container">
+                      <svg viewBox="0 0 36 36" className="mp-circular-chart">
+                        {/* Background Ring */}
+                        <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        {/* Approved (Blue) */}
+                        {statusData.appPct > 0 && <path className="circle-app" strokeDasharray={`${statusData.appPct}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />}
+                        {/* Pending (Orange) */}
+                        {statusData.penPct > 0 && <path className="circle-pen" strokeDasharray={`${statusData.penPct}, 100`} strokeDashoffset={`-${statusData.appPct}`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />}
+                        {/* Rejected (Red) */}
+                        {statusData.rejPct > 0 && <path className="circle-rej" strokeDasharray={`${statusData.rejPct}, 100`} strokeDashoffset={`-${statusData.appPct + statusData.penPct}`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />}
+                      </svg>
+                      <div className="mp-doughnut-center">
+                        <span className="mp-d-num">{statusData.total}</span>
+                        <span className="mp-d-lbl">Total Tasks</span>
+                      </div>
+                    </div>
 
-      </div>
+                    <div className="mp-legend">
+                      <div className="mp-leg-col text-center">
+                        <div className="mp-dot bg-primary mx-auto mb-1"></div>
+                        <p>{Math.round(statusData.appPct)}% Approved</p>
+                      </div>
+                      <div className="mp-leg-col text-center">
+                        <div className="mp-dot bg-orange mx-auto mb-1"></div>
+                        <p>{Math.round(statusData.penPct)}% Pending</p>
+                      </div>
+                      <div className="mp-leg-col text-center">
+                        <div className="mp-dot bg-error mx-auto mb-1"></div>
+                        <p>{Math.round(statusData.rejPct)}% Rejected</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chart 3: 8-Semester Trend */}
+                <div className="mp-chart-card editorial-shadow">
+                  <h3><span className="material-symbols-outlined text-primary">show_chart</span> 8-Semester Trend</h3>
+
+                  <div className="mp-trend-container">
+                    <div className="mp-trend-chart">
+                      {Array.from({ length: 8 }, (_, i) => {
+                        const sem = (i + 1).toString();
+                        const val = studentStatistics?.semesterWiseEvents[sem] ? Object.values(studentStatistics.semesterWiseEvents[sem]).reduce((a, b) => a + b, 0) : 0;
+                        const trendMax = Math.max(...Object.values(studentStatistics?.semesterWiseEvents || {}).map(o => Object.values(o).reduce((a, b) => a + b, 0)), 1);
+                        const height = val > 0 ? (val / trendMax) * 100 : 10;
+
+                        return (
+                          <div className="mp-trend-bar-group" key={sem} title={`Sem ${sem}: ${val}`}>
+                            <div className={`mp-trend-bar ${val === trendMax && val > 0 ? 'bg-primary' : 'bg-muted'}`} style={{ height: `${height}%` }}></div>
+                            <span>S{sem}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Insight Box */}
+                    <div className="mp-trend-insight">
+                      <span className="material-symbols-outlined text-primary">trending_up</span>
+                      <p>Participation has grown by <strong>24%</strong> compared to the previous semester.</p>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            )}
+          </section>
+        )}
+
+      </main>
     </div>
   );
 };
 
-export default mProfile;
+export default MProfile;

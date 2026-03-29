@@ -22,10 +22,7 @@ import {
 import { getAdminCredentials } from "./controller/adminController.js";
 import { getMentorCredentials } from "./controller/mentorController.js";
 
-
-
 // Import all models to register them with Sequelize
-
 import Admin from "./postgres/model/Admin.js";
 import Events from "./postgres/model/Events.js";
 import Mentor from "./postgres/model/Mentor.js";
@@ -40,22 +37,9 @@ import ClubEvent from "./postgres/model/ClubEvent.js";
 import StudentDetails from "./postgres/model/StudentDetails.js";
 import StudentActivitySummary from "./postgres/model/StudentActivitySummary.js";
 
-
 const app = express();
 
-app.use(express.json());
-app.use(cookieParser()); 
-// Prevent caching for all responses (important after logout)
-app.use((req, res, next) => {
-  res.set("Cache-Control", "no-store");
-  next();
-});
-
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// CORS Middleware
+// 1. CORS Middleware (Moved to the very top so it intercepts everything first)
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -63,6 +47,20 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// 2. Body Parser Middleware (UPDATED WITH 50MB LIMIT FOR HIGH-RES SCREENSHOTS)
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(cookieParser());
+
+// Prevent caching for all responses (important after logout)
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Register Routes
 app.use("/api/session", sessionRoutes);
@@ -72,11 +70,9 @@ app.use("/api/admin", adminRoutes);
 
 console.log("Club Admin Routes Loaded...");
 
-app.use("/api/clubadmin",clubAdminRoutes);
+app.use("/api/clubadmin", clubAdminRoutes);
 app.use("/uploads", express.static("uploads"));
 app.use('/clubadminpfp', express.static(path.join(__dirname, 'clubadminpfp')));
-
-
 
 
 // 🔹 Add Protected Route Here (After Session Routes)
@@ -117,15 +113,7 @@ app.use("/", eventRoutes);
 
 const PORT = 5000;
 
-
-
-
-// app.listen(PORT, () => {
-//   console.log(`Server is running at port ${PORT}`);
-// });
-
 //// Sync models and start the server
-
 sequelize
   .sync() // 🔹 Use { force: true } to drop tables and recreate them (only for development)
   .then(() => {
@@ -137,8 +125,5 @@ sequelize
   .catch((err) => {
     console.error("Database sync error:", err);
   });
-
-
-
 
 connection();
