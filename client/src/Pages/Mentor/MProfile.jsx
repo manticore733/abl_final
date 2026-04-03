@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import html2canvas from "html2canvas";
+import html2pdf from "html2pdf.js";
 import MNavbar from "../../Components/MentorC/MNavbar";
 import { useToast } from "../../Components/ToastContext";
+import StudentReportTemplate from './StudentReportTemplate';
 import "./css/mProfile.css";
 
 const MProfile = () => {
   const { showToast } = useToast();
   const barChartRef = useRef(null);
+  const reportTemplateRef = useRef(null);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState("All");
@@ -21,6 +23,11 @@ const MProfile = () => {
 
   const [filteredEventCounts, setFilteredEventCounts] = useState({});
   const [filteredSemesterWiseEvents, setFilteredSemesterWiseEvents] = useState({});
+
+  // --- NEW: Preview State ---
+  const [reportActivities, setReportActivities] = useState([]);
+  const [showPreview, setShowPreview] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   useEffect(() => {
     const mentorId = sessionStorage.getItem("mentorId");
@@ -69,7 +76,6 @@ const MProfile = () => {
       setFilteredSemesterWiseEvents(data.semesterWiseEvents);
       setSelectedSemester("All");
 
-      // Scroll smoothly to analytics section
       setTimeout(() => {
         barChartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
@@ -97,35 +103,99 @@ const MProfile = () => {
     }
   };
 
-  const handleGenerateReport = async () => {
-    if (!selectedStudent) return showToast('error', 'Selection Required', 'Select a student to generate a report.');
-
-    showToast('info', 'Generating', 'Capturing analytics data...');
+  // --- NEW: Open Preview Modal ---
+  const handleOpenPreview = async () => {
+    if (!selectedStudent || !studentStatistics) return showToast('error', 'Selection Required', 'Select a student first.');
+    showToast('info', 'Loading Preview', 'Fetching complete activity ledger...');
 
     try {
-      const canvas = await html2canvas(barChartRef.current, { scale: 2, backgroundColor: "#f5f7f9" });
-      const base64Image = canvas.toDataURL("image/png");
+      const res = await axios.get(`http://localhost:5000/api/mentor/student-processed-activities/${selectedStudent.s_id}`);
+      setReportActivities(res.data || []);
+      setShowPreview(true); // Open the modal!
+    } catch (error) {
+      showToast('error', 'Fetch Failed', 'Could not compile the preview.');
+    }
+  };
 
-      const payload = {
-        rollNumber: selectedStudent.s_username,
-        barChartBase64: base64Image
+  // --- NEW: Trigger Actual Download ---
+  //   const handleDownloadPDF = async () => {
+  //     setIsGeneratingPDF(true);
+  //     showToast('info', 'Generating PDF', 'Formatting official document...');
+
+  //     try {
+  //       const element = reportTemplateRef.current;
+  //       // const opt = {
+  //       //   margin: 0, // We handle padding completely in CSS now!
+  //       //   filename: `${selectedStudent.s_username}_Academic_Report.pdf`,
+  //       //   image: { type: 'jpeg', quality: 0.98 },
+  //       //   html2canvas: { scale: 2, useCORS: true },
+  //       //   jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+  //       //   pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  //       // };
+
+  //       const opt = {
+  //   margin: [10, 10, 10, 10], // top, right, bottom, left in mm
+  //   filename: `${selectedStudent.s_username}_Academic_Report.pdf`,
+  //   image: { type: 'jpeg', quality: 0.98 },
+  //   html2canvas: { 
+  //     scale: 2, 
+  //     useCORS: true,
+  //     windowWidth: 850, // 👈 Tell html2canvas the viewport is exactly 850px
+  //   },
+  //   jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  //   pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  // };
+
+  //       await html2pdf().set(opt).from(element).save();
+
+  //       showToast('success', 'Download Complete', 'PDF Report successfully generated.');
+  //       setShowPreview(false); // Close modal on success
+  //     } catch (error) {
+  //       showToast('error', 'Generation Failed', 'Could not compile the PDF report.');
+  //     } finally {
+  //       setIsGeneratingPDF(false);
+  //     }
+  //   };
+
+  const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    showToast('info', 'Generating PDF', 'Formatting official document...');
+
+    try {
+      const element = reportTemplateRef.current;
+
+      // 👇 Temporarily override styles for clean capture
+      const originalStyle = element.style.cssText;
+      element.style.width = '850px';
+      element.style.maxWidth = '850px';
+      element.style.overflow = 'visible';
+
+      const opt = {
+        margin: 0,
+        filename: `${selectedStudent.s_username}_Academic_Report.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          windowWidth: 850,
+          scrollX: 0,
+          scrollY: 0,
+        },
+        jsPDF: { unit: 'px', format: [850, 1200], orientation: 'portrait' }, // 👈 Custom page size matching template
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
-      const response = await axios.post("http://localhost:5000/api/mentor/generate-report", payload, {
-        responseType: 'blob',
-      });
+      await html2pdf().set(opt).from(element).save();
 
-      const blob = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `${selectedStudent.name}_Report.docx`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      // 👇 Restore original styles
+      element.style.cssText = originalStyle;
 
-      showToast('success', 'Download Complete', 'The report has been saved to your device.');
+      showToast('success', 'Download Complete', 'PDF Report successfully generated.');
+      setShowPreview(false);
     } catch (error) {
-      showToast('error', 'Generation Failed', 'Failed to build the document.');
+      showToast('error', 'Generation Failed', 'Could not compile the PDF report.');
+    } finally {
+      setIsGeneratingPDF(false);
     }
   };
 
@@ -134,8 +204,7 @@ const MProfile = () => {
     const approved = counts?.Approved || 0;
     const pending = counts?.Pending || 0;
     const rejected = counts?.Rejected || 0;
-    const total = approved + pending + rejected || 1; // Prevent div/0
-
+    const total = approved + pending + rejected || 1;
     return {
       total: total === 1 && approved === 0 ? 0 : total,
       appPct: (approved / total) * 100,
@@ -144,31 +213,18 @@ const MProfile = () => {
     };
   };
 
-  // Radar Chart Generator
   const generateRadarPoints = () => {
-    // Standard pentagon outer points mapped to a 100x100 SVG viewbox
     const axes = [
-      { key: "Technical", x: 50, y: 10 },
-      { key: "Social", x: 90, y: 38 },
-      { key: "Sports", x: 75, y: 85 },
-      { key: "Cultural", x: 25, y: 85 },
-      { key: "Internships", x: 10, y: 38 }
+      { key: "Technical", x: 50, y: 10 }, { key: "Social", x: 90, y: 38 },
+      { key: "Sports", x: 75, y: 85 }, { key: "Cultural", x: 25, y: 85 }, { key: "Internships", x: 10, y: 38 }
     ];
-
-    // Find the max value across these 5 categories to scale the polygon properly
     const maxVal = Math.max(...axes.map(a => filteredEventCounts[a.key] || 0), 1);
-
-    // Calculate the scaled (x,y) coordinates for the inner blue polygon
     const dataPoints = axes.map(axis => {
       const val = filteredEventCounts[axis.key] || 0;
-      const ratio = Math.max(val / maxVal, 0.1); // min 10% so the shape is always visible
-      const px = 50 + (axis.x - 50) * ratio;
-      const py = 50 + (axis.y - 50) * ratio;
-      return { px, py };
+      const ratio = Math.max(val / maxVal, 0.1);
+      return { px: 50 + (axis.x - 50) * ratio, py: 50 + (axis.y - 50) * ratio, val, key: axis.key };
     });
-
     const polygonString = dataPoints.map(p => `${p.px},${p.py}`).join(" ");
-
     return { polygonString, dataPoints, axes };
   };
 
@@ -181,11 +237,10 @@ const MProfile = () => {
 
       <main className="mp-main-content">
 
-        {/* Section 1: Hero & Report Generation */}
+        {/* Section 1: Hero & Action Card */}
         <section className="mp-hero-section">
           <div className="mp-hero-flex">
 
-            {/* Profile Identity Card */}
             <div className="mp-profile-card">
               <div className="mp-card-bg-accent"></div>
               <div className="mp-profile-identity">
@@ -200,33 +255,21 @@ const MProfile = () => {
               </div>
 
               <div className="mp-profile-stats">
-                <div className="mp-stat-box">
-                  <label>Batch</label>
-                  <p>{mentorInfo?.m_batch || "—"}</p>
-                </div>
-                <div className="mp-stat-box">
-                  <label>Semester</label>
-                  <p>{mentorInfo?.m_sem || "—"}</p>
-                </div>
-                <div className="mp-stat-box">
-                  <label>Section</label>
-                  <p>{mentorInfo?.m_csec || "—"}</p>
-                </div>
-                <div className="mp-stat-box highlight">
-                  <label>Students</label>
-                  <p>{studentsList.length}</p>
-                </div>
+                <div className="mp-stat-box"><label>Batch</label><p>{mentorInfo?.m_batch || "—"}</p></div>
+                <div className="mp-stat-box"><label>Semester</label><p>{mentorInfo?.m_sem || "—"}</p></div>
+                <div className="mp-stat-box"><label>Section</label><p>{mentorInfo?.m_csec || "—"}</p></div>
+                <div className="mp-stat-box highlight"><label>Students</label><p>{studentsList.length}</p></div>
               </div>
             </div>
 
-            {/* Action Card */}
             <div className="mp-action-card">
               <div className="mp-action-icon"><span className="material-symbols-outlined">analytics</span></div>
               <h3>Academic Report</h3>
               <p>Generate a comprehensive summary for the selected student.</p>
               <div className="mp-action-buttons">
-                <button className="mp-btn-generate" onClick={handleGenerateReport} disabled={!selectedStudent}>
-                  <span className="material-symbols-outlined">description</span> Word Doc
+                {/* Changed this button to open the Preview Modal instead! */}
+                <button className="mp-btn-generate" onClick={handleOpenPreview} disabled={!selectedStudent}>
+                  <span className="material-symbols-outlined">preview</span> Preview Report
                 </button>
               </div>
             </div>
@@ -248,12 +291,7 @@ const MProfile = () => {
               <table className="mp-table">
                 <thead>
                   <tr>
-                    <th>Sr No</th>
-                    <th>Roll Number</th>
-                    <th>Name</th>
-                    <th>Division</th>
-                    <th>Total Credits</th>
-                    <th className="text-right">Action</th>
+                    <th>Sr No</th><th>Roll Number</th><th>Name</th><th>Division</th><th>Total Credits</th><th className="text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -263,7 +301,7 @@ const MProfile = () => {
                     <tr><td colSpan="6" className="text-center py-8">No students assigned to your batch.</td></tr>
                   ) : (
                     studentsList.map((student, index) => {
-                      const maxTarget = 200; // Assuming 200 is goal for visual bar
+                      const maxTarget = 200;
                       const progressPct = Math.min((student.total_credits / maxTarget) * 100, 100);
                       const isLow = progressPct < 40;
 
@@ -297,16 +335,13 @@ const MProfile = () => {
         {/* Section 3: Analytical Charts (Conditional) */}
         {selectedStudent && (
           <section className="mp-analytics-section" ref={barChartRef}>
-
             <div className="mp-analytics-header">
               <h2>Academic Analytics</h2>
               <div className="mp-filter-group">
                 <span className="mp-filter-label">Filter Period:</span>
                 <select className="mp-filter-select" value={selectedSemester} onChange={handleSemesterChange}>
                   <option value="All">All Semesters</option>
-                  {Array.from({ length: 8 }, (_, i) => (
-                    <option key={i + 1} value={(i + 1).toString()}>Semester {i + 1}</option>
-                  ))}
+                  {Array.from({ length: 8 }, (_, i) => (<option key={i + 1} value={(i + 1).toString()}>Semester {i + 1}</option>))}
                 </select>
               </div>
             </div>
@@ -321,32 +356,21 @@ const MProfile = () => {
                   <h3><span className="material-symbols-outlined text-primary">diversity_3</span> Participation by Type</h3>
                   <div className="mp-radar-wrapper">
                     <svg viewBox="0 0 100 100" className="mp-radar-svg">
-                      {/* Background Web Pentagon */}
                       <polygon points="50,10 90,38 75,85 25,85 10,38" className="mp-radar-bg" />
-
-                      {/* Axes Lines */}
                       <line x1="50" y1="50" x2="50" y2="10" className="mp-radar-line" />
                       <line x1="50" y1="50" x2="90" y2="38" className="mp-radar-line" />
                       <line x1="50" y1="50" x2="75" y2="85" className="mp-radar-line" />
                       <line x1="50" y1="50" x2="25" y2="85" className="mp-radar-line" />
                       <line x1="50" y1="50" x2="10" y2="38" className="mp-radar-line" />
-
-                      {/* Data Polygon (Blue fill) */}
                       <polygon points={radarData.polygonString} className="mp-radar-data" />
-
-                      {/* Data Points (Blue circles at vertices) */}
                       {radarData.dataPoints.map((p, idx) => (
-                        <circle key={idx} cx={p.px} cy={p.py} r="2.5" className="mp-radar-dot" />
+                        <circle key={idx} cx={p.px} cy={p.py} r="2.5" className="mp-radar-dot">
+                          <title>{`${p.key}: ${p.val} Activities`}</title>
+                        </circle>
                       ))}
                     </svg>
-
-                    {/* Absolute positioned labels */}
                     <div className="mp-radar-labels">
-                      <span className="rad-lbl label-tech">TECHNICAL</span>
-                      <span className="rad-lbl label-soc">SOCIAL</span>
-                      <span className="rad-lbl label-spt">SPORTS</span>
-                      <span className="rad-lbl label-cul">CULTURAL</span>
-                      <span className="rad-lbl label-int">INTERNSHIPS</span>
+                      <span className="rad-lbl label-tech">TECHNICAL</span><span className="rad-lbl label-soc">SOCIAL</span><span className="rad-lbl label-spt">SPORTS</span><span className="rad-lbl label-cul">CULTURAL</span><span className="rad-lbl label-int">INTERNSHIPS</span>
                     </div>
                   </div>
                 </div>
@@ -357,34 +381,19 @@ const MProfile = () => {
                   <div className="mp-doughnut-wrapper">
                     <div className="mp-svg-container">
                       <svg viewBox="0 0 36 36" className="mp-circular-chart">
-                        {/* Background Ring */}
                         <path className="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                        {/* Approved (Blue) */}
                         {statusData.appPct > 0 && <path className="circle-app" strokeDasharray={`${statusData.appPct}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />}
-                        {/* Pending (Orange) */}
                         {statusData.penPct > 0 && <path className="circle-pen" strokeDasharray={`${statusData.penPct}, 100`} strokeDashoffset={`-${statusData.appPct}`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />}
-                        {/* Rejected (Red) */}
                         {statusData.rejPct > 0 && <path className="circle-rej" strokeDasharray={`${statusData.rejPct}, 100`} strokeDashoffset={`-${statusData.appPct + statusData.penPct}`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />}
                       </svg>
                       <div className="mp-doughnut-center">
-                        <span className="mp-d-num">{statusData.total}</span>
-                        <span className="mp-d-lbl">Total Tasks</span>
+                        <span className="mp-d-num">{statusData.total}</span><span className="mp-d-lbl">Total Tasks</span>
                       </div>
                     </div>
-
                     <div className="mp-legend">
-                      <div className="mp-leg-col text-center">
-                        <div className="mp-dot bg-primary mx-auto mb-1"></div>
-                        <p>{Math.round(statusData.appPct)}% Approved</p>
-                      </div>
-                      <div className="mp-leg-col text-center">
-                        <div className="mp-dot bg-orange mx-auto mb-1"></div>
-                        <p>{Math.round(statusData.penPct)}% Pending</p>
-                      </div>
-                      <div className="mp-leg-col text-center">
-                        <div className="mp-dot bg-error mx-auto mb-1"></div>
-                        <p>{Math.round(statusData.rejPct)}% Rejected</p>
-                      </div>
+                      <div className="mp-leg-col text-center"><div className="mp-dot bg-primary mx-auto mb-1"></div><p>{Math.round(statusData.appPct)}% Approved</p></div>
+                      <div className="mp-leg-col text-center"><div className="mp-dot bg-orange mx-auto mb-1"></div><p>{Math.round(statusData.penPct)}% Pending</p></div>
+                      <div className="mp-leg-col text-center"><div className="mp-dot bg-error mx-auto mb-1"></div><p>{Math.round(statusData.rejPct)}% Rejected</p></div>
                     </div>
                   </div>
                 </div>
@@ -392,7 +401,6 @@ const MProfile = () => {
                 {/* Chart 3: 8-Semester Trend */}
                 <div className="mp-chart-card editorial-shadow">
                   <h3><span className="material-symbols-outlined text-primary">show_chart</span> 8-Semester Trend</h3>
-
                   <div className="mp-trend-container">
                     <div className="mp-trend-chart">
                       {Array.from({ length: 8 }, (_, i) => {
@@ -400,7 +408,6 @@ const MProfile = () => {
                         const val = studentStatistics?.semesterWiseEvents[sem] ? Object.values(studentStatistics.semesterWiseEvents[sem]).reduce((a, b) => a + b, 0) : 0;
                         const trendMax = Math.max(...Object.values(studentStatistics?.semesterWiseEvents || {}).map(o => Object.values(o).reduce((a, b) => a + b, 0)), 1);
                         const height = val > 0 ? (val / trendMax) * 100 : 10;
-
                         return (
                           <div className="mp-trend-bar-group" key={sem} title={`Sem ${sem}: ${val}`}>
                             <div className={`mp-trend-bar ${val === trendMax && val > 0 ? 'bg-primary' : 'bg-muted'}`} style={{ height: `${height}%` }}></div>
@@ -409,14 +416,11 @@ const MProfile = () => {
                         );
                       })}
                     </div>
-
-                    {/* Insight Box */}
                     <div className="mp-trend-insight">
                       <span className="material-symbols-outlined text-primary">trending_up</span>
                       <p>Participation has grown by <strong>24%</strong> compared to the previous semester.</p>
                     </div>
                   </div>
-
                 </div>
 
               </div>
@@ -425,6 +429,39 @@ const MProfile = () => {
         )}
 
       </main>
+
+      {/* --- NEW: THE PREVIEW MODAL --- */}
+      {showPreview && (
+        <div className="mp-preview-overlay">
+          <div className="mp-preview-modal">
+
+            <div className="mp-preview-toolbar">
+              <h3>Report Preview <span className="preview-pill">A4 Format</span></h3>
+              <div className="mp-preview-actions">
+                <button className="mp-btn-cancel" onClick={() => setShowPreview(false)}>Cancel</button>
+                <button className="mp-btn-download" onClick={handleDownloadPDF} disabled={isGeneratingPDF}>
+                  <span className="material-symbols-outlined">download</span>
+                  {isGeneratingPDF ? "Generating PDF..." : "Download PDF"}
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Preview Area */}
+            <div className="mp-preview-content">
+              {/* Notice we render the Template directly inside the modal now! */}
+              <StudentReportTemplate
+                ref={reportTemplateRef}
+                student={selectedStudent}
+                mentor={{ name: sessionStorage.getItem("username") }}
+                statistics={studentStatistics}
+                activities={reportActivities}
+              />
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
