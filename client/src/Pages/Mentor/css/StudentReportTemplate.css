@@ -199,8 +199,13 @@ thead {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 
+}
+
+.srt-ledger-section {
+    padding-top: 2rem;
+    /* 👈 adds breathing room when it lands at top of a new page */
 }
 
 .srt-dot {
@@ -411,15 +416,21 @@ thead {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-top: 2rem;
+    margin-top: 3rem;
     border-top: 1px solid #eef1f3;
     page-break-inside: avoid;
 }
 
 .srt-document {
     width: 850px;
-    min-height: auto;
-    /* 👈 Remove any min-height if present */
+    background: #ffffff;
+    font-family: 'Inter', sans-serif;
+    color: #2c2f31;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-height: 100%;
+    /* 👈 add this */
 }
 
 .srt-footer label {

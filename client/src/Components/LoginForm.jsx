@@ -102,7 +102,7 @@ const LoginForm = ({ role }) => {
                 </div>
             </header>
 
-            <main className="min-h-screen w-full flex items-center justify-center relative overflow-hidden px-4 pt-24 pb-12">
+            <main className="min-h-screen w-full flex items-center justify-center relative overflow-hidden px-4 pt-12 pb-12">
                 {/* Abstract Editorial Background Elements */}
                 <div className="absolute top-[-10%] right-[-5%] w-[40rem] h-[40rem] rounded-full bg-primary-fixed/20 blur-[100px]"></div>
                 <div className="absolute bottom-[-10%] left-[-5%] w-[35rem] h-[35rem] rounded-full bg-tertiary-fixed/30 blur-[100px]"></div>
