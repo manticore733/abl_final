@@ -1,30 +1,509 @@
-.cad-event-form {
-    margin: 7cm 1cm 1cm 1cm;
-    background-color: rgb(2, 48, 47);
-    padding: 20cm;
+/* CAddEvents.css - Editorial Club Admin Layout */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --ca-bg: #f5f7f9;
+    --ca-surface: #ffffff;
+    --ca-surface-high: #dfe3e6;
+    --ca-surface-low: #eef1f3;
+    --ca-primary: #0053cc;
+    --ca-primary-grad: linear-gradient(135deg, #0053cc 0%, #779dff 100%);
+    --ca-text-main: #2c2f31;
+    --ca-text-sub: #595c5e;
+    --ca-border: rgba(197, 197, 212, 0.3);
+    --ca-error: #b31b25;
+    --ca-shadow: 0 12px 32px rgba(44, 47, 49, 0.06);
+}
+
+.ca-page-wrapper {
+    background-color: var(--ca-bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--ca-text-main);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Manrope', sans-serif;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* --- EMBEDDED NAVBAR --- */
+.ca-navbar {
+    background: rgba(248, 250, 252, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 40;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;      /* Allows items to wrap into new rows if needed */
-    align-items: center;  /* Vertically center items in each row */
-    gap: 1rem;           /* Space between form items */
-    border-radius: 1cm;
-    border: 10px solid rgb(255, 255, 255);
-    
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 2rem;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-.cad-add-event-text {
-    color: aliceblue;
-    padding-top: 10px;
-    padding-bottom: 3px;
+.ca-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 }
 
-.form-control-1,
-.form-select-1 {
+.ca-brand-logo {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #1d4ed8;
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.ca-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.ca-nav-links a {
+    text-decoration: none;
+    color: var(--ca-text-sub);
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: 'Manrope', sans-serif;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.ca-nav-links a:hover {
+    background: #f1f5f9;
+    color: #1d4ed8;
+}
+
+.ca-nav-links a.active {
+    color: #1d4ed8;
+    font-weight: 800;
+    border-bottom: 2px solid #1d4ed8;
+    border-radius: 0;
+    padding-bottom: 2px;
+}
+
+.ca-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ca-nav-icons {
+    display: flex;
+    gap: 8px;
+}
+
+.ca-nav-icons button {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 50%;
+    color: var(--ca-text-sub);
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ca-nav-icons button:hover {
+    background: #f1f5f9;
+    color: var(--ca-text-main);
+}
+
+.ca-nav-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--ca-surface-high);
+    border: 2px solid rgba(0, 83, 204, 0.1);
+    cursor: pointer;
+}
+
+.ca-nav-avatar img {
     width: 100%;
-    min-width: 250px; /* Ensures a consistent width */
-    max-width: 300px; /* Prevents excessive stretching */
-    border-radius: 7px;
-    background-color: azure;
-    border: 1px solid black;
-    padding: 1px;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+
+    .ca-navbar {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* --- MAIN CONTENT & FORM --- */
+.ca-watermark {
+    position: fixed;
+    bottom: -100px;
+    right: -100px;
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ca-watermark span {
+    font-size: 500px;
+    font-variation-settings: 'FILL' 1;
+    color: var(--ca-primary);
+}
+
+.ca-main-content {
+    max-width: 850px;
+    /* Reduced since sidebar is gone, perfectly centers the form */
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.ca-form-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.ca-breadcrumbs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ca-text-sub);
+    margin-bottom: 1rem;
+}
+
+.ca-breadcrumbs span.current {
+    color: var(--ca-primary);
+}
+
+.ca-breadcrumbs .material-symbols-outlined {
+    font-size: 16px;
+}
+
+.ca-form-header h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+.ca-form-header p {
+    font-size: 1.1rem;
+    color: var(--ca-text-sub);
+}
+
+.ca-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Form Sections */
+.ca-form-section {
+    background: var(--ca-surface);
+    border-radius: 1.25rem;
+    padding: 2.5rem;
+    box-shadow: var(--ca-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.ca-section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--ca-surface-low);
+    padding-bottom: 1rem;
+}
+
+.ca-section-header span {
+    color: var(--ca-primary);
+    font-size: 28px;
+}
+
+.ca-section-header h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+
+/* Inputs */
+.ca-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .ca-grid-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.ca-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ca-input-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.ca-input-group label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ca-text-main);
+}
+
+.ca-input-group input,
+.ca-input-group select,
+.ca-input-group textarea {
+    width: 100%;
+    background: var(--ca-surface-high);
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--ca-text-main);
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+
+.ca-input-group input:focus,
+.ca-input-group select:focus,
+.ca-input-group textarea:focus {
+    background: #f8fafc;
+    outline: none;
+    border-bottom-color: var(--ca-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.ca-input-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Icons in inputs */
+.relative-icon {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    top: 40px;
+    color: var(--ca-text-sub);
+    pointer-events: none;
+}
+
+.text-symbol {
+    font-weight: 700;
+    font-size: 1.1rem;
+    top: 38px;
+}
+
+.with-icon {
+    padding-left: 44px !important;
+}
+
+/* Errors */
+.error {
+    border-bottom-color: var(--ca-error) !important;
+    background: #fef2f2 !important;
+}
+
+.ca-error-msg {
+    font-size: 0.75rem;
+    color: var(--ca-error);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* Upload Zone */
+.hidden-file-input {
+    display: none;
+}
+
+.ca-upload-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed rgba(197, 197, 212, 0.6);
+    border-radius: 1.25rem;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: rgba(238, 241, 243, 0.4);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ca-upload-zone:hover {
+    background: var(--ca-surface-low);
+    border-color: var(--ca-primary);
+}
+
+.ca-upload-zone.error-zone {
+    border-color: var(--ca-error);
+    background: #fef2f2;
+}
+
+.ca-upload-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(0, 83, 204, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    transition: transform 0.2s;
+}
+
+.ca-upload-zone:hover .ca-upload-icon {
+    transform: scale(1.1);
+}
+
+.ca-upload-icon span {
+    font-size: 32px;
+    color: var(--ca-primary);
+}
+
+.ca-upload-zone h3 {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.ca-upload-zone p {
+    font-size: 0.85rem;
+    color: var(--ca-text-sub);
+    max-width: 300px;
+    line-height: 1.5;
+}
+
+/* Image Preview state */
+.ca-preview-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.ca-preview-wrapper img {
+    max-width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 1rem;
+}
+
+.ca-preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.ca-preview-wrapper:hover .ca-preview-overlay {
+    opacity: 1;
+}
+
+/* Action Buttons */
+.ca-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+@media (max-width: 768px) {
+    .ca-form-actions {
+        flex-direction: column;
+    }
+
+    .ca-btn-draft,
+    .ca-btn-publish {
+        width: 100%;
+    }
+}
+
+.ca-btn-draft {
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    color: var(--ca-primary);
+    transition: all 0.2s;
+    background: transparent;
+}
+
+.ca-btn-draft:hover {
+    background: rgba(0, 83, 204, 0.05);
+}
+
+.ca-btn-publish {
+    padding: 14px 40px;
+    border-radius: 30px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    color: white;
+    background: var(--ca-primary-grad);
+    box-shadow: 0 4px 15px rgba(0, 83, 204, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+.ca-btn-publish:hover {
+    box-shadow: 0 6px 20px rgba(0, 83, 204, 0.3);
+    transform: translateY(-2px);
+}
+
+.ca-btn-publish:active {
+    transform: scale(0.98);
+}
+
+.ca-btn-publish span {
+    font-size: 20px;
 }

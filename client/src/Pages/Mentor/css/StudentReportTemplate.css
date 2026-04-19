@@ -1,7 +1,5 @@
-/* StudentReportTemplate.css - A4 Print Emulation */
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 
-/* CRITICAL PAGINATION RULES */
 .srt-avoid-break {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -19,7 +17,6 @@ thead {
 
 .srt-document {
     width: 850px;
-    /* Optimal width for A4 with margins */
     background: #ffffff;
     font-family: 'Inter', sans-serif;
     color: #2c2f31;
@@ -205,7 +202,6 @@ thead {
 
 .srt-ledger-section {
     padding-top: 2rem;
-    /* 👈 adds breathing room when it lands at top of a new page */
 }
 
 .srt-dot {
@@ -430,7 +426,7 @@ thead {
     flex-direction: column;
     box-sizing: border-box;
     min-height: 100%;
-    /* 👈 add this */
+
 }
 
 .srt-footer label {

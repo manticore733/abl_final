@@ -1,5 +1,599 @@
-.fc-event {
-    color: rgb(84, 31, 170) !important;
-    font-weight: bold;
+/* CAdCalendar.css - Editorial Calendar Layout */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+.ca-cal-main {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* Header & Title */
+.ca-cal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.ca-super-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--ca-teal);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  font-family: 'Inter', sans-serif;
+}
+
+.ca-cal-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  font-family: 'Manrope', sans-serif;
+  color: var(--ca-text-main);
+}
+
+/* View Toggles (Day/Week/Month) */
+.ca-view-toggles {
+  display: flex;
+  background: var(--ca-surface-low);
+  padding: 6px;
+  border-radius: 20px;
+  gap: 4px;
+}
+
+.ca-view-toggles button {
+  border: none;
+  background: transparent;
+  padding: 8px 24px;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ca-text-sub);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ca-view-toggles button:hover {
+  color: var(--ca-text-main);
+}
+
+.ca-view-toggles button.active {
+  background: white;
+  color: var(--ca-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Filters */
+.ca-filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.ca-filter-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--ca-text-sub);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  white-space: nowrap;
+}
+
+.ca-filter-pill:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.ca-filter-pill.active {
+  background: var(--ca-surface-low);
+  color: var(--ca-text-main);
+}
+
+.ca-filter-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Color Variables */
+.bg-secondary {
+  background: var(--ca-teal);
+}
+
+.bg-blue {
+  background: #3b82f6;
+}
+
+.bg-amber {
+  background: #f59e0b;
+}
+
+.bg-emerald {
+  background: #10b981;
+}
+
+.bg-purple {
+  background: #a855f7;
+}
+
+/* Grid Layout */
+.ca-cal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .ca-cal-grid {
+    grid-template-columns: 8fr 4fr;
   }
-  
+}
+
+/* --- FULLCALENDAR OVERRIDES --- */
+.ca-fc-wrapper {
+  background: var(--ca-surface-low);
+  padding: 4px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.fc {
+  font-family: 'Inter', sans-serif;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid {
+  border: none !important;
+}
+
+.fc .fc-col-header-cell-cushion {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ca-text-sub);
+  opacity: 0.7;
+  padding: 12px 0;
+}
+
+.fc-daygrid-day-frame {
+  background: rgba(255, 255, 255, 0.5);
+  margin: 2px;
+  border-radius: 12px;
+  min-height: 140px;
+  transition: background 0.2s;
+}
+
+.fc-day-today .fc-daygrid-day-frame {
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 83, 204, 0.1);
+  border: 2px solid var(--ca-primary);
+}
+
+.fc .fc-daygrid-day-top {
+  flex-direction: row;
+  padding: 8px;
+}
+
+.fc-daygrid-day-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ca-text-sub);
+}
+
+/* Custom Event Pill Styling based on Category */
+.fc-event {
+  border: none !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  margin: 2px 4px !important;
+  cursor: pointer;
+  border-left: 4px solid !important;
+  transition: transform 0.1s;
+}
+
+.fc-event:hover {
+  transform: scale(1.02);
+}
+
+.fc-event-title {
+  font-size: 0.65rem !important;
+  font-weight: 800 !important;
+}
+
+.fc-custom-technical {
+  background: #dbeafe !important;
+  border-left-color: #3b82f6 !important;
+}
+
+.fc-custom-technical .fc-event-title {
+  color: #1e40af !important;
+}
+
+.fc-custom-social {
+  background: #fef3c7 !important;
+  border-left-color: #f59e0b !important;
+}
+
+.fc-custom-social .fc-event-title {
+  color: #92400e !important;
+}
+
+.fc-custom-sports {
+  background: #d1fae5 !important;
+  border-left-color: #10b981 !important;
+}
+
+.fc-custom-sports .fc-event-title {
+  color: #065f46 !important;
+}
+
+.fc-custom-cultural {
+  background: #f3e8ff !important;
+  border-left-color: #a855f7 !important;
+}
+
+.fc-custom-cultural .fc-event-title {
+  color: #6b21a8 !important;
+}
+
+.fc-custom-unknown {
+  background: #e2e8f0 !important;
+  border-left-color: #64748b !important;
+}
+
+.fc-custom-unknown .fc-event-title {
+  color: #334155 !important;
+}
+
+/* --- SIDE DETAILS PANEL --- */
+.ca-cal-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 6rem;
+  height: max-content;
+}
+
+.ca-details-panel {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: var(--ca-shadow);
+}
+
+.ca-details-panel.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--ca-text-sub);
+}
+
+.empty-icon {
+  font-size: 4rem;
+  opacity: 0.2;
+  margin-bottom: 1rem;
+}
+
+.ca-details-panel.empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--ca-text-main);
+  margin-bottom: 8px;
+}
+
+.ca-event-poster {
+  width: 100%;
+  height: 180px;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 1.5rem;
+  background: var(--ca-surface-low);
+}
+
+.ca-event-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ca-live-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--ca-primary);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.1em;
+}
+
+.ca-event-name {
+  font-size: 1.75rem;
+  font-weight: 900;
+  font-family: 'Manrope', sans-serif;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.ca-event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.ca-event-meta span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ca-text-sub);
+}
+
+.ca-event-meta .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.ca-event-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ca-text-main);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--ca-surface-low);
+}
+
+.ca-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ca-stat-box {
+  background: var(--ca-surface-low);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.ca-stat-box .lbl {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--ca-text-sub);
+  margin-bottom: 4px;
+}
+
+.ca-stat-box .val {
+  font-size: 1.25rem;
+  font-weight: 900;
+  font-family: 'Manrope', sans-serif;
+}
+
+.ca-action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ca-action-stack button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ca-btn-blue {
+  background: var(--ca-primary);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 83, 204, 0.2);
+}
+
+.ca-btn-blue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 83, 204, 0.3);
+}
+
+.ca-btn-gray {
+  background: var(--ca-surface-high);
+  color: var(--ca-text-main);
+}
+
+.ca-btn-gray:hover {
+  background: #d0d5d8;
+}
+
+.ca-btn-red {
+  background: transparent;
+  color: var(--ca-error);
+}
+
+.ca-btn-red:hover {
+  background: #fef2f2;
+}
+
+/* Mini Stats Module */
+/* --- Mini Stats Module (FIXED LAYOUT) --- */
+/* --- Mini Stats Module (FIXED BARS) --- */
+.ca-mini-stats {
+  background: var(--ca-surface-low);
+  padding: 1.5rem 2rem;
+  border-radius: 1.25rem;
+  margin-top: 3rem;
+  max-width: 600px;
+}
+
+.ca-mini-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.ca-mini-header h4 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--ca-text-sub);
+}
+
+.ca-mini-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  /* Spreads them out evenly instead of stretching them */
+  height: 120px;
+  /* Made slightly taller so they look like proper pillars */
+  min-height: 120px;
+  flex-shrink: 0;
+  padding: 0 1rem;
+  /* Keeps them off the edges */
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(0, 83, 204, 0.1);
+}
+
+.mini-bar {
+  width: 40px;
+  /* CRITICAL: Locks the width so they don't squish! */
+  background: rgba(0, 83, 204, 0.2);
+  border-radius: 6px 6px 0 0;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.mini-bar:hover {
+  background: rgba(0, 83, 204, 0.4);
+  transform: scaleY(1.02);
+  transform-origin: bottom;
+}
+
+/* Override Tailwind heights just to be safe */
+.ca-mini-chart .h-40 {
+  height: 40% !important;
+}
+
+.ca-mini-chart .h-60 {
+  height: 60% !important;
+}
+
+.ca-mini-chart .h-100 {
+  height: 100% !important;
+}
+
+.ca-mini-chart .h-30 {
+  height: 30% !important;
+}
+
+.ca-mini-chart .h-50 {
+  height: 50% !important;
+}
+
+/* Keep the shadow pointing UP on the active bar */
+.ca-mini-chart .bg-primary {
+  background: var(--ca-primary) !important;
+  box-shadow: 0 -4px 15px rgba(0, 83, 204, 0.3);
+}
+
+.ca-mini-stats p {
+  font-size: 0.75rem;
+  color: var(--ca-text-sub);
+  line-height: 1.5;
+}
+
+.ca-mini-stats p strong {
+  color: var(--ca-primary);
+}
+
+.h-40 {
+  height: 40%;
+}
+
+.h-60 {
+  height: 60%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.h-30 {
+  height: 30%;
+}
+
+.h-50 {
+  height: 50%;
+}
+
+.bg-primary {
+  background: var(--ca-primary) !important;
+}
+
+.ca-mini-stats p {
+  font-size: 0.75rem;
+  color: var(--ca-text-sub);
+  line-height: 1.5;
+}
+
+.ca-mini-stats p strong {
+  color: var(--ca-primary);
+}
+
+/* --- OVERRIDE TAILWIND HEIGHTS --- */
+.ca-mini-chart .h-40 {
+  height: 40% !important;
+}
+
+.ca-mini-chart .h-60 {
+  height: 60% !important;
+}
+
+.ca-mini-chart .h-100 {
+  height: 100% !important;
+}
+
+.ca-mini-chart .h-30 {
+  height: 30% !important;
+}
+
+.ca-mini-chart .h-50 {
+  height: 50% !important;
+}
+
+.bg-primary {
+  background: var(--ca-primary) !important;
+}
+
+.ca-mini-stats p {
+  font-size: 0.75rem;
+  color: var(--ca-text-sub);
+  line-height: 1.5;
+}
+
+.ca-mini-stats p strong {
+  color: var(--ca-primary);
+}

@@ -1,28 +1,613 @@
-.cadmin-homepage {
-    margin-top: 2cm;
-    height: 100vh; /* Full height to center the text */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #033757; /* Adjust color as needed */
-    animation: floatingText 3s ease-in-out infinite; /* Continuous animation */
+/* cHomepage.css - Club Admin Dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --ca-bg: #f5f7f9;
+    --ca-surface: #ffffff;
+    --ca-surface-high: #dfe3e6;
+    --ca-surface-low: #eef1f3;
+    --ca-primary: #0053cc;
+    --ca-primary-dim: #0048b3;
+    --ca-teal: #006479;
+    --ca-text-main: #2c2f31;
+    --ca-text-sub: #595c5e;
 }
 
-/* Animation Keyframes */
-@keyframes floatingText {
-    0% {
-        transform: translateY(0);
-        opacity: 1;
+.ca-page-wrapper {
+    background-color: var(--ca-bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--ca-text-main);
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Manrope', sans-serif;
+    margin: 0;
+}
+
+p {
+    margin: 0;
+}
+
+.ca-dash-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+}
+
+/* 1. Hero Banner */
+.ca-hero-banner {
+    position: relative;
+    background: linear-gradient(135deg, var(--ca-primary) 0%, var(--ca-primary-dim) 100%);
+    border-radius: 1.5rem;
+    padding: 3rem;
+    color: white;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 83, 204, 0.2);
+    margin-bottom: 2.5rem;
+}
+
+.ca-hero-bg-icon {
+    position: absolute;
+    top: -50px;
+    right: -30px;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.ca-hero-bg-icon span {
+    font-size: 300px;
+}
+
+.ca-hero-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.ca-status-pill-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.ca-status-pill {
+    background: #fd9d1a;
+    color: #4c2b00;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ca-est-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.ca-club-title {
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+.ca-club-desc {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.ca-hero-kpis {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.ca-kpi-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    min-width: 140px;
+}
+
+.ca-kpi-val {
+    font-size: 2.5rem;
+    font-weight: 800;
+    font-family: 'Manrope', sans-serif;
+    line-height: 1;
+}
+
+.ca-kpi-lbl {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    opacity: 0.8;
+    margin-top: 8px;
+    font-weight: 700;
+}
+
+/* Grid Layout */
+.ca-dash-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .ca-dash-grid {
+        grid-template-columns: 8fr 4fr;
     }
-    50% {
-        transform: translateY(-15px);
-        opacity: 0.7;
+}
+
+.ca-dash-left,
+.ca-dash-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* 2. Panels & Charts */
+.ca-panel {
+    background: var(--ca-surface);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.ca-super-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--ca-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+}
+
+.ca-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.ca-panel-header h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.ca-filter-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.ca-filter-btns button {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--ca-text-sub);
+}
+
+.ca-filter-btns button.active {
+    background: var(--ca-surface-high);
+    color: var(--ca-text-main);
+}
+
+.ca-chart-container {
+    height: 200px;
+    /* Reduced from 250px to fit inside the card better */
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    padding: 0 1rem;
+    margin-top: 2rem;
+    /* Added margin to push it away from the text above */
+    border-bottom: 1px solid var(--ca-surface-high);
+    /* Optional: Adds a subtle baseline for the bars */
+}
+
+.ca-bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 40px;
+    height: 100%;
+    /* Force the group to take the full height of the container */
+    justify-content: flex-end;
+    /* Force the bars to anchor to the bottom */
+    cursor: pointer;
+}
+
+.ca-bar {
+    width: 100%;
+    background: rgba(0, 83, 204, 0.2);
+    border-radius: 8px 8px 0 0;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.ca-bar-group:hover .ca-bar {
+    background: rgba(0, 83, 204, 0.4);
+    transform: scaleY(1.02);
+    /* Slight hover pop */
+    transform-origin: bottom;
+}
+
+.ca-bar.ca-bar-primary {
+    background: var(--ca-primary);
+    box-shadow: 0 -4px 20px rgba(0, 83, 204, 0.3);
+    /* Adjusted shadow to point UP instead of DOWN */
+}
+
+.ca-bar.ca-bar-teal {
+    background: var(--ca-teal);
+    box-shadow: 0 -4px 20px rgba(0, 100, 121, 0.3);
+}
+
+/* Label styling remains the same */
+.ca-bar-group span {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--ca-text-sub);
+    padding-bottom: 8px;
+    /* Give the text a little room to breathe at the bottom */
+}
+
+.h-40 {
+    height: 40%;
+}
+
+.h-50 {
+    height: 50%;
+}
+
+.h-60 {
+    height: 60%;
+}
+
+.h-70 {
+    height: 70%;
+}
+
+.h-80 {
+    height: 80%;
+}
+
+.h-90 {
+    height: 90%;
+}
+
+.ca-bar-group span {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--ca-text-sub);
+}
+
+.text-primary {
+    color: var(--ca-primary) !important;
+}
+
+.text-teal {
+    color: var(--ca-teal) !important;
+}
+
+/* 3. Active Events */
+.ca-section-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.ca-section-title-row h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.ca-section-title-row a {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--ca-primary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.ca-events-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .ca-events-grid {
+        grid-template-columns: 1fr 1fr;
     }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+}
+
+.ca-event-card {
+    background: var(--ca-surface);
+    padding: 1.5rem;
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s;
+}
+
+.ca-event-card:hover {
+    transform: translateY(-4px);
+}
+
+.ca-event-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.ca-event-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e0f6ff;
+    color: #004e60;
+}
+
+.ca-live-pill {
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.05em;
+}
+
+.pill-green {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.pill-blue {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.ca-event-card h4 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.ca-event-card p {
+    font-size: 0.75rem;
+    color: var(--ca-text-sub);
+    margin-bottom: 1.5rem;
+}
+
+.ca-event-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.ca-event-actions button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ca-btn-secondary {
+    background: var(--ca-surface-low);
+    color: var(--ca-text-main);
+}
+
+.ca-btn-secondary:hover {
+    background: var(--ca-surface-high);
+}
+
+.ca-btn-primary {
+    background: var(--ca-primary);
+    color: white;
+}
+
+.ca-btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(0, 83, 204, 0.3);
+}
+
+/* 4. Quick Action Card */
+.ca-action-card {
+    background: linear-gradient(135deg, #006479 0%, #004e60 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 24px rgba(0, 100, 121, 0.2);
+}
+
+.ca-action-content {
+    position: relative;
+    z-index: 10;
+}
+
+.ca-action-content h4 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.ca-action-content p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.ca-btn-create {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    color: #006479;
+    border: none;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.ca-btn-create:hover {
+    transform: scale(1.02);
+}
+
+.ca-action-bg-icon {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-size: 150px;
+    opacity: 0.1;
+    transform: rotate(15deg);
+}
+
+/* 5. Feed & Alerts */
+.ca-feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.ca-feed-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.ca-mini-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-blue {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.bg-teal {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+
+.bg-orange {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.ca-mini-icon span {
+    font-size: 18px;
+}
+
+.ca-feed-text p {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    line-height: 1.4;
+    color: var(--ca-text-main);
+}
+
+.ca-feed-text span {
+    font-size: 0.65rem;
+    color: var(--ca-text-sub);
+}
+
+.ca-btn-outline {
+    background: transparent;
+    border: 1px solid var(--ca-surface-high);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--ca-text-sub);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.ca-btn-outline:hover {
+    background: var(--ca-surface-low);
+}
+
+.ca-alert-box {
+    background: var(--ca-surface);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--ca-surface-high);
+}
+
+.ca-alert-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: var(--ca-primary);
+}
+
+.ca-alert-header h5 {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ca-text-sub);
+}
+
+.ca-alert-box p {
+    font-size: 0.85rem;
+    color: var(--ca-text-main);
+    line-height: 1.5;
+}
+
+.ca-footer {
+    text-align: center;
+    padding: 2rem;
+    opacity: 0.5;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
 }

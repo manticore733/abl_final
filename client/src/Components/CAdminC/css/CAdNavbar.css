@@ -1,124 +1,135 @@
-/* .navbar{
+/* CAdNavbar.css - Editorial Club Admin Navbar */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Ensure icons render correctly */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.ca-navbar {
+    background: rgba(248, 250, 252, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     display: flex;
-    flex-direction: row;
-    background-color: #393E46;
-    margin-top: 3.25cm;
-    width: 100%;
-    align-items: center;
     justify-content: space-between;
-    padding: 0.5cm 0.5cm;
-}
-.navbar-nav{
-    display: flex;
-    flex-direction: row;
-    color: aliceblue !important;
     align-items: center;
-    justify-content: space-between;
-    gap: 15cm;
+    padding: 0.75rem 2.5rem;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 20px -10px rgba(0, 0, 0, 0.05);
 }
-.links-snav{
+
+.ca-nav-left {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    color: aliceblue !important;
+    gap: 2.5rem;
 }
-.nav-link{
-    color:aliceblue;
+
+.ca-brand-logo {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #1d4ed8;
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: -0.5px;
 }
-.logout{
+
+.ca-nav-links {
     display: flex;
-    flex-direction: row;
-    align-items: end;
-    gap: 1cm;
-}
-.cadmin-profile-icon{
-    color: aliceblue;
-}
-
-.enter-records{
-    display: flex ; 
-    flex-direction: row;
-}
-
-.student-role-button{
-    margin-left: 1cm;
-}
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
- .navbar {
-    display: flex;
-    flex-direction: row;
-    background-color: #393E46;
-    margin-top: 3.25cm;
-    width: 100%;
     align-items: center;
-    justify-content: space-between;
-    padding: 0.5cm 1cm;
+    gap: 1.5rem;
 }
 
-/* Club Admin Text (Left-Aligned) */
-.admin-role-text {
-    color: aliceblue;
-    font-size: 1rem;
-    white-space: nowrap; /* Prevents text from breaking */
-}
-
-/* Centered Navigation Links */
-.nav-center {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 1cm; /* Keeps spacing the same */
-}
-
-/* Navbar Links */
-.nav-link {
-    color: aliceblue;
+.ca-nav-links a {
     text-decoration: none;
-    font-size: 1rem;
+    color: #595c5e;
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: 'Manrope', sans-serif;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
 }
 
-/* Profile Icon & Logout Button (Right-Aligned) */
-.logout-profile {
+.ca-nav-links a:hover {
+    background: #f1f5f9;
+    color: #1d4ed8;
+}
+
+.ca-nav-links a.active {
+    color: #1d4ed8;
+    font-weight: 800;
+    border-bottom: 2px solid #1d4ed8;
+    border-radius: 0;
+    padding-bottom: 4px;
+}
+
+.ca-nav-right {
     display: flex;
     align-items: center;
-    gap: 1cm;
+    gap: 1.25rem;
 }
 
-.admin-profile-icon {
-    color: aliceblue;
+.ca-nav-icons {
+    display: flex;
+    gap: 8px;
 }
 
-/* Logout Button */
-.logout-btn {
-    background: none;
+.ca-nav-icons button {
+    background: transparent;
     border: none;
-    color: aliceblue;
+    padding: 8px;
+    border-radius: 50%;
+    color: #595c5e;
     cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.ca-nav-icons button:hover {
+    background: #f1f5f9;
+    color: #2c2f31;
+}
 
+/* Make logout button red on hover for clear UX */
+.ca-nav-icons .ca-logout-btn:hover {
+    background: #fef2f2;
+    color: #dc2626;
+}
 
+.ca-nav-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #dfe3e6;
+    border: 2px solid rgba(0, 83, 204, 0.15);
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
 
+.ca-nav-avatar:hover {
+    transform: scale(1.05);
+    border-color: #1d4ed8;
+}
 
+.ca-nav-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .hidden-mobile {
+        display: none !important;
+    }
 
-
-
-
-
-
-
+    .ca-navbar {
+        padding: 0.75rem 1.5rem;
+    }
+}

@@ -1,250 +1,12 @@
-// import React, { useState } from "react";
-// import "./css/CAddEvents.css";
-// import { addEvent } from "../../api/eventApi"; // Import the API function
-// import CAdNavbar from "../../Components/CAdminC/CAdNavbar";
-
-// const CAddEvents = () => {
-//   const [formData, setFormData] = useState({
-//     e_name: "",
-//     e_org: "",
-//     e_cost: "",
-//     e_type: "",
-//     e_category: "",
-//     e_img: null,
-//     e_date:"",
-//     e_link:"",
-//   });
-
-//   // Handle input changes
-//   const handleInputChange = (e) => {
-//     const { id, value, type, files } = e.target;
-//     if (type === "file") {
-//       setFormData({ ...formData, e_img: files[0] });
-//     } else {
-//       setFormData({ ...formData, [id]: value });
-//     }
-//   };
-
-//   // Handle form submission
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     const data = new FormData();
-//     data.append("e_name", formData.e_name);
-//     data.append("e_org", formData.e_org);
-//     data.append("e_cost", formData.e_cost);
-//     data.append("e_type", formData.e_type);
-//     data.append("e_category", formData.e_category);
-//     data.append("e_img", formData.e_img);
-//     data.append("e_date", formData.e_date);
-//     data.append("e_link", formData.e_link);
-
-
-//     try {
-//       await addEvent(data); // Call the API function
-//       alert("Activity added successfully!");
-//     } catch (error) {
-//       alert("Failed to add Activity.");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <CAdNavbar />
-//       <form className="cad-event-form" onSubmit={handleSubmit}>
-//         <form1 >
-//           <div className="add-event-text-header">Add Activity</div>
-//           <div className="cad-add-event-text event-name">Activity Name:</div>
-//           <input
-//             className="form-control-1 form-control-sm"
-//             type="text"
-//             id="e_name"
-//             value={formData.e_name}
-//             onChange={handleInputChange}
-//             required
-//           />
-//           <div className="cad-add-event-text">Organizer Name:</div>
-//           <input
-//             className="form-control-1 form-control-sm"
-//             type="text"
-//             id="e_org"
-//             value={formData.e_org}
-//             onChange={handleInputChange}
-//             required
-//           />
-//           <div className="cad-add-event-text">Activity Registration Fee:</div>
-//           <input
-//             className="form-control-1 form-control-sm"
-//             type="number"
-//             id="e_cost"
-//             value={formData.e_cost}
-//             onChange={handleInputChange}
-//             required
-//           />
-//           <div className="cad-add-event-text">Activity Type:</div>
-//           <select
-//             className="form-select-1"
-//             id="e_type"
-//             value={formData.e_type}
-//             onChange={handleInputChange}
-//             required
-//           >
-//             <option value="">Select</option>
-//             <option value="Internal">Intracollegiate </option>
-//           </select>
-//           <div className="cad-add-event-text">Activity Category:</div>
-//           <select
-//             className="form-select-1"
-//             id="e_category"
-//             value={formData.e_category}
-//             onChange={handleInputChange}
-//             required
-//           >
-//             <option value="">Select</option>
-//             <option value="Technical">Technical</option>
-//             <option value="Cultural">Cultural</option>
-//             <option value="Sports">Sports</option>
-//             <option value="Internship">Social</option>
-//             <option value="Internship">Internship</option>
-//           </select>
-//           <div className="cad-add-event-text">Add Image</div>
-//           <div className="mb-3">
-//             <input
-//               type="file"
-//               className="form-control-1"
-//               id="e_img"
-//               onChange={handleInputChange}
-//             />
-//           </div>
-//           <div className="cad-add-event-text">Enter the date on which activity is taking place:</div>
-//           <input
-//             className="form-control-1 form-control-sm"
-//             type="date"
-//             id="e_date"
-//             value={formData.e_date}
-//             onChange={handleInputChange}
-//             required
-//           />
-//           <div className="cad-add-event-text event-name">Activity Registration Link:</div>
-//           <input
-//             className="form-control-1 form-control-sm"
-//             type="text"
-//             id="e_link"
-//             value={formData.e_link}
-//             onChange={handleInputChange}
-//             required
-//           />
-//           <div className="event-buttons col-12">
-//             <button className="event-button btn btn-success" type="submit">
-//               Submit
-//             </button>
-//           </div>
-//         </form1>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default CAddEvents;
-// //sample form link: https://docs.google.com/forms/d/e/FORM_ID/viewform
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState } from "react";
-import { 
-  Container, TextField, Button, Grid, Card, CardContent, MenuItem, 
-  Typography 
-} from "@mui/material";
 import { addClubEvent } from "../../api/eventApi";
+import "./css/CAddEvents.css";
 import CAdNavbar from "../../Components/CAdminC/CAdNavbar";
+import { useToast } from "../../Components/ToastContext"; // <-- IMPORTED TOAST CONTEXT
 
 const CAddEvents = () => {
+  const { showToast } = useToast(); // <-- INITIALIZED TOAST HOOK
+
   const [formData, setFormData] = useState({
     roll_number: "",
     club_name: "",
@@ -258,7 +20,7 @@ const CAddEvents = () => {
     location: "",
     entry_fee: "",
     event_type: "",
-    event_mode: "",   // ✅ Add this
+    event_mode: "",
     event_link: "",
     poster_image: null,
     poster_preview: null,
@@ -266,63 +28,26 @@ const CAddEvents = () => {
 
   const [errors, setErrors] = useState({});
 
-   // Event type options
-   const eventTypes = ["Technical", "Cultural", "Sports", "Social"];
+  const eventTypes = ["Technical", "Cultural", "Sports", "Social"];
+  const eventModes = ["Online", "Offline", "Hybrid"];
 
-   const eventMode = ["Online","Offline"]
-
-   // Validate Input Fields
-   const validateForm = () => {
+  // Validate Input Fields
+  const validateForm = () => {
     let newErrors = {};
     const today = new Date().toISOString().split("T")[0];
 
-    // Roll Number - Must be a number
-    if (!/^\d+$/.test(formData.roll_number)) {
-      newErrors.roll_number = "Roll Number must be a number.";
-    }
+    if (!/^\d+$/.test(formData.roll_number)) newErrors.roll_number = "Must be a valid number.";
+    if (!/^[A-Za-z\s]+$/.test(formData.admin_name)) newErrors.admin_name = "Only alphabets allowed.";
+    if (!/^[A-Za-z\s]+$/.test(formData.club_name)) newErrors.club_name = "Only alphabets allowed.";
 
-    // Name fields - Only alphabets
-    ["admin_name", "club_name"].forEach((field) => {
-      if (!/^[A-Za-z\s]+$/.test(formData[field])) {
-        newErrors[field] = "Only alphabets are allowed.";
-      }
-    });
+    if (formData.start_date && formData.start_date < today) newErrors.start_date = "Cannot be before today.";
+    if (formData.end_date && formData.end_date < today) newErrors.end_date = "Cannot be before today.";
+    if (formData.start_date && formData.end_date && formData.end_date < formData.start_date) newErrors.end_date = "Cannot be before Start Date.";
+    if (formData.start_time && formData.end_time && formData.end_time < formData.start_time) newErrors.end_time = "Cannot be before Start Time.";
 
-    // Start & End Date Validations
-    if (formData.start_date && formData.start_date < today) {
-      newErrors.start_date = "Start Date cannot be before today.";
-    }
-    if (formData.end_date && formData.end_date < today) {
-      newErrors.end_date = "End Date cannot be before today.";
-    }
-    // Allow same start & end date, but prevent end_date from being before start_date
-if (formData.start_date && formData.end_date && formData.end_date < formData.start_date) {
-  newErrors.end_date = "End Date cannot be before Start Date.";
-}
-    // if (formData.start_date && formData.end_date && formData.end_date < formData.start_date) {
-    //   newErrors.end_date = "End Date cannot be before Start Date.";
-    // }
+    if (!/[A-Za-z]/.test(formData.location)) newErrors.location = "Must contain at least one letter.";
+    if (!/^(free|Free|\d+)$/.test(formData.entry_fee)) newErrors.entry_fee = 'Enter "Free" or an amount.';
 
-    // Start & End Time Validations
-    if (formData.start_time && formData.end_time && formData.end_time < formData.start_time) {
-      newErrors.end_time = "End Time cannot be before Start Time.";
-    }
-
-    // Location - Cannot be empty & must contain at least one letter
-    if (!/[A-Za-z]/.test(formData.location)) {
-      newErrors.location = "Location must contain at least one letter.";
-    }
-
-    // Entry Fee - Must be either "free" or a valid number
-    if (!/^(free|Free|\d+)$/.test(formData.entry_fee)) {
-      newErrors.entry_fee = 'Entry Fee must be "free" or a valid number.';
-    }
-
-    // Event Link - If provided, must be a valid URL
-    // if (formData.event_link && !/^https?:\/\/[^\s$.?#].[^\s]*$/.test(formData.event_link)) {
-    //   newErrors.event_link = "Enter a valid URL.";
-    // }
-    // Allow general URLs and Google Forms URLs
     if (
       formData.event_link &&
       !/^(https?:\/\/[^\s$.?#].[^\s]*)$|^(https:\/\/docs\.google\.com\/forms\/d\/e\/[A-Za-z0-9_-]+\/viewform(\?.*)?)$/.test(formData.event_link)
@@ -330,21 +55,18 @@ if (formData.start_date && formData.end_date && formData.end_date < formData.sta
       newErrors.event_link = "Enter a valid URL.";
     }
 
-    if (!formData.event_mode) {
-      newErrors.event_mode = "Please select an event mode.";
-    }
-
+    if (!formData.event_mode) newErrors.event_mode = "Please select a mode.";
+    if (!formData.event_type) newErrors.event_type = "Please select a type.";
+    if (!formData.poster_image) newErrors.poster_image = "Poster image is required.";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Returns true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
-
-  // Handle input changes
-  
   const handleInputChange = (e) => {
     const { id, value, type, files, name } = e.target;
-  
+    const fieldName = id || name;
+
     if (type === "file") {
       const file = files[0];
       setFormData((prevData) => ({
@@ -352,20 +74,20 @@ if (formData.start_date && formData.end_date && formData.end_date < formData.sta
         poster_image: file,
         poster_preview: file ? URL.createObjectURL(file) : null,
       }));
+      if (file) setErrors(prev => ({ ...prev, poster_image: null }));
     } else {
-      // Fix for dropdown selection: Use `name` instead of `id`
-      setFormData((prevData) => ({ ...prevData, [id || name]: value }));
+      setFormData((prevData) => ({ ...prevData, [fieldName]: value }));
+      if (errors[fieldName]) setErrors(prev => ({ ...prev, [fieldName]: null }));
     }
   };
-  
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) return;
-
-    console.log("🚀 Submitting Data:", formData); // Debugging line
+    if (!validateForm()) {
+      // REPLACED ALERT WITH TOAST
+      showToast('error', 'Validation Error', 'Please fix the highlighted errors before publishing.');
+      return;
+    }
 
     const data = new FormData();
     Object.entries(formData).forEach(([key, value]) => {
@@ -378,306 +100,202 @@ if (formData.start_date && formData.end_date && formData.end_date < formData.sta
 
     try {
       const response = await addClubEvent(data);
-      alert(response.message || "Event added successfully!");
+      // REPLACED ALERT WITH TOAST
+      showToast('success', 'Event Published!', response.message || "Your event has been successfully published.");
 
-      // Clear form after submission
       setFormData({
-        roll_number: "",
-        club_name: "",
-        admin_name: "",
-        event_name: "",
-        description: "",
-        start_date: "",
-        end_date: "",
-        start_time: "",
-        end_time: "",
-        location: "",
-        entry_fee: "",
-        event_type: "",
-        event_link: "",
-        poster_image: null,
-        poster_preview: null,
+        roll_number: "", club_name: "", admin_name: "", event_name: "",
+        description: "", start_date: "", end_date: "", start_time: "",
+        end_time: "", location: "", entry_fee: "", event_type: "",
+        event_mode: "", event_link: "", poster_image: null, poster_preview: null,
       });
-
-
       setErrors({});
     } catch (error) {
-      console.error("❌ Error adding event:", error);
-      alert(error.response?.data?.message || "Failed to add event.");
+      // REPLACED ALERT WITH TOAST
+      showToast('error', 'Publish Failed', error.response?.data?.message || "Failed to publish event. Please try again.");
     }
   };
 
   return (
-    <div> 
+    <div className="ca-page-wrapper">
       <CAdNavbar />
-      <Container maxWidth="md" sx={{ mt: 2, padding: 15 }}>
-        <Card elevation={3} sx={{ padding: 3 }}>
-          <CardContent>
-            <Typography variant="h5" align="center" gutterBottom>
-              Add Club Event
-            </Typography>
+      <main className="ca-main-content">
 
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
+        {/* Centered Form Area (Sidebar Removed) */}
+        <div className="ca-form-container">
+          <header className="ca-form-header">
+            <nav className="ca-breadcrumbs">
+              <span>Events</span>
+              <span className="material-symbols-outlined">chevron_right</span>
+              <span className="current">New Campaign</span>
+            </nav>
+            <h1>Create New Event</h1>
+            <p>Set up your next campus initiative with curated editorial precision.</p>
+          </header>
 
-                {[
-                  { label: "Your Roll Number", id: "roll_number" },
-                  { label: "Your Name", id: "admin_name" },
-                  { label: "Club Name", id: "club_name" },
-                  { label: "Event Name", id: "event_name" },
-                  { label: "Location", id: "location" },
-                ].map(({ label, id }) => (
-                  <Grid item xs={12} key={id}>
-                    <TextField 
-                      fullWidth 
-                      label={label} 
-                      id={id}
-                      value={formData[id]}
-                      onChange={handleInputChange}
-                      required
-                      error={!!errors[id]}
-                      helperText={errors[id]}
-                    />
-                  </Grid>
-                ))}
+          <form className="ca-form" onSubmit={handleSubmit}>
 
-                {/* Description */}
-                <Grid item xs={12}>
-                  <TextField 
-                    fullWidth 
-                    label="Event Description" 
-                    id="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    multiline
-                    rows={3}
-                    required 
-                  />
-                </Grid>
+            {/* Section 1: Admin Identity */}
+            <section className="ca-form-section">
+              <div className="ca-section-header">
+                <span className="material-symbols-outlined">verified_user</span>
+                <h2>Club Admin Identity</h2>
+              </div>
+              <div className="ca-grid-2">
+                <div className="ca-input-group">
+                  <label>Your Name</label>
+                  <input type="text" id="admin_name" value={formData.admin_name} onChange={handleInputChange} className={errors.admin_name ? 'error' : ''} placeholder="e.g., Alex Chen" />
+                  {errors.admin_name && <span className="ca-error-msg">{errors.admin_name}</span>}
+                </div>
+                <div className="ca-input-group">
+                  <label>Roll Number</label>
+                  <input type="text" id="roll_number" value={formData.roll_number} onChange={handleInputChange} className={errors.roll_number ? 'error' : ''} placeholder="e.g., 1021101" />
+                  {errors.roll_number && <span className="ca-error-msg">{errors.roll_number}</span>}
+                </div>
+                <div className="ca-input-group full-width">
+                  <label>Club Name</label>
+                  <input type="text" id="club_name" value={formData.club_name} onChange={handleInputChange} className={errors.club_name ? 'error' : ''} placeholder="e.g., The Editorial Board" />
+                  {errors.club_name && <span className="ca-error-msg">{errors.club_name}</span>}
+                </div>
+              </div>
+            </section>
 
+            {/* Section 2: Event Details */}
+            <section className="ca-form-section">
+              <div className="ca-section-header">
+                <span className="material-symbols-outlined">description</span>
+                <h2>Event Details</h2>
+              </div>
+              <div className="ca-input-group full-width mb-4">
+                <label>Event Name</label>
+                <input type="text" id="event_name" value={formData.event_name} onChange={handleInputChange} className={errors.event_name ? 'error' : ''} placeholder="e.g., Annual Symposium 2026" />
+                {errors.event_name && <span className="ca-error-msg">{errors.event_name}</span>}
+              </div>
+              <div className="ca-input-group full-width mb-4 relative-icon">
+                <label>Location</label>
+                <span className="material-symbols-outlined input-icon">location_on</span>
+                <input type="text" id="location" value={formData.location} onChange={handleInputChange} className={`with-icon ${errors.location ? 'error' : ''}`} placeholder="Campus Auditorium or Building Name" />
+                {errors.location && <span className="ca-error-msg">{errors.location}</span>}
+              </div>
+              <div className="ca-input-group full-width">
+                <label>Event Description</label>
+                <textarea id="description" rows="4" value={formData.description} onChange={handleInputChange} className={errors.description ? 'error' : ''} placeholder="Craft a compelling narrative for your event..."></textarea>
+                {errors.description && <span className="ca-error-msg">{errors.description}</span>}
+              </div>
+            </section>
 
-                 
+            {/* Section 3: Schedule */}
+            <section className="ca-form-section">
+              <div className="ca-section-header">
+                <span className="material-symbols-outlined">calendar_month</span>
+                <h2>Schedule</h2>
+              </div>
+              <div className="ca-grid-2">
+                <div className="ca-input-group">
+                  <label>Start Date</label>
+                  <input type="date" id="start_date" value={formData.start_date} onChange={handleInputChange} className={errors.start_date ? 'error' : ''} />
+                  {errors.start_date && <span className="ca-error-msg">{errors.start_date}</span>}
+                </div>
+                <div className="ca-input-group">
+                  <label>Start Time</label>
+                  <input type="time" id="start_time" value={formData.start_time} onChange={handleInputChange} className={errors.start_time ? 'error' : ''} />
+                  {errors.start_time && <span className="ca-error-msg">{errors.start_time}</span>}
+                </div>
+                <div className="ca-input-group">
+                  <label>End Date</label>
+                  <input type="date" id="end_date" value={formData.end_date} onChange={handleInputChange} className={errors.end_date ? 'error' : ''} />
+                  {errors.end_date && <span className="ca-error-msg">{errors.end_date}</span>}
+                </div>
+                <div className="ca-input-group">
+                  <label>End Time</label>
+                  <input type="time" id="end_time" value={formData.end_time} onChange={handleInputChange} className={errors.end_time ? 'error' : ''} />
+                  {errors.end_time && <span className="ca-error-msg">{errors.end_time}</span>}
+                </div>
+              </div>
+            </section>
 
+            {/* Section 4: Logistics & Access */}
+            <section className="ca-form-section">
+              <div className="ca-section-header">
+                <span className="material-symbols-outlined">hub</span>
+                <h2>Logistics & Access</h2>
+              </div>
+              <div className="ca-grid-2 mb-4">
+                <div className="ca-input-group relative-icon">
+                  <label>Entry Fee</label>
+                  <span className="input-icon text-symbol">$</span>
+                  <input type="text" id="entry_fee" value={formData.entry_fee} onChange={handleInputChange} className={`with-icon ${errors.entry_fee ? 'error' : ''}`} placeholder="Free or 150" />
+                  {errors.entry_fee && <span className="ca-error-msg">{errors.entry_fee}</span>}
+                </div>
 
-                {/* Dates */}
-                {[
-                  { label: "Start Date", id: "start_date", type: "date" },
-                  { label: "End Date", id: "end_date", type: "date" },
-                ].map(({ label, id, type }) => (
-                  <Grid item xs={6} key={id}>
-                    <TextField 
-                      fullWidth 
-                      type={type}
-                      label={label} 
-                      id={id}
-                      value={formData[id]}
-                      onChange={handleInputChange}
-                      InputLabelProps={{ shrink: true }}
-                      required
-                      error={!!errors[id]}
-                      helperText={errors[id]}
-                    />
-                  </Grid>
-                ))}
+                <div className="ca-input-group">
+                  <label>Event Type</label>
+                  <select id="event_type" value={formData.event_type} onChange={handleInputChange} className={errors.event_type ? 'error' : ''}>
+                    <option value="">Select Category</option>
+                    {eventTypes.map(type => <option key={type} value={type}>{type}</option>)}
+                  </select>
+                  {errors.event_type && <span className="ca-error-msg">{errors.event_type}</span>}
+                </div>
 
-                {/* Times */}
-                {[
-                  { label: "Start Time", id: "start_time", type: "time" },
-                  { label: "End Time", id: "end_time", type: "time" },
-                ].map(({ label, id, type }) => (
-                  <Grid item xs={6} key={id}>
-                    <TextField 
-                      fullWidth 
-                      type={type}
-                      label={label} 
-                      id={id}
-                      value={formData[id]}
-                      onChange={handleInputChange}
-                      InputLabelProps={{ shrink: true }}
-                      required
-                      error={!!errors[id]}
-                      helperText={errors[id]}
-                    />
-                  </Grid>
-                ))}
+                <div className="ca-input-group">
+                  <label>Event Mode</label>
+                  <select id="event_mode" value={formData.event_mode} onChange={handleInputChange} className={errors.event_mode ? 'error' : ''}>
+                    <option value="">Select Mode</option>
+                    {eventModes.map(mode => <option key={mode} value={mode}>{mode}</option>)}
+                  </select>
+                  {errors.event_mode && <span className="ca-error-msg">{errors.event_mode}</span>}
+                </div>
 
+                <div className="ca-input-group">
+                  <label>Registration / Event Link</label>
+                  <input type="url" id="event_link" value={formData.event_link} onChange={handleInputChange} className={errors.event_link ? 'error' : ''} placeholder="https://docs.google.com/..." />
+                  {errors.event_link && <span className="ca-error-msg">{errors.event_link}</span>}
+                </div>
+              </div>
+            </section>
 
-    
-                {/* Entry Fee */}
-                <Grid item xs={12}>
-                  <TextField 
-                    fullWidth 
-                    label="Entry Fee (Free or Amount)" 
-                    id="entry_fee"
-                    value={formData.entry_fee}
-                    onChange={handleInputChange}
-                    required
-                    error={!!errors.entry_fee}
-                    helperText={errors.entry_fee}
-                  />
-                </Grid>
+            {/* Section 5: Visual Media */}
+            <section className="ca-form-section">
+              <div className="ca-section-header">
+                <span className="material-symbols-outlined">image</span>
+                <h2>Visual Media</h2>
+              </div>
 
-
-
-                {/* Event Type (Dropdown) */}
-                <Grid item xs={12}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Event Type"
-                  id="event_type"
-                  name="event_type"  // Ensure name is set correctly
-                  value={formData.event_type}
-                  onChange={handleInputChange}
-                  required
-                  error={!!errors.event_type}
-                  helperText={errors.event_type}
-                >
-                  {eventTypes.map((type) => (
-                    <MenuItem key={type} value={type}>
-                      {type}
-                    </MenuItem>
-                  ))}
-                </TextField>
-
-                </Grid>
-
-                {/* Event Mode (Dropdown) */}
-                <Grid item xs={12}>
-                  <TextField
-                    select
-                    fullWidth
-                    label="Event Mode"
-                    id="event_mode"
-                    name="event_mode"  // ✅ Ensure `name` is set correctly
-                    value={formData.event_mode}
-                    onChange={handleInputChange}
-                    required
-                  >
-                    {eventMode.map((mode) => (
-                      <MenuItem key={mode} value={mode}>
-                        {mode}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-
-
-
-                {/* Event Link (Optional) */}
-                <Grid item xs={12}>
-                  <TextField 
-                    fullWidth 
-                    label="Event Link " 
-                    id="event_link"
-                    value={formData.event_link}
-                    onChange={handleInputChange}
-                    error={!!errors.event_link}
-                    helperText={errors.event_link}
-                  />
-                </Grid>
-
-
-
-                 {/* Image Upload */}
-              <Grid item xs={12}>
-                 <Typography variant="body1">Upload Poster Image:</Typography>
-                 <input 
-                  type="file" 
-                  id="poster_image" 
-                  accept="image/*" 
-                  onChange={handleInputChange} 
-                  required
-                />
-
-                {/* Show Image Preview */}
-                {formData.poster_preview && (
-                  <img 
-                    src={formData.poster_preview} 
-                    alt="Preview" 
-                    style={{ marginTop: 10, maxWidth: "100%", height: "auto", borderRadius: 8 }}
-                  />
+              <label htmlFor="poster_image" className={`ca-upload-zone ${errors.poster_image ? 'error-zone' : ''}`}>
+                {formData.poster_preview ? (
+                  <div className="ca-preview-wrapper">
+                    <img src={formData.poster_preview} alt="Poster Preview" />
+                    <div className="ca-preview-overlay">
+                      <span className="material-symbols-outlined">edit</span> Change Image
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="ca-upload-icon">
+                      <span className="material-symbols-outlined">upload_file</span>
+                    </div>
+                    <h3>Upload Poster Image</h3>
+                    <p>Click to browse. Recommended: High-resolution (4:5 ratio).</p>
+                  </>
                 )}
-              </Grid>
+                <input type="file" id="poster_image" accept="image/*" onChange={handleInputChange} className="hidden-file-input" />
+              </label>
+              {errors.poster_image && <span className="ca-error-msg text-center mt-2">{errors.poster_image}</span>}
+            </section>
 
-                {/* Submit */}
-                <Grid item xs={12}>
-                  <Button type="submit" variant="contained" color="primary" fullWidth>
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </form>
-          </CardContent>
-        </Card>
-      </Container>
+            {/* Form Actions */}
+            <div className="ca-form-actions">
+              <button type="button" className="ca-btn-draft">Save Draft</button>
+              <button type="submit" className="ca-btn-publish">
+                Publish Event <span className="material-symbols-outlined">send</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </main>
     </div>
   );
 };
 
 export default CAddEvents;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -103,7 +103,7 @@ const MProfile = () => {
     }
   };
 
-  // --- NEW: Open Preview Modal ---
+
   const handleOpenPreview = async () => {
     if (!selectedStudent || !studentStatistics) return showToast('error', 'Selection Required', 'Select a student first.');
     showToast('info', 'Loading Preview', 'Fetching complete activity ledger...');
@@ -117,46 +117,6 @@ const MProfile = () => {
     }
   };
 
-  // --- NEW: Trigger Actual Download ---
-  //   const handleDownloadPDF = async () => {
-  //     setIsGeneratingPDF(true);
-  //     showToast('info', 'Generating PDF', 'Formatting official document...');
-
-  //     try {
-  //       const element = reportTemplateRef.current;
-  //       // const opt = {
-  //       //   margin: 0, // We handle padding completely in CSS now!
-  //       //   filename: `${selectedStudent.s_username}_Academic_Report.pdf`,
-  //       //   image: { type: 'jpeg', quality: 0.98 },
-  //       //   html2canvas: { scale: 2, useCORS: true },
-  //       //   jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-  //       //   pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-  //       // };
-
-  //       const opt = {
-  //   margin: [10, 10, 10, 10], // top, right, bottom, left in mm
-  //   filename: `${selectedStudent.s_username}_Academic_Report.pdf`,
-  //   image: { type: 'jpeg', quality: 0.98 },
-  //   html2canvas: { 
-  //     scale: 2, 
-  //     useCORS: true,
-  //     windowWidth: 850, // 👈 Tell html2canvas the viewport is exactly 850px
-  //   },
-  //   jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-  //   pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-  // };
-
-  //       await html2pdf().set(opt).from(element).save();
-
-  //       showToast('success', 'Download Complete', 'PDF Report successfully generated.');
-  //       setShowPreview(false); // Close modal on success
-  //     } catch (error) {
-  //       showToast('error', 'Generation Failed', 'Could not compile the PDF report.');
-  //     } finally {
-  //       setIsGeneratingPDF(false);
-  //     }
-  //   };
-
   const handleDownloadPDF = async () => {
     setIsGeneratingPDF(true);
     showToast('info', 'Generating PDF', 'Formatting official document...');
@@ -164,7 +124,7 @@ const MProfile = () => {
     try {
       const element = reportTemplateRef.current;
 
-      // 👇 Temporarily override styles for clean capture
+
       const originalStyle = element.style.cssText;
       element.style.width = '850px';
       element.style.maxWidth = '850px';
