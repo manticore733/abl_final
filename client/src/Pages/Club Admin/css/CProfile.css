@@ -1,0 +1,739 @@
+/* CProfile.css - Editorial Club Admin Dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --cap-bg: #f5f7f9;
+    --cap-surface: #ffffff;
+    --cap-surface-high: #dfe3e6;
+    --cap-surface-low: #eef1f3;
+    --cap-primary: #0053cc;
+    --cap-primary-grad: linear-gradient(135deg, #0053cc 0%, #779dff 100%);
+    --cap-secondary: #006479;
+    --cap-tertiary: #854f00;
+    --cap-text-main: #2c2f31;
+    --cap-text-sub: #595c5e;
+    --cap-shadow: 0 12px 32px rgba(44, 47, 49, 0.04);
+    --cap-outline: #abadaf;
+    --cap-error: #b31b25;
+}
+
+.cap-page-wrapper {
+    background-color: var(--cap-bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--cap-text-main);
+    min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Manrope', sans-serif;
+    margin: 0;
+}
+
+p,
+label {
+    margin: 0;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+.cap-main-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+}
+
+.cap-header-section {
+    margin-bottom: 2.5rem;
+    padding-left: 1rem;
+}
+
+.cap-header-section h2 {
+    font-size: 2.25rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+}
+
+.cap-header-section p {
+    font-size: 1.05rem;
+    color: var(--cap-text-sub);
+    font-weight: 500;
+    max-width: 700px;
+}
+
+.cap-loading {
+    text-align: center;
+    padding: 4rem;
+    font-weight: 700;
+    color: var(--cap-text-sub);
+}
+
+/* --- TOP GRID --- */
+.cap-top-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+    .cap-top-grid {
+        grid-template-columns: 3fr 6fr 3fr;
+    }
+}
+
+.cap-card {
+    background: var(--cap-surface);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    box-shadow: var(--cap-shadow);
+}
+
+/* 1. Profile Card */
+.cap-profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.cap-avatar-wrapper {
+    width: 96px;
+    height: 96px;
+    border-radius: 1rem;
+    background: var(--cap-primary-grad);
+    padding: 4px;
+    margin-bottom: 1rem;
+}
+
+.cap-avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    background: white;
+}
+
+.cap-profile-card h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.cap-role {
+    font-size: 0.85rem;
+    color: var(--cap-text-sub);
+    margin-bottom: 1.5rem;
+}
+
+.cap-stats-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cap-stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--cap-text-sub);
+}
+
+.cap-val-primary {
+    font-weight: 800;
+    color: var(--cap-primary);
+}
+
+.cap-val-secondary {
+    font-weight: 800;
+    color: var(--cap-secondary);
+}
+
+.cap-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--cap-surface-low);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 4px;
+}
+
+.cap-progress-fill {
+    height: 100%;
+    background: var(--cap-primary);
+    border-radius: 10px;
+}
+
+/* 2. Impact Card */
+.cap-impact-card {
+    background: var(--cap-surface-low);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.cap-impact-bg-circle {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    background: rgba(0, 83, 204, 0.05);
+    border-radius: 50%;
+}
+
+.cap-impact-content {
+    position: relative;
+    z-index: 10;
+}
+
+.cap-pill-legacy {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #77dfff;
+    color: #004e60;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+}
+
+.cap-pill-legacy .material-symbols-outlined {
+    font-size: 14px;
+    font-variation-settings: 'FILL' 1;
+}
+
+.cap-impact-card h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+.cap-impact-card p {
+    font-size: 0.95rem;
+    color: var(--cap-text-sub);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.cap-impact-kpis {
+    display: flex;
+    gap: 1rem;
+}
+
+.cap-kpi-box {
+    background: var(--cap-surface);
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.cap-kpi-box label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cap-outline);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.cap-kpi-box p {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--cap-text-main);
+}
+
+/* 3. Skills Matrix */
+.cap-skills-card h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.cap-skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.cap-skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cap-skill-lbl {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cap-text-sub);
+}
+
+.cap-skill-track {
+    display: flex;
+    gap: 4px;
+    height: 6px;
+}
+
+.cap-skill-fill {
+    flex: 1;
+    border-radius: 10px;
+}
+
+.bg-primary {
+    background: var(--cap-primary);
+}
+
+.text-primary {
+    color: var(--cap-primary);
+}
+
+.bg-secondary {
+    background: var(--cap-secondary);
+}
+
+.text-secondary {
+    color: var(--cap-secondary);
+}
+
+.bg-tertiary {
+    background: var(--cap-tertiary);
+}
+
+.text-tertiary {
+    color: var(--cap-tertiary);
+}
+
+.bg-gray {
+    background: var(--cap-surface-high);
+}
+
+/* --- CONSOLE & TABLE --- */
+.cap-console-section {
+    background: var(--cap-surface);
+    border-radius: 1.25rem;
+    padding: 2rem;
+    box-shadow: var(--cap-shadow);
+}
+
+.cap-console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.cap-console-header h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.cap-console-header p {
+    font-size: 0.9rem;
+    color: var(--cap-text-sub);
+}
+
+.cap-console-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Filter Bar */
+.cap-filter-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    background: var(--cap-bg);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    flex-wrap: wrap;
+}
+
+.cap-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.w-48 {
+    width: 12rem;
+}
+
+.cap-input-group label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cap-outline);
+    padding-left: 4px;
+}
+
+.cap-search-input {
+    position: relative;
+}
+
+
+.cap-search-input span {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cap-text-sub);
+}
+
+/* ==========================================
+   FILTER INPUTS (CLEANED & FIXED)
+   ========================================== */
+
+/* 1. Safely isolated Search Input styling */
+.cap-search-input input {
+    width: 100%;
+    background: white;
+    border: none;
+    /* Top: 12px | Right: 16px | Bottom: 12px | Left: 44px */
+    padding: 12px 16px 12px 44px !important;
+    border-radius: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+/* Win the CSS Specificity War against the Edit Profile leak */
+.cap-filter-bar .cap-input-group .cap-search-input input {
+    padding: 12px 16px 12px 44px !important;
+}
+
+/* 2. Safely isolated Date Input styling */
+.cap-date-input {
+    width: 100%;
+    background: white;
+    border: none;
+    padding: 12px 16px !important;
+    border-radius: 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+/* Shared Focus State */
+.cap-search-input input:focus,
+.cap-date-input:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(0, 83, 204, 0.2) !important;
+}
+
+.cap-status-filters {
+    display: flex;
+    gap: 1rem;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 0.75rem;
+}
+
+.cap-status-filters label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Buttons */
+.cap-btn-gradient {
+    background: var(--cap-primary-grad);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(0, 83, 204, 0.2);
+}
+
+.cap-btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 83, 204, 0.3);
+}
+
+.cap-btn-primary {
+    background: var(--cap-primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 83, 204, 0.15);
+}
+
+.cap-btn-primary:hover {
+    box-shadow: 0 6px 15px rgba(0, 83, 204, 0.25);
+}
+
+.cap-btn-outline {
+    background: var(--cap-surface-high);
+    color: var(--cap-text-main);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cap-btn-outline:hover {
+    background: var(--cap-outline);
+}
+
+.cap-btn-dark {
+    background: var(--cap-text-main);
+    color: var(--cap-surface);
+    border: none;
+    padding: 12px 24px;
+    border-radius: 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.cap-btn-dark:hover {
+    opacity: 0.9;
+}
+
+/* Table */
+.cap-table-wrapper {
+    overflow-x: auto;
+}
+
+.cap-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.cap-table th {
+    background: var(--cap-surface-low);
+    padding: 1rem 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cap-text-sub);
+}
+
+.cap-table th:first-child {
+    border-radius: 12px 0 0 0;
+}
+
+.cap-table th:last-child {
+    border-radius: 0 12px 0 0;
+}
+
+.cap-table td {
+    padding: 1.25rem 1.5rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--cap-bg);
+    transition: background 0.2s;
+}
+
+.cap-table tr:hover td {
+    background: var(--cap-bg);
+}
+
+.cap-event-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cap-event-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cap-event-icon span {
+    font-size: 18px;
+}
+
+.text-sub {
+    color: var(--cap-text-sub);
+    font-weight: 500;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Dynamic Status Pills */
+.cap-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cap-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.bg-blue-light {
+    background: #dbeafe;
+}
+
+.text-blue {
+    color: #1d4ed8;
+}
+
+.bg-blue {
+    background: #1d4ed8;
+}
+
+.bg-outline-light {
+    background: var(--cap-surface-high);
+}
+
+.text-outline {
+    color: var(--cap-text-sub);
+}
+
+.bg-outline {
+    background: var(--cap-outline);
+}
+
+.bg-primary-light {
+    background: rgba(0, 83, 204, 0.1);
+}
+
+/* Table Actions */
+.cap-action-btns {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.cap-action-btns button {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--cap-text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cap-action-btns button:hover {
+    background: rgba(0, 83, 204, 0.05);
+    color: var(--cap-primary);
+}
+
+.cap-action-btns button.hover-error:hover {
+    background: #fef2f2;
+    color: var(--cap-error);
+}
+
+/* Pagination */
+.cap-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--cap-surface-high);
+}
+
+.cap-pagination p {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--cap-text-sub);
+}
+
+.cap-page-controls {
+    display: flex;
+    gap: 4px;
+}
+
+.cap-page-controls button {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--cap-text-sub);
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cap-page-controls button:hover:not(:disabled) {
+    background: var(--cap-surface-low);
+}
+
+.cap-page-controls button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.cap-page-controls button.active {
+    background: var(--cap-primary);
+    color: white;
+}
