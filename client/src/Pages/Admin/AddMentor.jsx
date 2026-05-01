@@ -1,212 +1,3 @@
-// import React, { useState } from "react";
-// import AdNavbar from "../../Components/AdminC/AdNavbar";
-// import "./css/AddMentor.css";
-// import { addMentor } from "../../api/mentorAddApi"; // Updated API function
-
-// const AddMentor = () => {
-//   const [formData, setFormData] = useState({
-//     m_username: "",
-//     m_password: "",
-//     m_name: "",
-//     m_batch: "",
-//     m_sem: "",
-//     m_csec: "",
-//     m_branch: "",
-//   });
-
-//   const [errors, setErrors] = useState({}); // State to track validation errors
-
-//   const branches = ["Computer", "Mechanical", "EXTC", "IT", "Electrical"];
-//   const semesters = Array.from({ length: 8 }, (_, i) => (i + 1).toString()); // ["1", "2", ..., "8"]
-//   const sections = ["A", "B"];
-//   const batches = ["1", "2", "3", "4"];
-
-//   // Handle changes for form inputs
-//   const handleInputChange = (e) => {
-//     const { id, value } = e.target;
-//     setFormData({ ...formData, [id]: value });
-//     setErrors({ ...errors, [id]: "" }); // Clear error when user starts typing
-//   };
-
-//   // ✅ Form Validation Function
-//   const validateForm = () => {
-//     let isValid = true;
-//     let newErrors = {};
-
-//     Object.keys(formData).forEach((field) => {
-//       if (!formData[field]) {
-//         newErrors[field] = "This field is required";
-//         isValid = false;
-//       }
-//     });
-
-//     setErrors(newErrors);
-//     return isValid;
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     if (!validateForm()) {
-//       return; // Stop submission if validation fails
-//     }
-
-//     try {
-//       await addMentor(formData);
-//       alert("Mentor added successfully!");
-//     } catch (error) {
-//       console.error("Error adding mentor:", error);
-//       alert("Failed to add mentor.");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <AdNavbar />
-//       <form className="main-box row g-3 needs-validation" onSubmit={handleSubmit} noValidate>
-//         <div className="add-mentor-text"> Assign a Mentor to Batch </div>
-
-//         {/* Mentor Authentication Details */}
-//         <div className="col-sm-4">
-//           <label htmlFor="m_name" className="form-label">Name</label>
-//           <input type="text" className="form-control" id="m_name" value={formData.m_name} onChange={handleInputChange} />
-//           {errors.m_name && <small className="text-danger">{errors.m_name}</small>}
-//         </div>
-
-//         <div className="col-sm-4">
-//           <label htmlFor="m_username" className="form-label">Username</label>
-//           <input type="text" className="form-control" id="m_username" value={formData.m_username} onChange={handleInputChange} />
-//           {errors.m_username && <small className="text-danger">{errors.m_username}</small>}
-//         </div>
-
-//         <div className="col-sm-4">
-//           <label htmlFor="m_password" className="form-label">Password</label>
-//           <input type="password" className="form-control" id="m_password" value={formData.m_password} onChange={handleInputChange} />
-//           {errors.m_password && <small className="text-danger">{errors.m_password}</small>}
-//         </div>
-
-//         {/* Mentor Details */}
-//         <div className="col-sm-4">
-//           <label htmlFor="m_batch" className="form-label">Batch</label>
-//           <select className="form-control" id="m_batch" value={formData.m_batch} onChange={handleInputChange}>
-//             <option value="">Select Batch</option>
-//             {batches.map((batch, index) => (
-//               <option key={index} value={batch}>{batch}</option>
-//             ))}
-//           </select>
-//           {errors.m_batch && <small className="text-danger">{errors.m_batch}</small>}
-//         </div>
-
-//         <div className="col-sm-4">
-//           <label htmlFor="m_sem" className="form-label">Semester</label>
-//           <select className="form-control" id="m_sem" value={formData.m_sem} onChange={handleInputChange}>
-//             <option value="">Select Semester</option>
-//             {semesters.map((sem, index) => (
-//               <option key={index} value={sem}>{sem}</option>
-//             ))}
-//           </select>
-//           {errors.m_sem && <small className="text-danger">{errors.m_sem}</small>}
-//         </div>
-
-//         <div className="col-sm-4">
-//           <label htmlFor="m_csec" className="form-label">Class Section</label>
-//           <select className="form-control" id="m_csec" value={formData.m_csec} onChange={handleInputChange}>
-//             <option value="">Select Section</option>
-//             {sections.map((sec, index) => (
-//               <option key={index} value={sec}>{sec}</option>
-//             ))}
-//           </select>
-//           {errors.m_csec && <small className="text-danger">{errors.m_csec}</small>}
-//         </div>
-
-//         <div className="col-sm-4">
-//           <label htmlFor="m_branch" className="form-label">Branch</label>
-//           <select className="form-control" id="m_branch" value={formData.m_branch} onChange={handleInputChange}>
-//             <option value="">Select Branch</option>
-//             {branches.map((branch, index) => (
-//               <option key={index} value={branch}>{branch}</option>
-//             ))}
-//           </select>
-//           {errors.m_branch && <small className="text-danger">{errors.m_branch}</small>}
-//         </div>
-
-//         <div>
-//           <button type="submit" className="btn btn-outline-success">Submit</button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default AddMentor;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useState, useRef } from "react";
 import AdNavbar from "../../Components/AdminC/AdNavbar";
 import {
@@ -221,7 +12,7 @@ import {
   Typography,
   Input,
 } from "@mui/material";
-import { AccountCircle, Person, School} from "@mui/icons-material";
+import { AccountCircle, Person, School } from "@mui/icons-material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
@@ -290,9 +81,9 @@ const AddMentor = () => {
     }
   };
 
-    // File input hidden ref
-    const fileInputRef = useRef(null);
-    const handleUploadClick = () => fileInputRef.current?.click();
+  // File input hidden ref
+  const fileInputRef = useRef(null);
+  const handleUploadClick = () => fileInputRef.current?.click();
 
   // Validate form fields
   const validateStep = () => {
@@ -316,23 +107,23 @@ const AddMentor = () => {
       }
       if (!formData.m_designation) newErrors.m_designation = "Designation is required";
 
-     
+
       if (!formData.profile_pic) {
         newErrors.profile_pic = "Profile picture is required";
       }
-      
 
-    } 
-    
+
+    }
+
     else if (activeStep === 1) {
 
 
       if (!formData.m_username) newErrors.m_username = "Username is required";
       if (!formData.m_password) newErrors.m_password = "Password is required";
 
-    } 
-    
-    
+    }
+
+
     else if (activeStep === 2) {
       ["m_batch", "m_sem", "m_csec", "m_branch", "year_of_joining"].forEach((field) => {
         if (!formData[field]) newErrors[field] = "This field is required";
@@ -406,44 +197,44 @@ const AddMentor = () => {
 
   return (
 
-<div>
-  <AdNavbar/>
+    <div>
+      <AdNavbar />
 
 
 
-    <Container maxWidth="md" sx={{mb:2}}>
-      <Box sx={{ mt: 10, p: 4, bgcolor: "#fff", boxShadow: 3, borderRadius: 2 }}>
-        <Typography variant="h5" sx={{ mb: 3, textAlign: "center", fontWeight: "bold" }}>
-          Assign a Mentor to Batch
-        </Typography>
+      <Container maxWidth="md" sx={{ mb: 2 }}>
+        <Box sx={{ mt: 10, p: 4, bgcolor: "#fff", boxShadow: 3, borderRadius: 2 }}>
+          <Typography variant="h5" sx={{ mb: 3, textAlign: "center", fontWeight: "bold" }}>
+            Assign a Mentor to Batch
+          </Typography>
 
-        {/* Stepper */}
-        
-        <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel icon={index === 0 ? <AccountCircle /> : index === 1 ? <Person /> : <School />}>
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+          {/* Stepper */}
 
-        {/* Step Forms */}
+          <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: 4 }}>
+            {steps.map((label, index) => (
+              <Step key={label}>
+                <StepLabel icon={index === 0 ? <AccountCircle /> : index === 1 ? <Person /> : <School />}>
+                  {label}
+                </StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+
+          {/* Step Forms */}
 
 
 
-        <Box>
-          
-          {activeStep === 0 && (
-            <>
-              <TextField fullWidth label="Name" id="m_name"  value={formData.m_name} onChange={handleInputChange} error={!!errors.m_name} helperText={errors.m_name} sx={{ mb: 2 }} />
-              <TextField fullWidth label="Email" id="m_email"   value={formData.m_email} onChange={handleInputChange} error={!!errors.m_email} helperText={errors.m_email}   sx= {{mb:2}}/>
-              <TextField fullWidth label="Phone Number" id="m_phone"  value={formData.m_phone} onChange={handleInputChange} error={!!errors.m_phone} helperText={errors.m_phone}   sx= {{mb:2}}/>
-              <TextField fullWidth label="Designation" id="m_designation"  value={formData.m_designation} onChange={handleInputChange} error={!!errors.m_designation} helperText={errors.m_designation}   sx= {{mb:2}}/>
-              
-              {/* <Input type="file" onChange={handleFileChange} /> */}
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Box>
+
+            {activeStep === 0 && (
+              <>
+                <TextField fullWidth label="Name" id="m_name" value={formData.m_name} onChange={handleInputChange} error={!!errors.m_name} helperText={errors.m_name} sx={{ mb: 2 }} />
+                <TextField fullWidth label="Email" id="m_email" value={formData.m_email} onChange={handleInputChange} error={!!errors.m_email} helperText={errors.m_email} sx={{ mb: 2 }} />
+                <TextField fullWidth label="Phone Number" id="m_phone" value={formData.m_phone} onChange={handleInputChange} error={!!errors.m_phone} helperText={errors.m_phone} sx={{ mb: 2 }} />
+                <TextField fullWidth label="Designation" id="m_designation" value={formData.m_designation} onChange={handleInputChange} error={!!errors.m_designation} helperText={errors.m_designation} sx={{ mb: 2 }} />
+
+                {/* <Input type="file" onChange={handleFileChange} /> */}
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   {/* Show file name in a TextField for consistency */}
                   <TextField
                     fullWidth
@@ -483,146 +274,146 @@ const AddMentor = () => {
                   </Button>
                 </Box>
 
-            </>
-          )}
+              </>
+            )}
 
 
-          {activeStep === 1 && (
-            <>
-              <TextField fullWidth label="Username" id="m_username"  value={formData.m_username} onChange={handleInputChange} error={!!errors.m_username} helperText={errors.m_username} sx={{ mb: 2 }} />
-              {/* <TextField fullWidth type="password" label="Password" id="m_password"  value={formData.m_password} onChange={handleInputChange} error={!!errors.m_password} helperText={errors.m_password} sx={{ mb: 2 }} /> */}
-            
-              <TextField
-                    fullWidth
-                    type={showPassword ? "text" : "password"}  // ✅ Toggle password visibility
-                    label="Password"
-                    id="m_password"
-                    value={formData.m_password}  // ✅ Ensure input retains value
-                    onChange={handleInputChange}
-                    error={!!errors.m_password}
-                    helperText={errors.m_password}
-                    sx={{ mb: 2 }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={handleTogglePassword} edge="end">
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                              
-            </>
+            {activeStep === 1 && (
+              <>
+                <TextField fullWidth label="Username" id="m_username" value={formData.m_username} onChange={handleInputChange} error={!!errors.m_username} helperText={errors.m_username} sx={{ mb: 2 }} />
+                {/* <TextField fullWidth type="password" label="Password" id="m_password"  value={formData.m_password} onChange={handleInputChange} error={!!errors.m_password} helperText={errors.m_password} sx={{ mb: 2 }} /> */}
+
+                <TextField
+                  fullWidth
+                  type={showPassword ? "text" : "password"}  // ✅ Toggle password visibility
+                  label="Password"
+                  id="m_password"
+                  value={formData.m_password}  // ✅ Ensure input retains value
+                  onChange={handleInputChange}
+                  error={!!errors.m_password}
+                  helperText={errors.m_password}
+                  sx={{ mb: 2 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleTogglePassword} edge="end">
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+              </>
 
 
-          )}
+            )}
 
 
-          
-
-                {activeStep === 2 && (
-                  <>
-                    <TextField
-                      fullWidth
-                      type="number"
-                      label="Year of Joining"
-                      id="year_of_joining"
-                      onChange={handleInputChange}
-                      value={formData.year_of_joining}
-                      error={!!errors.year_of_joining}
-                      helperText={errors.year_of_joining}
-                      sx={{ mb: 2 }}
-                    />
-
-                    <TextField
-                      select
-                      fullWidth
-                      label="Batch"
-                      id="m_batch"
-                      value={formData.m_batch}
-                      onChange={handleDropdownChange("m_batch")}
-                      error={!!errors.m_batch}
-                      helperText={errors.m_batch}
-                      sx={{ mb: 2 }}
-                    >
-                      {batches.map((batch) => (
-                        <MenuItem key={batch} value={batch}>
-                          {batch}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-
-                    <TextField
-                      select
-                      fullWidth
-                      label="Division"
-                      id="m_csec"
-                      value={formData.m_csec}
-                      onChange={handleDropdownChange("m_csec")}
-                      error={!!errors.m_csec}
-                      helperText={errors.m_csec}
-                      sx={{ mb: 2 }}
-                    >
-                      {sections.map((section) => (
-                        <MenuItem key={section} value={section}>
-                          {section}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-
-                    <TextField
-                      select
-                      fullWidth
-                      label="Semester"
-                      id="m_sem"
-                      value={formData.m_sem}
-                      onChange={handleDropdownChange("m_sem")}
-                      error={!!errors.m_sem}
-                      helperText={errors.m_sem}
-                      sx={{ mb: 2 }}
-                    >
-                      {semesters.map((sem) => (
-                        <MenuItem key={sem} value={sem}>
-                          {sem}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-
-                    <TextField
-                      select
-                      fullWidth
-                      label="Department"
-                      id="m_branch"
-                      value={formData.m_branch}
-                      onChange={handleDropdownChange("m_branch")}
-                      error={!!errors.m_branch}
-                      helperText={errors.m_branch}
-                      sx={{ mb: 2 }}
-                    >
-                      {branches.map((branch) => (
-                        <MenuItem key={branch} value={branch}>
-                          {branch}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </>
-                )}
 
 
-        </Box>
-        
+            {activeStep === 2 && (
+              <>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Year of Joining"
+                  id="year_of_joining"
+                  onChange={handleInputChange}
+                  value={formData.year_of_joining}
+                  error={!!errors.year_of_joining}
+                  helperText={errors.year_of_joining}
+                  sx={{ mb: 2 }}
+                />
 
-            {/* Buttons */}
-            <Box sx={{ mt: 4, display: "flex", justifyContent: "space-between" }}>
-              {activeStep > 0 && <Button onClick={handleBack}>Back</Button>}
-              {activeStep < steps.length - 1 ? <Button variant="contained" onClick={handleNext}>Next</Button> : <Button variant="contained" onClick={handleSubmit}>Submit</Button>}
-            </Box>
+                <TextField
+                  select
+                  fullWidth
+                  label="Batch"
+                  id="m_batch"
+                  value={formData.m_batch}
+                  onChange={handleDropdownChange("m_batch")}
+                  error={!!errors.m_batch}
+                  helperText={errors.m_batch}
+                  sx={{ mb: 2 }}
+                >
+                  {batches.map((batch) => (
+                    <MenuItem key={batch} value={batch}>
+                      {batch}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
+                <TextField
+                  select
+                  fullWidth
+                  label="Division"
+                  id="m_csec"
+                  value={formData.m_csec}
+                  onChange={handleDropdownChange("m_csec")}
+                  error={!!errors.m_csec}
+                  helperText={errors.m_csec}
+                  sx={{ mb: 2 }}
+                >
+                  {sections.map((section) => (
+                    <MenuItem key={section} value={section}>
+                      {section}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  select
+                  fullWidth
+                  label="Semester"
+                  id="m_sem"
+                  value={formData.m_sem}
+                  onChange={handleDropdownChange("m_sem")}
+                  error={!!errors.m_sem}
+                  helperText={errors.m_sem}
+                  sx={{ mb: 2 }}
+                >
+                  {semesters.map((sem) => (
+                    <MenuItem key={sem} value={sem}>
+                      {sem}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  select
+                  fullWidth
+                  label="Department"
+                  id="m_branch"
+                  value={formData.m_branch}
+                  onChange={handleDropdownChange("m_branch")}
+                  error={!!errors.m_branch}
+                  helperText={errors.m_branch}
+                  sx={{ mb: 2 }}
+                >
+                  {branches.map((branch) => (
+                    <MenuItem key={branch} value={branch}>
+                      {branch}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </>
+            )}
 
 
           </Box>
-    </Container>
+
+
+          {/* Buttons */}
+          <Box sx={{ mt: 4, display: "flex", justifyContent: "space-between" }}>
+            {activeStep > 0 && <Button onClick={handleBack}>Back</Button>}
+            {activeStep < steps.length - 1 ? <Button variant="contained" onClick={handleNext}>Next</Button> : <Button variant="contained" onClick={handleSubmit}>Submit</Button>}
+          </Box>
+
+
+
+        </Box>
+      </Container>
     </div>
   );
 };

@@ -32,7 +32,7 @@ import CProfile from "./Pages/Club Admin/CProfile";
 // Admin Pages
 import AHomepage from "./Pages/Admin/aHomepage";
 import AddMentor from "./Pages/Admin/AddMentor";
-import AddEvents from "./Pages/Admin/AddEvents";
+// import AddEvents from "./Pages/Admin/AddEvents";
 import AdViewStudents from "./Pages/Admin/AdViewStudents";
 import AdViewMentor from "./Pages/Admin/AdViewMentor";
 import Adprofile from "./Pages/Admin/Adprofile";
@@ -70,7 +70,7 @@ const InnerApp = () => {
           {/* Admin Pages */}
           <Route path="/aHomepage" element={<ProtectedRoute><AHomepage /></ProtectedRoute>} />
           <Route path="/add-mentor" element={<ProtectedRoute><AddMentor /></ProtectedRoute>} />
-          <Route path="/add-events" element={<ProtectedRoute><AddEvents /></ProtectedRoute>} />
+          {/* <Route path="/add-events" element={<ProtectedRoute><AddEvents /></ProtectedRoute>} /> */}
           <Route path="/ad-view-students" element={<ProtectedRoute><AdViewStudents /></ProtectedRoute>} />
           <Route path="/ad-view-mentor" element={<ProtectedRoute><AdViewMentor /></ProtectedRoute>} />
           <Route path="/adprofile" element={<ProtectedRoute><Adprofile /></ProtectedRoute>} />

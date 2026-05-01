@@ -1,113 +1,147 @@
-/* .navbar{
+/* AdNavbar.css - Consistent Thinner Global Navbar */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+.sa-top-nav {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    /* Thinner, exactly matches SNavbar */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
-    flex-direction: row;
-    background-color: #393E46;
-    margin-top: 3.25cm;
-    width: 100%;
-    align-items: center;
     justify-content: space-between;
-    padding: 0.5cm 0.5cm;
-}
-.navbar-nav{
-    display: flex;
-    flex-direction: row;
-    color: aliceblue !important;
     align-items: center;
-    justify-content: space-between;
-    gap: 11.5cm;
+    padding: 0 2rem;
+    z-index: 50;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
-.links-adnav{
+
+.sa-nav-left,
+.sa-nav-right {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    color: aliceblue !important;
+    gap: 1.5rem;
 }
-.nav-link{
-    color:aliceblue;
-}
-.logout{
+
+/* Brand Section */
+.sa-brand-container {
     display: flex;
-    flex-direction: row;
-    align-items: end;
-    gap: 1cm;
-}
-.admin-profile-icon{
-    color: aliceblue;
-}
-
-.enter-records{
-    display: flex ; 
-    flex-direction: row;
-}
-
-.admin-role-button{
-    margin-left: 1cm;
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.navbar {
-    display: flex;
-    flex-direction: row;
-    background-color: #222831;
-    margin-top: 3.25cm;
-    width: 100%;
     align-items: center;
-    justify-content: space-between;
-    padding: 0.5cm 1cm;
+    gap: 10px;
+    margin-right: 1rem;
 }
 
-/* Admin Role Text */
-.admin-role-text {
-    color: aliceblue;
-    font-size: 1rem;
-    white-space: nowrap;
-}
-
-/* Centered Navigation Links */
-.nav-center {
+.sa-brand-icon {
+    width: 28px;
+    height: 28px;
+    background: #0053cc;
+    border-radius: 6px;
     display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: center;
-    align-items: center;
-    gap: 1cm;
+    color: white;
 }
 
-/* Navbar Links */
-.nav-link {
-    color: aliceblue;
+.sa-brand-icon span {
+    font-size: 16px;
+}
+
+.sa-brand-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #2c2f31;
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+/* Links */
+.sa-desktop-links {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .sa-desktop-links {
+        display: flex;
+        gap: 1.5rem;
+    }
+}
+
+.sa-nav-link {
+    color: #595c5e;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: color 0.2s;
     text-decoration: none;
-    font-size: 1rem;
-}
-
-/* Profile Icon & Logout Button */
-.logout-profile {
+    height: 64px;
+    /* Spans full height of navbar */
     display: flex;
     align-items: center;
-    gap: 1cm;
+    box-sizing: border-box;
+    border-bottom: 2px solid transparent;
+    padding-top: 2px;
+    /* Visual balance */
 }
 
-.admin-profile-icon {
-    color: aliceblue;
+.sa-nav-link:hover {
+    color: #0053cc;
 }
 
-/* Logout Button */
-.logout-btn {
-    background: none;
+.sa-nav-link.active {
+    color: #0053cc;
+    border-bottom: 2px solid #0053cc;
+    font-weight: 800;
+}
+
+/* Icons & Profile */
+.sa-icon-btn {
+    color: #595c5e;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
-    color: aliceblue;
+    background: transparent;
     cursor: pointer;
+}
+
+.sa-icon-btn:hover {
+    background: rgba(0, 83, 204, 0.05);
+    color: #0053cc;
+}
+
+.logout-icon-btn:hover {
+    color: #b31b25;
+    background: rgba(179, 27, 37, 0.05);
+}
+
+.sa-profile-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sa-profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid transparent;
+    background: #dfe3e6;
+    transition: transform 0.2s, border 0.2s;
+}
+
+.sa-profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.border-active {
+    border: 2px solid #0053cc;
 }
