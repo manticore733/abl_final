@@ -1,65 +1,432 @@
-/* AdProfile.css */
+/* AdProfile.css - Executive Identity View */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 
-.admin-profile-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    background: #f4f4f4;
-    padding: 20px;
-    margin-top: 4cm;
+.ap-page-wrapper {
+  background-color: #f5f7f9;
+  font-family: 'Inter', sans-serif;
+  color: #2c2f31;
+  min-height: 100vh;
+}
+
+.ap-main-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+.ap-grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .ap-grid-container {
+    grid-template-columns: 5fr 7fr;
   }
-  
-  .admin-profile-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    max-width: 400px;
-    width: 100%;
-    padding: 20px;
+}
+
+/* --- LEFT COLUMN --- */
+.ap-left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Main Profile Card */
+.ap-profile-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2.5rem;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(44, 47, 49, 0.04);
+}
+
+.ap-watermark {
+  position: absolute;
+  right: -2rem;
+  bottom: -2rem;
+  font-size: 240px !important;
+  color: #0053cc;
+  opacity: 0.03;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ap-profile-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .ap-profile-content {
+    align-items: flex-start;
+    text-align: left;
   }
-  
-  .admin-profile-image img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid #007bff;
+}
+
+.ap-avatar-wrapper {
+  width: 160px;
+  height: 160px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 4px solid #eef1f3;
+}
+
+.ap-avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ap-name {
+  font-family: 'Manrope', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #2c2f31;
+  letter-spacing: -1px;
+  margin: 0 0 8px 0;
+}
+
+.ap-role {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0053cc;
+  margin: 0 0 2rem 0;
+}
+
+/* Contact List */
+.ap-contact-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.ap-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 8px;
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+
+.ap-contact-item:hover {
+  background: #f5f7f9;
+}
+
+.ap-contact-icon {
+  width: 40px;
+  height: 40px;
+  background: #eef1f3;
+  color: #595c5e;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.ap-contact-item:hover .ap-contact-icon {
+  background: #e0f6ff;
+  color: #0053cc;
+}
+
+.ap-contact-icon span {
+  font-size: 18px;
+}
+
+.ap-contact-text {
+  text-align: left;
+}
+
+.ap-contact-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #747779;
+  margin: 0 0 2px 0;
+}
+
+.ap-contact-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2c2f31;
+  margin: 0;
+}
+
+.ap-btn-edit {
+  width: 100%;
+  background: linear-gradient(135deg, #0053cc 0%, #779dff 100%);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 9999px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 83, 204, 0.2);
+  transition: all 0.2s;
+}
+
+.ap-btn-edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0, 83, 204, 0.3);
+}
+
+.ap-btn-edit span {
+  font-size: 20px;
+}
+
+/* Expertise Card */
+.ap-expertise-card {
+  background: #eef1f3;
+  border-radius: 1.5rem;
+  padding: 2rem;
+}
+
+.ap-expertise-card h3 {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #595c5e;
+  margin: 0 0 1.5rem 0;
+}
+
+.ap-expertise-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ap-tag {
+  background: #77dfff;
+  color: #004e60;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+/* --- RIGHT COLUMN --- */
+.ap-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.ap-section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.ap-section-header h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #2c2f31;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ap-divider {
+  height: 1px;
+  background: #dfe3e6;
+  flex-grow: 1;
+  margin: 0 1.5rem;
+}
+
+.ap-q-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #0053cc;
+  white-space: nowrap;
+}
+
+/* Impact KPIs */
+.ap-impact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .ap-impact-grid {
+    grid-template-columns: 1fr 1fr;
   }
-  
-  .admin-profile-details {
-    text-align: center;
-    margin-top: 15px;
-  }
-  
-  .admin-profile-details h2 {
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  .admin-profile-details p {
-    margin: 5px 0;
-    color: #666;
-  }
-  
-  .edit-profile-btn {
-    margin-top: 15px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .edit-profile-btn:hover {
-    background-color: #0056b3;
-  }
-  
+}
+
+.ap-impact-card {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 12rem;
+  box-shadow: 0 12px 32px rgba(44, 47, 49, 0.04);
+  transition: transform 0.2s;
+  cursor: default;
+}
+
+.ap-impact-card:hover {
+  transform: scale(1.02);
+}
+
+.ap-impact-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.ap-impact-icon {
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ap-impact-trend {
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bg-primary-light {
+  background: rgba(0, 83, 204, 0.05);
+}
+
+.text-primary {
+  color: #0053cc;
+}
+
+.bg-tertiary-light {
+  background: rgba(133, 79, 0, 0.1);
+}
+
+.text-tertiary {
+  color: #854f00;
+}
+
+.ap-impact-value {
+  font-family: 'Manrope', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #2c2f31;
+  margin: 0 0 4px 0;
+  line-height: 1;
+}
+
+.ap-impact-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #595c5e;
+  margin: 0;
+}
+
+/* System Updates Log */
+.ap-updates-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ap-update-item {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: all 0.2s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.ap-update-item:hover {
+  border-left-color: #0053cc;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.ap-update-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.ap-update-icon {
+  width: 48px;
+  height: 48px;
+  background: #eef1f3;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #595c5e;
+}
+
+.ap-update-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2c2f31;
+  margin: 0 0 4px 0;
+}
+
+.ap-update-meta {
+  font-size: 0.75rem;
+  color: #747779;
+  margin: 0;
+}
+
+.ap-arrow-icon {
+  font-size: 16px !important;
+  color: #abadaf;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.ap-update-item:hover .ap-arrow-icon {
+  opacity: 1;
+}
+
+.ap-btn-view-log {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 1rem;
+  color: #0053cc;
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border-radius: 1rem;
+  transition: background 0.2s;
+}
+
+.ap-btn-view-log:hover {
+  background: #eef1f3;
+}
