@@ -1,63 +1,348 @@
-.main-box{
-    margin: 6cm auto 6cm auto; /* Centers horizontally and adds top & bottom spacing */
-    height: auto;
-    width: 30cm; /* Set the correct width */
-    background-color: #011f27;
-    border: solid black 2px;
-    border-radius: 1cm;
-    padding: 20px;
+/* AddMentor.css - Pure CSS implementation of the Editorial Design */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+.am-page-wrapper {
+    background-color: #f5f7f9;
+    font-family: 'Inter', sans-serif;
+    color: #2c2f31;
+    min-height: 100vh;
 }
 
-/* 🔹 Allow items to break to the next row */
-.form-group {
-    display: flex;
-    flex-wrap: wrap; /* Allows items to wrap onto the next row */
-    justify-content: space-between;
-}
-.form-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%; 
+.am-main-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
 }
 
-/* Ensures all dropdowns & inputs remain the same width */
-.form-control, .form-select {
+/* Header & Back Button */
+.am-header-section {
+    margin-bottom: 2.5rem;
+}
+
+.am-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: #595c5e;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s, transform 0.2s;
+    padding: 0;
+}
+
+.am-back-btn:hover {
+    color: #0053cc;
+    transform: translateX(-4px);
+}
+
+.am-header-section h1 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    color: #2c2f31;
+}
+
+.am-header-section p {
+    font-size: 1.05rem;
+    color: #595c5e;
+    line-height: 1.6;
+    max-width: 700px;
+}
+
+/* The Form & Cards */
+.am-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.am-card {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    box-shadow: 0 12px 32px rgba(44, 47, 49, 0.04);
+    overflow: hidden;
+}
+
+.am-card-header {
+    padding: 2rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eef1f3;
+}
+
+.am-card-header.no-border {
+    border-bottom: none;
+    padding-bottom: 1rem;
+}
+
+.am-card-header h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #2c2f31;
+    margin-bottom: 4px;
+}
+
+.am-card-header p {
+    font-size: 0.85rem;
+    color: #747779;
+    margin: 0;
+}
+
+/* Photo Upload Circle */
+.am-photo-upload-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.am-photo-dropzone {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #eef1f3;
+    border: 2px dashed #abadaf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.am-photo-dropzone:hover {
+    border-color: #0053cc;
+    background: #e0f6ff;
+}
+
+.am-photo-dropzone.am-error-border {
+    border-color: #b31b25;
+    background: #ffefee;
+}
+
+.am-photo-preview {
     width: 100%;
-    min-width: 250px; /* Ensures a consistent width */
-    max-width: 300px; /* Prevents excessive stretching */
-    border-radius: 7px;
-    background-color: azure;
-    border: solid black 1px;
-    padding-left: 10px;  
+    height: 100%;
+    object-fit: cover;
 }
 
-/* 🔹 Ensure each label + input takes the full row */
-.form-group .form-label, 
-.form-group .form-control, 
-.form-group .form-select {
-    width: 100%; /* Makes each input take full width of container */
-    margin-bottom: 10px; /* Adds space between rows */
+.am-upload-icon {
+    color: #747779;
+    font-size: 24px;
+    transition: transform 0.2s;
 }
 
-.add-mentor-text {
-    color: aliceblue;
-    font-size: 0.85cm;
-    margin-bottom: 1cm;
+.am-photo-dropzone:hover .am-upload-icon {
+    transform: scale(1.1);
+    color: #0053cc;
 }
 
-.form-label {
-    color: aliceblue;
+.am-photo-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.8rem;
 }
 
-.form-control, .form-select {
-    width: 100%; /* Ensures proper width */
-    border-radius: 7px;
-    background-color: azure;
-    border: solid black 1px;
-    padding-left: 1cm;  
+.am-photo-text strong {
+    color: #2c2f31;
 }
 
-.entry-event-button {
-    margin-bottom: 10px;
+.am-photo-text span {
+    color: #747779;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Grid & Inputs */
+.am-card-grid {
+    padding: 0 2.5rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .am-card-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.am-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.am-input-group label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #747779;
+    margin-left: 4px;
+}
+
+/* The Sleek Input Wrapper */
+.am-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #eef1f3;
+    border-radius: 8px;
+    padding: 0 16px;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.am-input-wrapper.align-top {
+    align-items: flex-start;
+    padding-top: 12px;
+}
+
+.am-input-wrapper:focus-within {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    border-bottom-color: #0053cc;
+}
+
+.am-input-wrapper.am-error {
+    border-bottom-color: #b31b25;
+}
+
+.am-input-wrapper span.material-symbols-outlined {
+    color: #747779;
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.am-input-wrapper span.cursor-pointer {
+    margin-right: 0;
+    margin-left: 12px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.am-input-wrapper span.cursor-pointer:hover {
+    color: #2c2f31;
+}
+
+.am-input-wrapper input,
+.am-input-wrapper textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 14px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: #2c2f31;
+    font-weight: 500;
+}
+
+.am-input-wrapper textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Select Dropdowns */
+.am-select {
+    width: 100%;
+    background: #eef1f3;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: #2c2f31;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.am-select:focus {
+    background: #ffffff;
+    outline: none;
+    border-bottom-color: #0053cc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.am-select.am-error-border {
+    border-bottom-color: #b31b25;
+}
+
+/* Helpers & Errors */
+.am-helper-text {
+    font-size: 0.7rem;
+    color: #747779;
+    margin-left: 4px;
+    margin-top: 4px;
+}
+
+.am-error-text {
+    font-size: 0.75rem;
+    color: #b31b25;
+    font-weight: 600;
+    margin-left: 4px;
+}
+
+/* Form Footer Actions */
+.am-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+
+.am-btn-discard {
+    background: transparent;
+    border: none;
+    color: #595c5e;
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.am-btn-discard:hover {
+    color: #b31b25;
+}
+
+.am-btn-submit {
+    background: linear-gradient(135deg, #0053cc 0%, #779dff 100%);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 20px rgba(0, 83, 204, 0.2);
+}
+
+.am-btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 83, 204, 0.3);
+}
+
+.am-btn-submit:active {
+    transform: translateY(0);
 }
