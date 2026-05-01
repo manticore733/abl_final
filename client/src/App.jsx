@@ -74,7 +74,7 @@ const InnerApp = () => {
           <Route path="/ad-view-students" element={<ProtectedRoute><AdViewStudents /></ProtectedRoute>} />
           <Route path="/ad-view-mentor" element={<ProtectedRoute><AdViewMentor /></ProtectedRoute>} />
           <Route path="/adprofile" element={<ProtectedRoute><Adprofile /></ProtectedRoute>} />
-
+          <Route path="/student-profile/:id" element={<ProtectedRoute><StudentDetails /></ProtectedRoute>} />
           {/* Club Admin Pages */}
           <Route path="/cHomepage" element={<ProtectedRoute><CHomepage /></ProtectedRoute>} />
           <Route path="/cadd-events" element={<ProtectedRoute><CAddEvents /></ProtectedRoute>} />

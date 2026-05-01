@@ -1,0 +1,667 @@
+/* AdStudentProfile.css - Super Admin Single Student View */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+.asp-page-wrapper {
+    background-color: #f5f7f9;
+    font-family: 'Inter', sans-serif;
+    color: #2c2f31;
+    min-height: 100vh;
+}
+
+.asp-main-content {
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+}
+
+/* --- HEADER --- */
+.asp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.asp-breadcrumbs {
+    display: flex;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #747779;
+    margin-bottom: 8px;
+}
+
+.asp-breadcrumbs span {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.asp-breadcrumbs span:hover {
+    color: #0053cc;
+}
+
+.asp-breadcrumbs span.current {
+    color: #0053cc;
+    cursor: default;
+}
+
+.asp-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #2c2f31;
+    letter-spacing: -1px;
+    margin: 0;
+}
+
+.asp-header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.asp-btn-outline {
+    background: transparent;
+    color: #2c2f31;
+    border: 1px solid rgba(116, 119, 121, 0.3);
+    padding: 12px 24px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.asp-btn-outline:hover {
+    background: #eef1f3;
+}
+
+.asp-btn-outline span {
+    font-size: 20px;
+}
+
+.asp-btn-primary {
+    background: linear-gradient(135deg, #0053cc 0%, #779dff 100%);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 83, 204, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.asp-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 83, 204, 0.3);
+}
+
+.asp-btn-primary span {
+    font-size: 20px;
+}
+
+/* --- TOP GRID --- */
+.asp-top-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+    .asp-top-grid {
+        grid-template-columns: 4fr 8fr;
+    }
+}
+
+/* Identity Card */
+.asp-identity-card {
+    background: #ffffff;
+    border-radius: 1.5rem;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(44, 47, 49, 0.04);
+}
+
+.asp-profile-img-container {
+    width: 180px;
+    height: 180px;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border: 4px solid #f5f7f9;
+}
+
+.asp-profile-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.asp-identity-card h2 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.asp-roll-text {
+    font-size: 0.95rem;
+    color: #595c5e;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.asp-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.asp-mentor-badge {
+    background: #77dfff;
+    color: #004e60;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.asp-mentor-badge span {
+    font-size: 16px;
+}
+
+.asp-status-badge {
+    background: #fd9d1a;
+    color: #4c2b00;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(253, 157, 26, 0.3);
+}
+
+.asp-status-badge span {
+    font-size: 16px;
+}
+
+.asp-meta-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    border-top: 1px solid #dfe3e6;
+    padding-top: 1.5rem;
+    text-align: left;
+}
+
+.asp-meta-item label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #747779;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.asp-meta-item p {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2c2f31;
+    margin: 0;
+}
+
+.text-secondary {
+    color: #006479 !important;
+}
+
+/* Credit Ecosystem Card */
+.asp-ecosystem-card {
+    background: #eef1f3;
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .asp-ecosystem-card {
+        flex-direction: row;
+    }
+}
+
+/* The Big SVG Ring */
+.asp-big-ring-wrapper {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 12px 32px rgba(44, 47, 49, 0.08);
+}
+
+.asp-big-svg {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    transform: rotate(-90deg);
+}
+
+.asp-ring-bg {
+    fill: transparent;
+    stroke: #dfe3e6;
+    stroke-width: 16;
+}
+
+.asp-ring-fill {
+    fill: transparent;
+    stroke: #0053cc;
+    stroke-width: 16;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s ease-out;
+}
+
+.asp-ring-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.asp-ring-score {
+    font-family: 'Manrope', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: #2c2f31;
+}
+
+.asp-ring-max {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #747779;
+    text-transform: uppercase;
+    margin-top: 4px;
+}
+
+.asp-ring-icon {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    width: 48px;
+    height: 48px;
+    background: #0053cc;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 83, 204, 0.3);
+    border: 4px solid #eef1f3;
+}
+
+/* The Breakdown Bars */
+.asp-breakdown-container {
+    width: 100%;
+}
+
+.asp-breakdown-container h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #2c2f31;
+}
+
+.asp-bars-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.asp-bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.asp-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.asp-bar-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #2c2f31;
+}
+
+.asp-bar-score {
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.asp-bar-track {
+    width: 100%;
+    height: 10px;
+    background: #dfe3e6;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.asp-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 1s ease-out;
+}
+
+/* Dynamic Colors */
+.text-primary {
+    color: #0053cc;
+}
+
+.bg-primary {
+    background: #0053cc;
+}
+
+.text-secondary {
+    color: #006479;
+}
+
+.bg-secondary {
+    background: #006479;
+}
+
+.text-tertiary {
+    color: #854f00;
+}
+
+.bg-tertiary {
+    background: #854f00;
+}
+
+.text-primary-dim {
+    color: #608fff;
+}
+
+.bg-gradient-blue {
+    background: linear-gradient(90deg, #608fff, #0053cc);
+}
+
+.text-cyan {
+    color: #48d3f8;
+}
+
+.bg-cyan {
+    background: #48d3f8;
+}
+
+/* --- AUDIT TRAIL TABLE --- */
+.asp-audit-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.asp-audit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.asp-audit-header h3 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #2c2f31;
+    margin: 0;
+}
+
+.asp-audit-filters {
+    display: flex;
+    gap: 12px;
+}
+
+.asp-search-box {
+    position: relative;
+    width: 250px;
+}
+
+.asp-search-box span {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #747779;
+    font-size: 20px;
+}
+
+.asp-search-box input {
+    width: 100%;
+    background: #eef1f3;
+    border: none;
+    padding: 10px 16px 10px 40px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.asp-audit-filters select {
+    background: #eef1f3;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #2c2f31;
+    outline: none;
+    cursor: pointer;
+}
+
+.asp-table-container {
+    background: #ffffff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.asp-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.asp-table th {
+    background: rgba(238, 241, 243, 0.5);
+    padding: 1.25rem 1.5rem;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #747779;
+}
+
+.asp-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f5f7f9;
+    vertical-align: middle;
+    transition: background 0.2s;
+}
+
+.asp-table tr:hover td {
+    background: rgba(245, 247, 249, 0.5);
+}
+
+.asp-activity-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2c2f31;
+    margin: 0 0 2px 0;
+}
+
+.asp-activity-sub {
+    font-size: 0.75rem;
+    color: #747779;
+    margin: 0;
+}
+
+.asp-cat-pill {
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.cat-blue {
+    background: rgba(0, 83, 204, 0.1);
+    color: #0053cc;
+}
+
+.cat-orange {
+    background: rgba(253, 157, 26, 0.15);
+    color: #854f00;
+}
+
+.cat-cyan {
+    background: rgba(119, 223, 255, 0.3);
+    color: #006479;
+}
+
+.cat-brown {
+    background: rgba(133, 79, 0, 0.1);
+    color: #583300;
+}
+
+.asp-date-cell {
+    font-size: 0.85rem;
+    color: #2c2f31;
+}
+
+.asp-credit-cell {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #2c2f31;
+}
+
+.asp-status-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #006479;
+}
+
+.asp-status-cell span {
+    font-size: 16px;
+}
+
+.asp-approver-cell {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2c2f31;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.asp-btn-icon {
+    background: transparent;
+    border: none;
+    color: #0053cc;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asp-btn-icon:hover {
+    background: rgba(0, 83, 204, 0.05);
+    transform: scale(1.1);
+}
+
+/* Pagination */
+.asp-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: rgba(238, 241, 243, 0.3);
+    border-top: 1px solid #eef1f3;
+}
+
+.asp-pagination p {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #747779;
+    margin: 0;
+}
+
+.asp-page-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.asp-page-btns button {
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+}
+
+.asp-page-btns button:disabled {
+    background: #dfe3e6;
+    color: #abadaf;
+    cursor: not-allowed;
+}
+
+.asp-page-btns button.active {
+    background: #0053cc;
+    color: white;
+    transition: background 0.2s;
+}
+
+.asp-page-btns button.active:hover {
+    background: #0048b3;
+}

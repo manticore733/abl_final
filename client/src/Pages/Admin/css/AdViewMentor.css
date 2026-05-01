@@ -1,7 +1,417 @@
-.mentor-view-main{
-    margin-top: 4.5cm;
-    padding: 1.5cm;
+/* AdViewMentor.css - Super Admin Mentor Roster */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+.avm-page-wrapper {
+    background-color: #f5f7f9;
+    font-family: 'Inter', sans-serif;
+    color: #2c2f31;
+    min-height: 100vh;
+}
+
+.avm-main-content {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+}
+
+/* Header & Breadcrumbs */
+.avm-header-section {
+    margin-bottom: 2.5rem;
+    padding-left: 0.5rem;
+}
+
+.avm-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #747779;
+    margin-bottom: 12px;
+}
+
+.avm-breadcrumbs .current {
+    color: #0053cc;
+}
+
+.avm-breadcrumbs span.material-symbols-outlined {
+    font-size: 14px;
+}
+
+.avm-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.avm-header-flex h1 {
+    font-family: 'Manrope', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+    color: #2c2f31;
+}
+
+.avm-header-flex p {
+    font-size: 1.05rem;
+    color: #595c5e;
+    max-width: 600px;
+    margin: 0;
+}
+
+.avm-btn-primary {
+    background: linear-gradient(135deg, #0053cc 0%, #779dff 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 20px rgba(0, 83, 204, 0.2);
+}
+
+.avm-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(0, 83, 204, 0.3);
+}
+
+/* Analytical Filter Bar */
+.avm-filter-bar {
+    background: #eef1f3;
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    align-items: flex-end;
+}
+
+.avm-filter-group {
     display: flex;
     flex-direction: column;
-    gap: 1cm;
+    gap: 6px;
+}
+
+.avm-filter-group.flex-1 {
+    flex: 1;
+    min-width: 200px;
+}
+
+.avm-filter-group.w-32 {
+    width: 8rem;
+}
+
+.avm-filter-group.w-40 {
+    width: 10rem;
+}
+
+.avm-filter-group label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #747779;
+    padding-left: 4px;
+}
+
+.avm-filter-group select,
+.avm-year-input {
+    width: 100%;
+    background: #ffffff;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: #2c2f31;
+    font-weight: 600;
+    outline: none;
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.avm-filter-group select:focus,
+.avm-year-input:focus {
+    box-shadow: 0 0 0 2px rgba(0, 83, 204, 0.2);
+}
+
+.avm-filter-action {
+    padding-bottom: 2px;
+}
+
+.avm-btn-filter {
+    background: #dfe3e6;
+    color: #2c2f31;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.avm-btn-filter:hover {
+    background: #0053cc;
+    color: white;
+}
+
+/* Table Container */
+.avm-table-container {
+    background: #ffffff;
+    border-radius: 1.25rem;
+    box-shadow: 0 12px 32px rgba(44, 47, 49, 0.04);
+    overflow: hidden;
+}
+
+.avm-loading,
+.avm-error,
+.avm-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    font-weight: 600;
+    color: #747779;
+}
+
+.avm-error {
+    color: #b31b25;
+}
+
+.avm-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.avm-table th {
+    background: #f9fafb;
+    padding: 1.25rem 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #747779;
+    border-bottom: 1px solid #eef1f3;
+}
+
+.avm-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f5f7f9;
+    transition: background 0.2s;
+    vertical-align: middle;
+}
+
+.avm-table tr:hover td {
+    background: #f9fafb;
+}
+
+.w-16 {
+    width: 4rem;
+    text-align: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.avm-text-sub {
+    color: #747779;
+}
+
+/* Mentor Profile Cell */
+.avm-mentor-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avm-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid #eef1f3;
+}
+
+.avm-avatar-initials {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.bg-primary-light {
+    background: #e0f6ff;
+}
+
+.text-primary {
+    color: #0053cc;
+}
+
+.avm-mentor-cell strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #2c2f31;
+    margin-bottom: 2px;
+}
+
+.avm-mentor-role {
+    font-size: 0.75rem;
+    color: #747779;
+}
+
+.avm-dept-text {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #595c5e;
+}
+
+/* Academics Badges */
+.avm-academics-cell {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.avm-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.avm-badge.bg-gray {
+    background: #eef1f3;
+    color: #595c5e;
+}
+
+.avm-badge.bg-blue-light {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+/* Action Buttons */
+.avm-action-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.avm-action-btns button {
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.avm-action-btns button span {
+    font-size: 20px;
+}
+
+.btn-edit {
+    color: #0053cc;
+}
+
+.btn-edit:hover {
+    background: #e0f6ff;
+}
+
+.btn-delete {
+    color: #b31b25;
+}
+
+.btn-delete:hover {
+    background: #ffefee;
+}
+
+.btn-upgrade {
+    color: #854f00;
+}
+
+.btn-upgrade:hover {
+    background: #ffedd5;
+}
+
+/* Orange for Semester Upgrade */
+
+/* Pagination */
+.avm-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid #eef1f3;
+}
+
+.avm-pagination p {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #747779;
+    margin: 0;
+}
+
+.avm-page-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.avm-page-controls button {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: none;
+    background: #eef1f3;
+    color: #595c5e;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.avm-page-controls button:hover:not(:disabled) {
+    background: #0053cc;
+    color: white;
+}
+
+.avm-page-controls button.active {
+    background: #0053cc;
+    color: white;
+}
+
+.avm-page-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
