@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { fetchStudentCredentials, getClubAdminStatus } from "../api/studentApi";
-import { fetchAdminCredentials } from "../api/adminApi";
-import { fetchMentorCredentials } from "../api/mentorApi";
+import axios from "axios"; // ✅ Added axios for the login call
 import "./css/LoginForm.css";
 import { useToast } from "../Components/ToastContext";
 
@@ -33,57 +31,39 @@ const LoginForm = ({ role }) => {
         setIsLoading(true);
 
         try {
-            let credentials;
-            let isValid = false;
+            // Format the role for the backend (e.g., "Club Admin" -> "clubadmin")
+            const backendRole = role.toLowerCase().replace(" ", "");
 
-            if (role === "Student" || role === "Club Admin") {
-                credentials = await fetchStudentCredentials(username);
-                if (role === "Club Admin") {
-                    const clubAdminStatus = await getClubAdminStatus(credentials.s_id);
-                    if (!clubAdminStatus) throw new Error("Student is not a Club Admin");
+            // ✅ ONE API call to rule them all. No more client-side password checking!
+            const response = await axios.post("http://localhost:5000/api/auth/login",
+                {
+                    username: username,
+                    password: password,
+                    role: backendRole
+                },
+                {
+                    withCredentials: true // 🍪 CRITICAL: Tells the browser to accept the HTTP-Only Cookie!
                 }
-                isValid = credentials.s_password === password;
-            }
-            else if (role === "Admin") {
-                credentials = await fetchAdminCredentials(username);
-                isValid = credentials.a_password === password;
-            }
-            else if (role === "Mentor") {
-                credentials = await fetchMentorCredentials(username);
-                isValid = credentials.m_password === password;
-            }
-            else {
-                throw new Error("Invalid role.");
-            }
+            );
 
-            if (!isValid) throw new Error("Invalid username or password.");
+            if (response.data.success) {
+                // ✅ Store UI state (but NOT the token, the browser holds the cookie securely!)
+                sessionStorage.setItem("username", username);
+                sessionStorage.setItem("role", role);
 
-            sessionStorage.setItem("username", username);
-            sessionStorage.setItem("role", role);
-
-            const sessionResponse = await fetch("http://localhost:5000/api/session/generate-token", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ username: username, user_type: role.toLowerCase() }),
-            });
-
-            const sessionData = await sessionResponse.json();
-
-            if (sessionResponse.ok) {
                 showToast('success', 'Welcome Back!', `Successfully logged in as ${role}.`);
+
                 if (role === "Club Admin") navigate("/cHomepage");
                 else if (role === "Student") navigate("/sHomepage");
                 else if (role === "Admin") navigate("/aHomepage");
                 else if (role === "Mentor") navigate("/mHomepage");
-            } else {
-                throw new Error(sessionData.message || "Failed to create session.");
             }
-
         } catch (err) {
             console.error("Login Error:", err);
-            setError(err.message || "Server error. Please try again.");
-            showToast('error', 'Access Denied', err.message);
+            // Extract the clean error message we wrote in the backend Controller!
+            const errorMessage = err.response?.data?.message || "Server error. Please try again.";
+            setError(errorMessage);
+            showToast('error', 'Access Denied', errorMessage);
         } finally {
             setIsLoading(false);
         }

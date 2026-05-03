@@ -1,26 +1,32 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./css/AdNavbar.css";
+import { useToast } from "../../Components/ToastContext"; // ✅ Added for feedback
+import apiClient from "../../apiClient";
 
 const AdNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { showToast } = useToast();
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/session/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+      // ✅ Use apiClient to hit the new auth/logout endpoint
+      const response = await apiClient.post("/api/auth/logout");
 
-      if (response.ok) {
+      if (response.data.success) {
+        // ✅ Clear UI state securely
+        sessionStorage.clear();
+
+        showToast('success', 'Logged Out', 'Admin session securely closed.');
         navigate("/", { replace: true });
-      } else {
-        const data = await response.json();
-        console.error("Logout failed:", data.message);
       }
     } catch (error) {
       console.error("Error during logout:", error);
+      // Failsafe: clear local storage and kick to login even if server disconnects
+      sessionStorage.clear();
+      showToast('error', 'Session Ended', 'You have been logged out.');
+      navigate("/", { replace: true });
     }
   };
 

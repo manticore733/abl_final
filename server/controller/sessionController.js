@@ -1,10 +1,10 @@
 import crypto from "crypto";
-import Session from "../postgres/model/Session.js";
+// import Session from "../postgres/model/Session.js";
 import { sequelize } from "../postgres/postgresmodel.js";
 
 // Function to generate a secure session token
 const generateSessionToken = () => {
-    return crypto.randomBytes(64).toString("hex"); 
+    return crypto.randomBytes(64).toString("hex");
 };
 
 // Function to generate and store session token in a cookie
@@ -20,8 +20,8 @@ export const generateTokenForUser = async (req, res) => {
         let usernameField;
 
         if (user_type === "student") {
-            userModel = "students"; 
-            userIdField = "s_id"; 
+            userModel = "students";
+            userIdField = "s_id";
             usernameField = "s_username";
         } else if (user_type === "mentor") {
             userModel = "mentor_info";
@@ -31,9 +31,9 @@ export const generateTokenForUser = async (req, res) => {
             userModel = "admin";
             userIdField = "a_id";
             usernameField = "a_username";
-        } else if (user_type === "club admin"){
-            userModel = "students"; 
-            userIdField = "s_id"; 
+        } else if (user_type === "club admin") {
+            userModel = "students";
+            userIdField = "s_id";
             usernameField = "s_username";
         }
         else {
@@ -42,9 +42,9 @@ export const generateTokenForUser = async (req, res) => {
 
         // Fetch the user ID from the correct table
         const query = `SELECT ${userIdField} FROM ${userModel} WHERE ${usernameField} = ?`;
-        const [user] = await sequelize.query(query, { 
-            replacements: [username], 
-            type: sequelize.QueryTypes.SELECT 
+        const [user] = await sequelize.query(query, {
+            replacements: [username],
+            type: sequelize.QueryTypes.SELECT
         });
 
         if (!user) {
@@ -62,8 +62,8 @@ export const generateTokenForUser = async (req, res) => {
 
         // Start transaction to ensure consistency
         await sequelize.transaction(async (t) => {
-            await Session.destroy({ 
-                where: { user_id: user_uuid }  
+            await Session.destroy({
+                where: { user_id: user_uuid }
             }, { transaction: t });
 
             const newSession = await Session.create({
